@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial - FocusUp</title>
+    <link rel="stylesheet" href="{{url_for ('static', filename = 'pagina_inicial.css')}}">
+</head>
+<body>
+    <header>
+       <div class="logo-container">
+        <div class="focusup-logo">
+                <div class="checkmark-container">
+                    <div class="checkmark"></div>
+                </div>
+                <span class="focusup-text">FocusUp</span>
+            </div>
+        </div>
+        </header>
+
+    <main>
+        <div class="text_container"> <h1>
+                Por que utilizar um gerenciador de estudos?
+            </h1>
+            <p>
+                O software gerenciador de estudos surgiu da necessidade
+                de ajudar estudantes a organizarem melhor seu tempo e tarefas. 
+                Com a grande quantidade de matérias, prazos e atividades, 
+                muitos têm dificuldade em manter uma rotina eficiente.
+                Essa ferramenta permite planejar, acompanhar o progresso 
+                e melhorar o desempenho, tornando os estudos mais produtivos e menos estressantes.
+            </p>
+            </div>
+
+            <div class="botoes">
+                <button class="cadastro">
+                    <a href="{{url_for('register')}}">Cadastre-se</a>
+                </button>
+                <button class="login">
+                    <a href="{{url_for('login')}}">Login</a>
+                </button>
+            </div>
+        </main>
+
+</body>
+</html>

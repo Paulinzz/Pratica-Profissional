@@ -1,0 +1,14 @@
+# Ambiente virtual
+env/
+
+# Arquivos temporários do Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de log
+*.log
