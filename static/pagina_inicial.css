@@ -100,7 +100,7 @@ main {
     border-radius: 30px;
     min-width: 200px;
     min-height: 50px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 3px black;
     border: none;
     cursor: pointer;
 }
@@ -115,7 +115,7 @@ main {
     border-radius: 30px;
     min-width: 200px;
     min-height: 50px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 3px black;
     border: none;
     cursor: pointer;
 }

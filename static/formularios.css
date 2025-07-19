@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    background: linear-gradient(to bottom, #1a73e8 50%, #ffffff 50%);
+    flex-direction: column;
+}
+
+header{
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    justify-content: center;
+    color: white;
+}
+
+header h1{
+    font-size: 45px;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+form{
+    background-color: #eff1f3;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-width: 500px;
+    gap: 30px;
+    border-radius: 40px;
+    box-shadow: 0 0 2px black;
+    padding: 60px 100px 60px 100px;
+    
+}
+.email{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 7px;
+}
+.senha{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 7px;
+}
+.email input{
+    min-height: 50px;
+    border-radius: 30px;
+    flex: 1;
+    padding: 10px;
+    font-weight: normal;
+    color: black;
+    border: none;
+    box-shadow: 0 0 2px black;
+    font-size: 18px;
+}
+.senha input{
+    min-height: 50px;
+    border-radius: 30px;
+    flex: 1;
+    padding: 10px;
+    color: black;
+    border: none;
+    box-shadow: 0 0 2px black;
+    font-size: 18px;
+}
+form button{
+    border: none;
+    background-color: green;
+    color: white;
+    height: 50px;
+    min-width: 120px;
+    border-radius: 40px;
+    box-shadow: 0 0 2px black;
+    font-size: 20px;
+}
+.logo-container {
+    width: auto;
+}
+
+.focusup-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    text-decoration: none;
+}
+
+.checkmark-container {
+    width: 40px;
+    height: 40px;
+    background-color: #1a73e8;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.checkmark {
+    width: 20px;
+    height: 10px;
+    border: 3px solid white;
+    border-top: none;
+    border-right: none;
+    transform: rotate(-45deg);
+    position: absolute;
+}
+
+.focusup-text {
+    font-size: 40px;
+    font-weight: bold;
+}
