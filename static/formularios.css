@@ -66,7 +66,8 @@ form{
     color: black;
     border: none;
     box-shadow: 0 0 2px black;
-    font-size: 18px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
 }
 .senha input{
     min-height: 50px;
@@ -76,7 +77,8 @@ form{
     color: black;
     border: none;
     box-shadow: 0 0 2px black;
-    font-size: 18px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
 }
 form button{
     border: none;
@@ -87,6 +89,7 @@ form button{
     border-radius: 40px;
     box-shadow: 0 0 2px black;
     font-size: 20px;
+    font-family: 'Poppins', sans-serif;
 }
 .logo-container {
     width: auto;

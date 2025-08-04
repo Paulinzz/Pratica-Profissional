@@ -94,6 +94,7 @@ main {
     font-weight: 400;
     font-size: 20px;
     text-decoration: none;
+    font-family: 'Poppins', sans-serif;
 }
 .botoes .cadastro{
     background-color: #1a73e8;
@@ -109,6 +110,7 @@ main {
     font-weight: 400;
     font-size: 20px;
     text-decoration: none;
+    font-family: 'Poppins', sans-serif;
     
 }
 .botoes .login{
