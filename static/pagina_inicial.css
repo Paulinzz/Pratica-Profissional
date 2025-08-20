@@ -29,6 +29,7 @@ header {
     align-items: center;
     gap: 8px; 
     text-decoration: none;
+    cursor: pointer;
 }
 
 .checkmark-container {
@@ -60,7 +61,6 @@ main {
     flex: 1;
     display: flex;
     justify-content: center;
-    padding: 40px;
     flex-direction: column;
     align-items: center;
     gap: 40px;
@@ -72,7 +72,8 @@ main {
     display: flex;
     flex-direction: column;
     text-align: justify;
-    gap: 20px;
+    gap: 30px;
+    align-items: center;
 }
 
 .text_container h1 {
@@ -94,6 +95,7 @@ main {
     font-weight: 400;
     font-size: 20px;
     text-decoration: none;
+    font-family: 'Poppins';
 }
 .botoes .cadastro{
     background-color: #1a73e8;
@@ -109,6 +111,7 @@ main {
     font-weight: 400;
     font-size: 20px;
     text-decoration: none;
+    font-family: 'Poppins';
     
 }
 .botoes .login{
@@ -119,4 +122,34 @@ main {
     box-shadow: 0 0 3px black;
     border: none;
     cursor: pointer;
+}
+
+.botoes .cadastro:hover{
+    background-color: #2e7d32;
+    transform: scale(1.03);   
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.botoes .login:hover{
+    background-color: #2e7d32;
+    transform: scale(1.03);   
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.login a {
+    color: #12468a;
+    font-weight: 400;
+    font-size: 20px;
+    text-decoration: none;
+    font-family: 'Poppins';
+    
+}
+.login a:hover{
+    color: white;
+    
+}
+.cadastro a {
+    color: #cacaca;
+    font-weight: 400;
+    font-size: 20px;
+    text-decoration: none;
+    font-family: 'Poppins';
 }
