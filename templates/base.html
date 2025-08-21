@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+        Templates
+        {% endblock %}
+    </title>
+</head>
+<body>
+    
+    {% block header %}
+    <header>
+       <div class="logo-container">
+        <div class="focusup-logo">
+                <div class="checkmark-container">
+                    <div class="checkmark"></div>
+                </div>
+                <span class="focusup-text">FocusUp</span>
+            </div>
+        </div>
+        <div class="links">
+            <a href="{{url_for('index')}}">Início</a>
+            <a href="{{url_for('')}}">Atividades</a>
+            <a href="{{url_for('')}}">Ajuda</a>
+        </div>
+    </header>
+    {% endblock %}
+
+    {% block conteudo %}
+    <main>
+
+    </main>
+    {% endblock %}
+
+    {% block footer %}
+
+    {% endblock %}
+</body>
+</html>
