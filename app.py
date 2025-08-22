@@ -1,17 +1,16 @@
 from flask import *
-
 from flask_sqlalchemy import SQLAlchemy
-
 from flask_login import *
-
 from flask_bcrypt import (
     Bcrypt,
-)  # importação do Bcrypt para criptografia de senhas, substituindo a importação de werkzeug.security
+) 
 
 from models import (
     db,
-    Usuario,
-)  # Importação corrigida para o novo arquivo models.py, como especificado pelo coordenador
+    User,
+    Materia,
+    Atividade,
+) 
 
 app = Flask(__name__)
 
@@ -21,7 +20,6 @@ app.config["SECRET_KEY"] = "Chave1234"
 db.init_app(app)
 bcrypt = Bcrypt(app)
 
-# Configura o gerenciador de login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
@@ -29,18 +27,14 @@ login_manager.login_view = "login"
 
 @login_manager.user_loader
 def load_user(user_id):
-    """Função para carregar o usuário a partir do ID."""
-    return Usuario.query.get(int(user_id))
-
+    return User.query.get(int(user_id))
 
 with app.app_context():
     db.create_all()
 
-
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 @app.route("/cadastro", methods=["GET", "POST"])
 def register():
@@ -48,17 +42,14 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        # Verifica se o email já existe
-        user_exists = Usuario.query.filter_by(email=email).first()
+        user_exists = User.query.filter_by(email=email).first()
         if user_exists:
             flash("Este email já está cadastrado.", "danger")
             return redirect(url_for("register"))
 
-        # Criptografa a senha antes de salvar
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-        new_user = Usuario(email=email, password=hashed_password)
+        new_user = User(email=email, password=hashed_password)
 
-        # Adiciona o novo usuário ao banco de dados
         db.session.add(new_user)
         db.session.commit()
 
@@ -67,15 +58,13 @@ def register():
 
     return render_template("cadastro.html")
 
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        user = Usuario.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
 
-        # Verifica se o usuário existe e se a senha está correta (usando Bcrypt)
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             flash("Login realizado com sucesso!", "success")
@@ -85,21 +74,43 @@ def login():
 
     return render_template("login.html")
 
-
 @app.route("/logout")
 @login_required
 def logout():
-    """Rota para deslogar o usuário."""
     logout_user()
     flash("Você foi desconectado.", "info")
     return redirect(url_for("index"))
-
 
 @app.route("/dashboard")
 @login_required
 def dashboard():
     return render_template("dashboard.html")
 
+@app.route("/adicionar_materia", methods=["POST"])
+@login_required
+def adicionar_materia():
+    nome_materia = request.form.get("materia")
+    if not nome_materia:
+        flash("Por favor, adicione o nome da matéria.", "danger")
+    else:
+        nova_materia = Materia(nome=nome_materia, user_id=current_user.id)
+        db.session.add(nova_materia)
+        db.session.commit()
+        flash("Matéria adicionada com sucesso!", "success")
+    return redirect(url_for("dashboard"))
+
+@app.route("/adicionar_atividade", methods=["POST"])
+@login_required
+def adicionar_atividade():
+    nome_atividade = request.form.get("atividade")
+    if not nome_atividade:
+        flash("Por favor, adicione o nome da atividade.", "danger")
+    else:
+        nova_atividade = Atividade(nome=nome_atividade, user_id=current_user.id)
+        db.session.add(nova_atividade)
+        db.session.commit()
+        flash("Atividade adicionada com sucesso!", "success")
+    return redirect(url_for("dashboard"))
 
 if __name__ == "__main__":
     app.run(debug=True)
