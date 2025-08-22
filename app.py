@@ -10,7 +10,7 @@ from flask_bcrypt import (
 
 from models import (
     db,
-    User,
+    Usuario,
 )  # Importação corrigida para o novo arquivo models.py, como especificado pelo coordenador
 
 app = Flask(__name__)
@@ -30,7 +30,7 @@ login_manager.login_view = "login"
 @login_manager.user_loader
 def load_user(user_id):
     """Função para carregar o usuário a partir do ID."""
-    return User.query.get(int(user_id))
+    return Usuario.query.get(int(user_id))
 
 
 with app.app_context():
@@ -49,14 +49,14 @@ def register():
         password = request.form.get("password")
 
         # Verifica se o email já existe
-        user_exists = User.query.filter_by(email=email).first()
+        user_exists = Usuario.query.filter_by(email=email).first()
         if user_exists:
             flash("Este email já está cadastrado.", "danger")
             return redirect(url_for("register"))
 
         # Criptografa a senha antes de salvar
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-        new_user = User(email=email, password=hashed_password)
+        new_user = Usuario(email=email, password=hashed_password)
 
         # Adiciona o novo usuário ao banco de dados
         db.session.add(new_user)
@@ -73,7 +73,7 @@ def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        user = User.query.filter_by(email=email).first()
+        user = Usuario.query.filter_by(email=email).first()
 
         # Verifica se o usuário existe e se a senha está correta (usando Bcrypt)
         if user and bcrypt.check_password_hash(user.password, password):
@@ -103,4 +103,3 @@ def dashboard():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
