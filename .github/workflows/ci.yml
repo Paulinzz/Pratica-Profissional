@@ -1,0 +1,45 @@
+name: CI - Flask Project
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcairo2-dev
+          sudo apt install -y gobject-introspection libgirepository1.0-dev
+
+      - name: 📦 Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🧹 Lint com flake8
+        run: |
+          pip install flake8
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: 🧪 Executar testes (pytest)
+        run: |
+          pip install pytest
+          pytest
+      - name: 🔍 Verificar formatação com Black
+        run: |
+          pip install black
+          black . --check --diff

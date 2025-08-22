@@ -1,0 +1,22 @@
+feature:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "app.py"
+      - "templates/**"
+bug:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "tests/**"
+frontend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "static/**"
+infra:
+  - changed-files:
+    - any-glob-to-any-file:
+      - ".github/**"
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "requirements.txt"
+      - "README.md"
