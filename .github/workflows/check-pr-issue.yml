@@ -1,0 +1,21 @@
+name: "🚨 Verificar se PR referencia uma issue"
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  check-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✅ Verificando se PR referencia uma issue
+        uses: mszostok/check-pr-title@v1
+        with:
+          # Padrões aceitos: fixes #123, fix #12, resolves #1, close #5, etc.
+          pattern: '.*(close[sd]?|resolve[sd]?|fix(e[sd])?)\s+#\d+.*'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

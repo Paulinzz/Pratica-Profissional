@@ -1,0 +1,7 @@
+addReviewers: true
+addAssignees: false
+reviewers:
+  - flaubersauan 
+  - Paulinzz
+  - Abraao3
+numberOfReviewers: 1

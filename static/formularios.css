@@ -82,22 +82,18 @@ form{
     font-size: 18px;
     font-family: 'Poppins';
 }
-
-input:focus{
-  border: 2px solid #43A047;   /* verde */
-  outline: none;
-  box-shadow: 0 0 6px rgba(67, 160, 71, 0.4);
-}
 form button{
     border: none;
     background-color: green;
     color: white;
     height: 50px;
-    min-width: 120px;
+    width: 100%;
+    max-width: 140px;
     border-radius: 40px;
     box-shadow: 0 0 2px black;
     font-size: 20px;
     font-family: 'Poppins';
+    
 }
 .logo-container {
     width: auto;
@@ -134,4 +130,7 @@ form button{
 .focusup-text {
     font-size: 40px;
     font-weight: bold;
+}
+i{
+    color: #1a73e8;
 }

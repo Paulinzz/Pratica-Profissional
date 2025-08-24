@@ -1,0 +1,42 @@
+name: Label Pull Requests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sync-labels: false
+          dot: true
+
+  bugfix:
+    needs: label  # ← garante que o labeler rode antes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body || "";
+            const prTitle = context.payload.pull_request.title || "";
+
+            const issueReferencePattern = /(fixe?[sd]?|close[sd]?|resolve[sd]?)\s+#\d+/i;
+
+            if (issueReferencePattern.test(prBody) || issueReferencePattern.test(prTitle)) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: ['bugfix']
+              });
+              core.info("Label 'bugfix' added to the PR.");
+            } else {
+              core.info("No issue reference found. Label not added.");
+            }
