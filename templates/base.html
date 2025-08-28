@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>
         {% block title %}
         Templates
@@ -22,9 +24,25 @@
             </div>
         </div>
         <div class="links">
-            <a href="{{url_for('index')}}">Início</a>
-            <a href="{{url_for('')}}">Atividades</a>
-            <a href="{{url_for('')}}">Ajuda</a>
+            <a href="{{url_for('dashboard')}}">Início</a>
+            <a href="{{url_for('listar_atividades')}}">Atividades</a>
+            <a href="{{url_for('ajuda')}}">Ajuda</a>
+            <form action="{{url_for('listar_notificacoes')}}">
+                <button type="submit">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+            </form>
+        </div>
+        <div class="user">
+            <i class="fa-regular fa-user"></i>
+            <p>Olá, {{current_user.email}}</p>
+        </div>
+        <div class="logout">
+            <form action="{{url_for('logout')}}">
+                <button type="submit">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                </button>
+            </form>
         </div>
     </header>
     {% endblock %}

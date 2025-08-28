@@ -112,5 +112,22 @@ def adicionar_atividade():
         flash("Atividade adicionada com sucesso!", "success")
     return redirect(url_for("dashboard"))
 
+
+@app.route("/listar_atividades")
+@login_required
+def listar_atividades():
+    return render_template('listar_atividades.html')
+
+
+@app.route("/ajuda")
+@login_required
+def ajuda():
+    return render_template('ajuda.html')
+
+@app.route("/listar_noticacoes")
+@login_required
+def listar_notificacoes():
+    return render_template('listar_notificacoes.html')
+
 if __name__ == "__main__":
     app.run(debug=True)

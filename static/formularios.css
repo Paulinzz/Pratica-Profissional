@@ -17,9 +17,9 @@ body {
 header{
     display: flex;
     align-items: center;
-    padding: 40px;
     justify-content: center;
     color: white;
+    margin-top: 20px;
 }
 
 header h1{
@@ -34,15 +34,17 @@ main{
 }
 form{
     background-color: #eff1f3;
-    min-height: 300px;
+    max-height: 600px;
     display: flex;
     align-items: center;
     flex-direction: column;
-    min-width: 500px;
+    max-width: 580px;
     gap: 30px;
     border-radius: 40px;
     box-shadow: 0 0 2px black;
     padding: 60px 100px 60px 100px;
+    width: 100%;
+    height: 100%;
     
 }
 .email{
@@ -66,8 +68,8 @@ form{
     color: black;
     border: none;
     box-shadow: 0 0 2px black;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-family: 'Poppins';
 }
 .senha input{
     min-height: 50px;
@@ -77,19 +79,21 @@ form{
     color: black;
     border: none;
     box-shadow: 0 0 2px black;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-family: 'Poppins';
 }
 form button{
     border: none;
     background-color: green;
     color: white;
     height: 50px;
-    min-width: 120px;
+    width: 100%;
+    max-width: 140px;
     border-radius: 40px;
     box-shadow: 0 0 2px black;
     font-size: 20px;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins';
+    
 }
 .logo-container {
     width: auto;
@@ -114,9 +118,9 @@ form button{
 }
 
 .checkmark {
-    width: 20px;
+    width: 25px;
     height: 10px;
-    border: 3px solid white;
+    border: 5px solid white;
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
