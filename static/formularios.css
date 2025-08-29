@@ -82,6 +82,12 @@ form{
     font-size: 18px;
     font-family: 'Poppins';
 }
+input:focus {
+  border: 2px solid #43A047;
+  outline: none;
+  box-shadow: 0 0 6px rgba(67, 160, 71, 0.4);
+}
+
 form button{
     border: none;
     background-color: green;
@@ -94,6 +100,10 @@ form button{
     font-size: 20px;
     font-family: 'Poppins';
     
+}
+button:hover{
+    background-color: rgb(12, 82, 12);
+    transition: 0.5s;
 }
 .logo-container {
     width: auto;
