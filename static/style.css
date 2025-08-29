@@ -8,10 +8,11 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    padding: 20px;
+    padding: 30px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    gap: 30px;
 }
 .container_header{
     display: flex;
@@ -97,24 +98,107 @@ button i:hover{
     border-radius: 20px;
     color: white;
 }
-.main{
-    flex: 1;
-}
-.left-content{
-    width: 50%;
-    background-color: #1a73e8;
-    height: 100%;
-}
-
-.left-content{
-    width: 50%;
-    background-color: black;
-    height: 100%;
-}
-
 
 i{
     color: #1a73e8;
     padding: 20px;
     font-size: 20px;
+}
+main{
+    flex: 1;
+    display: flex;
+    gap: 15rem;
+}
+.left-content{
+    flex: 1;
+    display: flex;
+    max-width: 65%;
+    flex-direction: column;
+    border-radius: 30px;
+    gap: 20px;
+    
+}
+.container-case{
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    
+}
+.card-materias_mais_estudadas{
+    display: flex;
+    flex: 1;
+
+    box-shadow: 5px 5px 5px rgba(198, 154, 198, 0.5);
+    border-radius: 30px;
+    background-color: #eff1f3;
+}
+.card-sobre{
+    flex: 1;
+    box-shadow: 5px 5px 5px rgba(198, 154, 198, 0.5);
+    border-radius: 30px;
+    background-color: #eff1f3;
+    display: flex;
+}
+.card-dash{
+    flex: 1;
+    display: flex;
+    box-shadow: 5px 5px 5px rgba(198, 154, 198, 0.5);
+    border-radius: 30px;
+    background-color: #eff1f3;
+
+}
+
+.right-content{
+    display: flex;
+    flex: 1;
+    max-width: 35%;
+    gap: 20px;
+    flex-direction: column;
+}
+
+.card_artigo{
+    flex: 1;
+    display: flex;
+    box-shadow: 5px 5px 5px rgba(198, 154, 198, 0.5);
+    border-radius: 30px;
+    background-color: #eff1f3;
+}
+
+.container_add-atividade{
+    flex: 1;
+    display: flex;
+    border-radius: 30px;
+    align-items: end;
+    justify-content: end;
+}
+
+.add-atividade{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+
+}
+
+form{
+    display: flex;
+}
+
+.botao_add_atv{
+    border: none;
+    background-color: green;
+    border-radius: 20px;
+    box-shadow: 0 0 2px black;
+    font-family: 'Poppins';
+    flex: 1;
+    
+}
+.botao_add_atv:hover{
+    background-color: rgb(12, 82, 12);
+    transition: 0.5s;
+}
+
+i.fa-solid.fa-plus{
+    color: white;
 }

@@ -1,22 +1,47 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    Dashboard
+{% endblock %}
+
 {% block conteudo %}
+    <main>
         <div class="left-content">
-        <div class="card-dash">
+            <div class="card-dash">
+               
+            </div>
+            <div class="container-case">
+                <div class="card-materias_mais_estudadas">
+                    
+                </div>
+                <div class="card-sobre">
+                </div>
+            </div>
+        </div>
+
+
+    <div class="right-content">
+
+        <div class="card_artigo">
             
         </div>
-        <div class="card-materias_mais_estudadas">
 
+        <div class="container_add-atividade">
+            <div class="add-atividade">
+                <strong><p>
+                    Adicionar atividade
+                </p></strong>
+                <form action="{{url_for('adicionar_atividade')}}">
+                    <button type="submit" class="botao_add_atv">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-        <div class="card-sobre">
 
-        </div>
     </div>
-    <div class="right-content">
-        <div class="card-artigos_recentes">
 
-        </div>
-        
-    </div>
+    </main>
+
 {% endblock %}
 
