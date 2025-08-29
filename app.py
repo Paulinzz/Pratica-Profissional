@@ -3,14 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import *
 from flask_bcrypt import (
     Bcrypt,
-) 
+)
 
 from models import (
     db,
     User,
     Materia,
     Atividade,
-) 
+)
 
 app = Flask(__name__)
 
@@ -29,12 +29,15 @@ login_manager.login_view = "login"
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 with app.app_context():
     db.create_all()
+
 
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 @app.route("/cadastro", methods=["GET", "POST"])
 def register():
@@ -58,6 +61,7 @@ def register():
 
     return render_template("cadastro.html")
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -74,6 +78,7 @@ def login():
 
     return render_template("login.html")
 
+
 @app.route("/logout")
 @login_required
 def logout():
@@ -81,10 +86,12 @@ def logout():
     flash("Você foi desconectado.", "info")
     return redirect(url_for("index"))
 
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
     return render_template("dashboard.html")
+
 
 @app.route("/adicionar_materia", methods=["POST"])
 @login_required
@@ -98,6 +105,7 @@ def adicionar_materia():
         db.session.commit()
         flash("Matéria adicionada com sucesso!", "success")
     return redirect(url_for("dashboard"))
+
 
 @app.route("/adicionar_atividade", methods=["POST"])
 @login_required
@@ -116,18 +124,20 @@ def adicionar_atividade():
 @app.route("/listar_atividades")
 @login_required
 def listar_atividades():
-    return render_template('listar_atividades.html')
+    return render_template("listar_atividades.html")
 
 
 @app.route("/ajuda")
 @login_required
 def ajuda():
-    return render_template('ajuda.html')
+    return render_template("ajuda.html")
+
 
 @app.route("/listar_noticacoes")
 @login_required
 def listar_notificacoes():
-    return render_template('listar_notificacoes.html')
+    return render_template("listar_notificacoes.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
