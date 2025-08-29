@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ✅ Verificando se PR referencia uma issue
-        uses: mszostok/check-pr-title@v1
+        uses: Slashgear/action-check-pr-title@v4.3.0
         with:
-          # Padrões aceitos: fixes #123, fix #12, resolves #1, close #5, etc.
-          pattern: '.*(close[sd]?|resolve[sd]?|fix(e[sd])?)\s+#\d+.*'
+          regexp: '.*(close[sd]?|resolve[sd]?|fix(e[sd])?)\s+#\d+.*'
+          helpMessage: "O título do PR deve referenciar uma issue, por exemplo: 'fixes #123' ou 'closes #456'."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
