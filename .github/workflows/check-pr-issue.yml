@@ -6,16 +6,29 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
+  pull-requests: write   # precisa de write pra comentar
 
 jobs:
   check-pr:
     runs-on: ubuntu-latest
     steps:
       - name: ✅ Verificando se PR referencia uma issue
+        id: check_title
         uses: Slashgear/action-check-pr-title@v4.3.0
         with:
           regexp: '.*(close[sd]?|resolve[sd]?|fix(e[sd])?)\s+#\d+.*'
-          helpMessage: "O título do PR deve referenciar uma issue, por exemplo: 'fixes #123' ou 'closes #456'."
+          helpMessage: "O título do PR não referencia uma issue. É recomendado colocar algo como 'fixes #123' ou 'closes #456'."
+          failOnError: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 💬 Comentar no PR se não houver referência a issue
+        if: steps.check_title.outcome == 'failure'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ⚠️ Olá! Parece que o título do PR não referencia nenhuma issue.
+            É recomendável colocar algo como `fixes #123` ou `closes #456`.
+            Isso ajuda a manter o histórico e fechar issues automaticamente.
