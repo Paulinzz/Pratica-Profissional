@@ -10,8 +10,16 @@ body {
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
     display: flex;
-    background: linear-gradient(to bottom, #1a73e8 50%, #ffffff 50%);
+    background: linear-gradient(-45deg, #1a73e8, #4285f4, #6ba4ff, #ffffff);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;    
     flex-direction: column;
+}
+
+@keyframes gradientBG {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
 
 header{
@@ -41,7 +49,6 @@ form{
     max-width: 580px;
     gap: 30px;
     border-radius: 40px;
-    box-shadow: 0 0 2px black;
     padding: 60px 100px 60px 100px;
     width: 100%;
     height: 100%;
@@ -82,9 +89,20 @@ form{
     font-size: 18px;
     font-family: 'Poppins';
 }
+
+.email input:focus, .senha input:focus {
+    outline: none;
+    box-shadow: 0 0 6px #1a73e8;
+    border: 1px solid #1a73e8;
+    transition: all 0.3s ease;
+}
+
 form button{
     border: none;
-    background-color: green;
+    cursor: pointer;
+    background: linear-gradient(90deg, #2e7d32, #1a73e8);
+    background-size: 200% auto;
+    transition: all 0.4s ease;
     color: white;
     height: 50px;
     width: 100%;
@@ -94,6 +112,13 @@ form button{
     font-size: 20px;
     font-family: 'Poppins';
     
+    
+form button:hover{
+    background-position: right center;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,2);
+}
+
 }
 .logo-container {
     width: auto;
@@ -115,6 +140,19 @@ form button{
     justify-content: center;
     align-items: center;
     position: relative;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100%{
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.7);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(26, 115, 232, 0);
+    }
+    
 }
 
 .checkmark {
@@ -133,4 +171,47 @@ form button{
 }
 i{
     color: #1a73e8;
+}
+
+form a{
+    text-decoration: none;
+    color: #1a73e8;
+    font-size: 15px;
+    transition: color 0.3s;
+
+}
+
+form a:hover{
+    color: #2e7d32;
+    text-decoration: underline;
+}
+
+
+.flash {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease, fadeOut 0.5s ease 4.5s forwards;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.flash.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.flash.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
 }

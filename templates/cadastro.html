@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
     
     <header>
         <h1>Registre-se</h1>
@@ -36,8 +47,8 @@
                 <!-- Adicionado o atributo name="password" -->
                 <input type="password" name="password" placeholder="Senha" required>
             </div>
-            
             <button type="submit">Cadastrar</button>
+            <a href="{{url_for('login')}}">Já tem uma conta? entre aqui</a>             
         </form>
     </main>
 </body>
