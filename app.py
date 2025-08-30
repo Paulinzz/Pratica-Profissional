@@ -47,7 +47,7 @@ def register():
 
         user_exists = User.query.filter_by(email=email).first()
         if user_exists:
-            flash("Este email já está cadastrado.", "danger")
+            flash("Este email já está cadastrado.", "error")
             return redirect(url_for("register"))
 
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
@@ -56,7 +56,6 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Cadastro realizado com sucesso!", "success")
         return redirect(url_for("login"))
 
     return render_template("cadastro.html")

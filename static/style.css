@@ -24,9 +24,9 @@ header {
     align-items: center;
     padding: 20px;
     justify-content: space-between;
-    box-shadow: 5px 5px 5px rgba(198, 154, 198, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     border-radius: 30px;
-    background-color: #eff1f3;
+    background: linear-gradient(90deg, #eff1f3, #f7f9fc);
 }
 
 .logo-container {
@@ -38,7 +38,7 @@ header {
     align-items: center;
     gap: 8px; 
     text-decoration: none;
-    cursor: pointer;
+    cursor: alias;
 }
 
 .checkmark-container {
@@ -50,6 +50,7 @@ header {
     justify-content: center;
     align-items: center;
     position: relative;
+    animation: pulse 2s infinite; 
 }
 
 .checkmark {
@@ -60,6 +61,17 @@ header {
     border-right: none;
     transform: rotate(-45deg);
     position: absolute;
+}
+@keyframes pulse {
+    0%, 100%{
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.7);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(26, 115, 232, 0);
+    }
+    
 }
 
 .focusup-text {
@@ -90,13 +102,19 @@ header {
 }
 button{
     border: none;
+    background: none;
+    cursor: pointer;
     
 }
 button i:hover{
     background-color: #1a73e8;
-    transition: 0.5s;
+    transition: 0.2s;
     border-radius: 20px;
     color: white;
+}
+
+button h:hover{
+    background-color: green;
 }
 
 i{
@@ -185,20 +203,66 @@ form{
     display: flex;
 }
 
-.botao_add_atv{
-    border: none;
+.botao_add_atv {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     background-color: green;
-    border-radius: 20px;
-    box-shadow: 0 0 2px black;
-    font-family: 'Poppins';
-    flex: 1;
-    
+    color: white;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
 }
-.botao_add_atv:hover{
-    background-color: rgb(12, 82, 12);
-    transition: 0.5s;
+
+.botao_add_atv:hover {
+    transform: scale(1.1);
+    background-color: green;
 }
 
 i.fa-solid.fa-plus{
-    color: white;
+    color: #f7f9fc;
 }
+
+
+.card-materias_mais_estudadas, .card-sobre, .card-dash, .card_artigo{
+    padding: 20px;
+    background: #eff1f3;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+
+}
+
+.card-materias_mais_estudadas:hover, .card-sobre:hover, .card-dash:hover, .card_artigo:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-materias_mais_estudadas h2, .card-sobre h2, .card-dash h2, .card_artigo h2{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #1a73e8;
+}
+
+i.fa-bell {
+    position: relative;
+}
+i.fa-bell::after {
+    content: "3"; /* quantidade de notificações, posteriormente iremos trocar por js, apenas estestica  */ 
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+
