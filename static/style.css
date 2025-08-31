@@ -280,6 +280,9 @@ i.fa-bell::after {
     flex-direction: column;
     gap: 15px;
     margin-top: 15px;
+    max-height: 400px; /* ou a altura que você preferir */
+    overflow-y: auto;
+    padding-right: 15px;
 }
 
 .artigo-card {
