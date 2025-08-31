@@ -89,7 +89,7 @@ def logout():
     return redirect(url_for("index"))
 
 
-# Dicionário de tradução básico
+# Dicionário de tradução básico, isso é um teste simulando um tradutor
 traducoes_comuns = {
     "machine learning": "aprendizado de máquina",
     "deep learning": "aprendizado profundo",
@@ -115,14 +115,12 @@ def dashboard():
         artigos = data.get("results", [])
 
         for artigo in artigos:
-            # 🔹 traduz título
             titulo = artigo.get("title", "")
             for eng, pt in traducoes_comuns.items():
                 titulo = titulo.replace(eng, pt)
                 titulo = titulo.replace(eng.title(), pt.title())
             artigo["title_pt"] = titulo
 
-            # 🔹 reconstrói abstract
             resumo = artigo.get("abstract_inverted_index")
             if resumo:
                 abstract_words = []
