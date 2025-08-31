@@ -5,6 +5,8 @@ from flask_bcrypt import (
     Bcrypt,
 )
 
+import requests
+
 from models import (
     db,
     User,
@@ -86,11 +88,47 @@ def logout():
     return redirect(url_for("index"))
 
 
+# Dicionário de tradução básico
+traducoes_comuns = {
+    "machine learning": "aprendizado de máquina",
+    "deep learning": "aprendizado profundo",
+    "neural network": "rede neural",
+    "artificial intelligence": "inteligência artificial",
+    "data science": "ciência de dados",
+    "computer vision": "visão computacional",
+    "natural language processing": "processamento de linguagem natural",
+}
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    query = "deep learning"
+    url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={query}&limit=3&fields=title,authors,url,abstract"
+    response = requests.get(url)
 
+    artigos = []
+    if response.status_code == 200:
+        data = response.json()
+        artigos = data.get("data", [])
+        
+        for artigo in artigos:
+            titulo = artigo.get('title', '')
+            for eng, pt in traducoes_comuns.items():
+                titulo = titulo.replace(eng, pt)
+                titulo = titulo.replace(eng.title(), pt.title())
+            
+            artigo['title_pt'] = titulo
+            
+            if artigo.get('abstract'):
+                abstract = artigo['abstract']
+                for eng, pt in traducoes_comuns.items():
+                    abstract = abstract.replace(eng, pt)
+                    abstract = abstract.replace(eng.title(), pt.title())
+                artigo['abstract_pt'] = abstract[:150] + "..."
+            else:
+                artigo['abstract_pt'] = "Resumo não disponível"
+
+    return render_template("dashboard.html", artigos=artigos)
 
 @app.route("/adicionar_materia", methods=["POST"])
 @login_required

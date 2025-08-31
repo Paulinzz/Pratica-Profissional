@@ -19,28 +19,36 @@
             </div>
         </div>
 
+        <div class="right-content">
+            <div class="card_artigo">
+                <h2>Artigos Recomendados</h2>
+                <div class="artigos-container">
+                    {% if artigos %}
+                        {% for artigo in artigos %}
+                            <div class="artigo-card">
+                                <div class="artigo-info">
+                                    <h3>{{ artigo.title }}</h3>
+                                    <p>{{ artigo.abstract[:100] if artigo.abstract else "Resumo não disponível" }}...</p>
+                                    <a href="{{ artigo.url }}" target="_blank">Ler mais...</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Nenhum artigo encontrado.</p>
+                    {% endif %}
+                </div>
+            </div>
 
-    <div class="right-content">
-
-        <div class="card_artigo">
-            
-        </div>
-
-        <div class="container_add-atividade">
-            <div class="add-atividade">
-                <strong><p>
-                    Adicionar atividade
-                </p></strong>
-                <form action="{{url_for('adicionar_atividade')}}">
-                    <button type="submit" class="botao_add_atv">
-                        <h class="fa-solid fa-plus"></i>
-                    </button>
-                </form>
+            <div class="container_add-atividade">
+                <div class="add-atividade">
+                    <strong><p>Adicionar atividade</p></strong>
+                    <form action="{{url_for('adicionar_atividade')}}">
+                        <button type="submit" class="botao_add_atv">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-
-    </div>
-
     </main>
-
 {% endblock %}
