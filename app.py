@@ -5,12 +5,15 @@ from flask_bcrypt import (
     Bcrypt,
 )
 
+import requests
+
 from models import (
     db,
     User,
     Materia,
     Atividade,
 )
+
 
 app = Flask(__name__)
 
@@ -86,10 +89,59 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route("/dashboard")
+# Dicionário de tradução básico, isso é um teste simulando um tradutor
+traducoes_comuns = {
+    "machine learning": "aprendizado de máquina",
+    "deep learning": "aprendizado profundo",
+    "neural network": "rede neural",
+    "artificial intelligence": "inteligência artificial",
+    "data science": "ciência de dados",
+    "computer vision": "visão computacional",
+    "natural language processing": "processamento de linguagem natural",
+}
+
+
+@app.route("/dashboard", methods=["GET"])
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    # busca sempre artigos relacionados a métodos de estudo
+    query = "pomodoro|spaced repetition|active recall|mind map"
+    url = f"https://api.openalex.org/works?filter=title.search:{query},cited_by_count:>3&per-page=5"
+    response = requests.get(url)
+
+    artigos = []
+    if response.status_code == 200:
+        data = response.json()
+        artigos = data.get("results", [])
+
+        for artigo in artigos:
+            titulo = artigo.get("title", "")
+            for eng, pt in traducoes_comuns.items():
+                titulo = titulo.replace(eng, pt)
+                titulo = titulo.replace(eng.title(), pt.title())
+            artigo["title_pt"] = titulo
+
+            resumo = artigo.get("abstract_inverted_index")
+            if resumo:
+                abstract_words = []
+                for word, positions in resumo.items():
+                    for pos in positions:
+                        if len(abstract_words) <= pos:
+                            abstract_words.extend(
+                                [""] * (pos - len(abstract_words) + 1)
+                            )
+                        abstract_words[pos] = word
+                abstract = " ".join(abstract_words)
+                artigo["abstract_pt"] = abstract[:150] + "..."
+            else:
+                artigo["abstract_pt"] = "Resumo não disponível"
+
+            artigo["publication_year"] = artigo.get("publication_year")
+            artigo["cited_by_count"] = artigo.get("cited_by_count", 0)
+            artigo["doi"] = artigo.get("doi")
+            artigo["id"] = artigo.get("id")
+
+    return render_template("dashboard.html", artigos=artigos)
 
 
 @app.route("/adicionar_materia", methods=["POST"])

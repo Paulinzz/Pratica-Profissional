@@ -19,28 +19,56 @@
             </div>
         </div>
 
+        <div class="right-content">
+<div class="card_artigo">
+    <h2>Artigos Recomendados</h2>
+    <div class="artigos-container">
+        {% if artigos %}
+            {% for artigo in artigos %}
+                <div class="artigo-card">
+                    <div class="artigo-info">
+                        <h3>{{ artigo.title_pt if artigo.title_pt else artigo.title }}</h3>
+                        <p>{{ artigo.abstract_pt if artigo.abstract_pt else "Resumo não disponível" }}</p>
+                        
+                        <p><strong>Autores:</strong> 
+                            {% if artigo.authorships %}
+                                {{ artigo.authorships | map(attribute='author.display_name') | join(', ') }}
+                            {% else %}
+                                Não informado
+                            {% endif %}
+                        </p>
 
-    <div class="right-content">
+                        <p><strong>Ano:</strong> {{ artigo.publication_year if artigo.publication_year else "N/A" }}</p>
+                        
+                        <p><strong>DOI:</strong> 
+                            {% if artigo.doi %}
+                                <a href="https://doi.org/{{ artigo.doi }}" target="_blank">{{ artigo.doi }}</a>
+                            {% else %}
+                                Não disponível
+                            {% endif %}
+                        </p>
 
-        <div class="card_artigo">
-            
-        </div>
+                        <a href="{{ artigo.id if artigo.id else artigo.url }}" target="_blank">Ler mais...</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Nenhum artigo encontrado.</p>
+        {% endif %}
+    </div>
+</div>
 
-        <div class="container_add-atividade">
-            <div class="add-atividade">
-                <strong><p>
-                    Adicionar atividade
-                </p></strong>
-                <form action="{{url_for('adicionar_atividade')}}">
-                    <button type="submit" class="botao_add_atv">
-                        <h class="fa-solid fa-plus"></i>
-                    </button>
-                </form>
+
+            <div class="container_add-atividade">
+                <div class="add-atividade">
+                    <strong><p>Adicionar atividade</p></strong>
+                    <form action="{{url_for('adicionar_atividade')}}">
+                        <button type="submit" class="botao_add_atv">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-
-    </div>
-
     </main>
-
 {% endblock %}
