@@ -361,7 +361,7 @@ i.fa-solid.fa-book{
 .card-sobre{
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    text-align: justify;
 }
 
 .content-card-sobre{
@@ -377,6 +377,9 @@ i.fa-solid.fa-book{
     align-items: center;
 }
 
+.title_card-sobre{
+    font-size: 15px;
+}
 .title{
     font-size: 20px;
 }
