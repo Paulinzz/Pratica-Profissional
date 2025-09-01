@@ -22,5 +22,8 @@ class Materia(db.Model):
 class Atividade(db.Model):
     __tablename__ = "tb_atividades"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nome = db.Column(db.String(200), nullable=False)
+    materia = db.Column(db.String(100), nullable=False)
+    assunto_primario = db.Column(db.String(100), nullable=False)
+    descricao = db.Column(db.Text, nullable=True)
+    duracao = db.Column(db.String(10), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)

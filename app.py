@@ -158,16 +158,37 @@ def adicionar_materia():
     return redirect(url_for("dashboard"))
 
 
-@app.route("/adicionar_atividade", methods=["POST", "GET"])
+@app.route("/adicionar_atividade", methods=["GET", "POST"])
 @login_required
 def adicionar_atividade():
-    return render_template('adicionar_atividade.html')
+    if request.method == "POST":
+        materia = request.form.get("materia")
+        assunto = request.form.get("assunto_primario")
+        descricao = request.form.get("descricao")
+        duracao = request.form.get("duracao")
 
+        if not materia or not assunto:
+            flash("Informe pelo menos a matéria e o assunto primário.", "danger")
+        else:
+            nova_atividade = Atividade(
+                materia=materia,
+                assunto_primario=assunto,
+                descricao=descricao,
+                duracao=duracao,
+                user_id=current_user.id
+            )
+            db.session.add(nova_atividade)
+            db.session.commit()
+            flash("Atividade adicionada com sucesso!", "success")
+            return redirect(url_for("listar_atividades"))
+
+    return render_template("adicionar_atividade.html")
 
 @app.route("/listar_atividades")
 @login_required
 def listar_atividades():
-    return render_template("listar_atividades.html")
+    atividades = Atividade.query.filter_by(user_id=current_user.id).all()
+    return render_template("listar_atividades.html", atividades=atividades)
 
 
 @app.route("/ajuda")
