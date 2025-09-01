@@ -15,13 +15,25 @@
                     
                 </div>
                 <div class="card-sobre">
+                        <div class="title">
+                            <h1>Que tal conhecer um pouco mais sobre nós?</h1>
+                        </div>
+                        <div class="content-card-sobre">
+                            <img src="{{ url_for('static', filename='imagens/sobre.png') }}" alt="Equipe">
+                            <p>Esse projeto foi desenvolvido por alunos do 3° ano do curso de informática para internet 
+                                <a href="{{url_for('sobre_nos')}}">Ler mais...</a></p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="right-content">
 <div class="card_artigo">
-    <h2>Artigos Recomendados</h2>
+    <div class="title-card_artigo">
+        <h2>Artigos Recomendados</h2>
+        <i class="fa-solid fa-book"></i>
+    </div>
     <div class="artigos-container">
         {% if artigos %}
             {% for artigo in artigos %}
@@ -62,7 +74,7 @@
             <div class="container_add-atividade">
                 <div class="add-atividade">
                     <strong><p>Adicionar atividade</p></strong>
-                    <form action="{{url_for('adicionar_atividade')}}">
+                    <form action="{{url_for('adicionar_atividade')}}" method="post">
                         <button type="submit" class="botao_add_atv">
                             <i class="fa-solid fa-plus"></i>
                         </button>
@@ -72,3 +84,4 @@
         </div>
     </main>
 {% endblock %}
+

@@ -117,7 +117,7 @@ form button{
     box-shadow: 0 0 2px black;
     font-size: 20px;
     font-family: 'Poppins';
-    
+}
     
 form button:hover{
     background-position: right center;
@@ -125,7 +125,7 @@ form button:hover{
     box-shadow: 0 4px 10px rgba(0,0,0,2);
 }
 
-}
+
 button:hover{
     background-color: rgb(12, 82, 12);
     transition: 0.5s;

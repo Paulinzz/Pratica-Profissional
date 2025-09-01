@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Adicionar atividade
+{% endblock %}
+
+{% block conteudo %}
+
+    <main>
+        <div class="container_form_add-atv">
+            <h1>Adicionar nova atividade</h1>
+            <form action="{{url_for('adicionar_atividade')}}" method="post" class="form_adicionar-atividade">
+                <label for="materia">Matéria:</label>
+                <input type="text" name="materia" placeholder="Ex: Matématica">
+                <label for="assunto_primario">Assunto primário:</label>
+                <input type="text" name="assunto_primario" placeholder="Ex: Probabilidade">
+                <label for="descricao">Descrição detalhada:</label>
+                <input type="text" name="descricao" placeholder="Descrição detalhada sobre o que foi estudado">
+                <label for="duracao">Duração:</label>
+                <input type="time" name="duracao" placeholder="Ex: 3h">
+                <button type="submit">Adicionar</button>
+            </form>
+        </div>
+        
+        <div class="container_atividades_recentes">
+
+        </div>
+        </main>
+
+{% endblock %}
