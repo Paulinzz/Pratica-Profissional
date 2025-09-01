@@ -4,6 +4,8 @@ from flask_login import *
 from flask_bcrypt import (
     Bcrypt,
 )
+import os
+from dotenv import load_dotenv
 
 import requests
 
@@ -14,11 +16,22 @@ from models import (
     Atividade,
 )
 
+# Carregar variáveis de ambiente
+load_dotenv()
+
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
-app.config["SECRET_KEY"] = "Chave1234"
+# Configuração para MySQL usando variáveis de ambiente
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_PORT = os.getenv('DB_PORT', '3306')
+DB_NAME = os.getenv('DB_NAME', 'focosup')
+DB_USER = os.getenv('DB_USER', 'root')
+DB_PASSWORD = os.getenv('DB_PASSWORD', '')
+
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+app.config["SECRET_KEY"] = os.getenv('SECRET_KEY', 'Chave1234')
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 bcrypt = Bcrypt(app)
@@ -34,7 +47,12 @@ def load_user(user_id):
 
 
 with app.app_context():
-    db.create_all()
+    try:
+        db.create_all()
+        print("✅ Banco de dados conectado com sucesso!")
+    except Exception as e:
+        print(f"❌ Erro ao conectar com o banco de dados: {e}")
+        print("Verifique suas credenciais no arquivo .env")
 
 
 @app.route("/")
@@ -158,16 +176,37 @@ def adicionar_materia():
     return redirect(url_for("dashboard"))
 
 
-@app.route("/adicionar_atividade", methods=["POST", "GET"])
+@app.route("/adicionar_atividade", methods=["GET", "POST"])
 @login_required
 def adicionar_atividade():
-    return render_template("adicionar_atividade.html")
+    if request.method == "POST":
+        materia = request.form.get("materia")
+        assunto = request.form.get("assunto_primario")
+        descricao = request.form.get("descricao")
+        duracao = request.form.get("duracao")
 
+        if not materia or not assunto:
+            flash("Informe pelo menos a matéria e o assunto primário.", "danger")
+        else:
+            nova_atividade = Atividade(
+                materia=materia,
+                assunto_primario=assunto,
+                descricao=descricao,
+                duracao=duracao,
+                user_id=current_user.id
+            )
+            db.session.add(nova_atividade)
+            db.session.commit()
+            flash("Atividade adicionada com sucesso!", "success")
+            return redirect(url_for("listar_atividades"))
+
+    return render_template("adicionar_atividade.html")
 
 @app.route("/listar_atividades")
 @login_required
 def listar_atividades():
-    return render_template("listar_atividades.html")
+    atividades = Atividade.query.filter_by(user_id=current_user.id).all()
+    return render_template("listar_atividades.html", atividades=atividades)
 
 
 @app.route("/ajuda")
@@ -181,12 +220,10 @@ def ajuda():
 def listar_notificacoes():
     return render_template("listar_notificacoes.html")
 
-
 @app.route("/sobre_nos")
 @login_required
 def sobre_nos():
     return render_template("sobre.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True)

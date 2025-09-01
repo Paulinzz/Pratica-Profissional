@@ -12,3 +12,6 @@ Thumbs.db
 
 # Arquivos de log
 *.log
+
+# Arquivos de configuração local para o MySQL
+.env
