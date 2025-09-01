@@ -158,18 +158,10 @@ def adicionar_materia():
     return redirect(url_for("dashboard"))
 
 
-@app.route("/adicionar_atividade", methods=["POST"])
+@app.route("/adicionar_atividade", methods=["POST", "GET"])
 @login_required
 def adicionar_atividade():
-    nome_atividade = request.form.get("atividade")
-    if not nome_atividade:
-        flash("Por favor, adicione o nome da atividade.", "danger")
-    else:
-        nova_atividade = Atividade(nome=nome_atividade, user_id=current_user.id)
-        db.session.add(nova_atividade)
-        db.session.commit()
-        flash("Atividade adicionada com sucesso!", "success")
-    return redirect(url_for("dashboard"))
+    return render_template('adicionar_atividade.html')
 
 
 @app.route("/listar_atividades")
@@ -189,6 +181,10 @@ def ajuda():
 def listar_notificacoes():
     return render_template("listar_notificacoes.html")
 
+@app.route("/sobre_nos")
+@login_required
+def sobre_nos():
+    return render_template("sobre.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

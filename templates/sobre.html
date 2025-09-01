@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Sobre nós
+{% endblock %}
+
+{% block  conteudo %}
+    <main class="main_sobre">
+        <div class="quem_somos">
+            <div class="title">
+                <h1>Quem somos?</h1>
+                <p>Conheça a equipe por trás do FocusUp</p>
+            </div>
+            <div class="img_equipe">
+                <img src="{{ url_for('static', filename='imagens/sobre.png') }}" alt="Equipe">
+            </div>
+        </div>
+        <div class="container_nossa_hm">
+            <div class="nossa_historia">
+                <div class="title">
+                    <h1>Nossa história</h1>
+                </div>
+            </div>
+            <div class="nossa_missao">
+                <div class="title">
+                    <h1>Nossa missão</h1>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

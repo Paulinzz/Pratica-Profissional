@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Estilização do cabeçalho, main e corpo da página  */
 
 * {
     margin: 0;
@@ -126,7 +129,11 @@ main{
     flex: 1;
     display: flex;
     gap: 15rem;
+    padding: 50px;
 }
+
+/* Estilização do template "Dashboard" */
+
 .left-content{
     flex: 1;
     display: flex;
@@ -237,7 +244,8 @@ i.fa-solid.fa-plus{
 
 }
 
-.card-materias_mais_estudadas:hover, .card-sobre:hover, .card-dash:hover, .card_artigo:hover{
+.card-materias_mais_estudadas:hover, .card-sobre:hover, .card-dash:hover, .card_artigo:hover, .form_adicionar-atividade:hover
+,.container_atividades_recentes:hover, .nossa_missao:hover, .quem_somos:hover, .nossa_historia:hover{
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
@@ -253,7 +261,7 @@ i.fa-bell {
     position: relative;
 }
 i.fa-bell::after {
-    content: "3"; /* quantidade de notificações, posteriormente iremos trocar por js, apenas estestica  */ 
+    content: "3"; /* quantidade de notificações, posteriormente iremos trocar por js, apenas estética  */ 
     position: absolute;
     top: 12px;
     right: 12px;
@@ -265,6 +273,15 @@ i.fa-bell::after {
     border-radius: 50%;
 }
 
+.title-card_artigo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #ddd;
+}
+i.fa-solid.fa-book{
+    font-size: 40px;
+}
 .card_artigo {
     flex: 1;
     display: flex;
@@ -325,7 +342,147 @@ i.fa-bell::after {
 .card_artigo h2 {
     margin-bottom: 0;
     padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    color: black;
 }
 
+.container_form_add-atv{
+    display: flex;
+    flex-direction: column;
+    max-width: 65%;
+    flex: 1;
+    font-family: 'Inter';
+    gap: 15px;
+}
+.container_form_add-atv h1{
+    font-size: 40px;
+}
 
+.card-sobre{
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+}
+
+.content-card-sobre{
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.content-card-sobre img{
+    flex: 1;
+    max-height: 120px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title_card-sobre{
+    font-size: 15px;
+}
+.title{
+    font-size: 20px;
+}
+/* Estilização do template "Adicionar Atividade" */
+
+.container_atividades_recentes{
+    max-width: 35%;
+    background-color: white;
+    flex: 1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    background-color: #eff1f3;
+    border-radius: 30px;
+}
+
+.form_adicionar-atividade{
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #eff1f3;
+    flex: 1;
+    border-radius: 30px;
+    padding: 50px;
+    font-family: 'Inter';
+    justify-content: space-between;
+}
+.form_adicionar-atividade label{
+    font-weight: bold;
+    font-size: 20px;
+}
+.form_adicionar-atividade input{
+    flex: 1;
+    max-height: 40px;
+    border-radius: 10px;
+    border: 2px solid #9c9c9c;
+    padding: 10px;
+    font-size: 16px;
+
+}
+.form_adicionar-atividade input[name="descricao"] {
+    width: 100%;
+    flex: 1;
+    max-height: 70px;
+    border: 2px solid #9c9c9c;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 16px;
+}
+
+.form_adicionar-atividade input:focus {
+  border: 2px solid #008000;
+  outline: none;
+  box-shadow: 0 0 6px rgba(67, 160, 71, 0.4);
+}
+.form_adicionar-atividade button{
+    border: none;
+    cursor: pointer;
+    background-color: #008000;
+    color: white;
+    height: 50px;
+    width: 100%;
+    max-width: 140px;
+    border-radius: 40px;
+    box-shadow: 0 0 2px black;
+    font-size: 20px;
+    font-family: 'Poppins';
+}
+
+/* Estilização do template "Sobre nós" */
+
+.main_sobre{
+    flex: 1;
+    display: flex;
+    gap: 9rem;
+    padding: 50px;
+    flex-direction: column;
+}
+
+.quem_somos, .container_nossa_hm, .nossa_historia, .nossa_missao{
+    display: flex;
+    flex: 1;
+    padding: 30px;
+}
+.quem_somos{
+    background-color: #eff1f3;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    border-radius: 30px;
+    justify-content: space-between;
+    
+}
+.container_nossa_hm{
+    gap: 30px;
+}
+.img_equipe img{
+    flex: 1;
+    max-height: 300px;
+}
+.nossa_historia{
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    background-color: #eff1f3;
+    border-radius: 30px;
+}
+.nossa_missao{
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    background-color: #eff1f3;
+    border-radius: 30px;
+}
