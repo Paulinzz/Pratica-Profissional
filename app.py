@@ -161,7 +161,7 @@ def adicionar_materia():
 @app.route("/adicionar_atividade", methods=["POST", "GET"])
 @login_required
 def adicionar_atividade():
-    return render_template('adicionar_atividade.html')
+    return render_template("adicionar_atividade.html")
 
 
 @app.route("/listar_atividades")
@@ -181,10 +181,12 @@ def ajuda():
 def listar_notificacoes():
     return render_template("listar_notificacoes.html")
 
+
 @app.route("/sobre_nos")
 @login_required
 def sobre_nos():
     return render_template("sobre.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
