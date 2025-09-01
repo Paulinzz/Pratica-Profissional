@@ -245,7 +245,7 @@ i.fa-solid.fa-plus{
 }
 
 .card-materias_mais_estudadas:hover, .card-sobre:hover, .card-dash:hover, .card_artigo:hover, .form_adicionar-atividade:hover
-,.container_atividades_recentes:hover{
+,.container_atividades_recentes:hover, .nossa_missao:hover, .quem_somos:hover, .nossa_historia:hover{
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
@@ -394,7 +394,7 @@ i.fa-solid.fa-book{
 .form_adicionar-atividade{
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     background-color: #eff1f3;
     flex: 1;
     border-radius: 30px;
@@ -447,11 +447,14 @@ i.fa-solid.fa-book{
 /* Estilização do template "Sobre nós" */
 
 .main_sobre{
+    flex: 1;
     display: flex;
+    gap: 9rem;
+    padding: 50px;
     flex-direction: column;
 }
 
-.quem_somos, .container_nossa_hm{
+.quem_somos, .container_nossa_hm, .nossa_historia, .nossa_missao{
     display: flex;
     flex: 1;
     padding: 30px;
@@ -462,9 +465,21 @@ i.fa-solid.fa-book{
     border-radius: 30px;
     justify-content: space-between;
     
-    
+}
+.container_nossa_hm{
+    gap: 30px;
 }
 .img_equipe img{
     flex: 1;
     max-height: 300px;
+}
+.nossa_historia{
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    background-color: #eff1f3;
+    border-radius: 30px;
+}
+.nossa_missao{
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    background-color: #eff1f3;
+    border-radius: 30px;
 }
