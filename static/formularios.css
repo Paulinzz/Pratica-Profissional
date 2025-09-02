@@ -34,6 +34,42 @@ header h1{
     font-size: 45px;
 }
 
+.flash-container {
+    position: fixed; 
+    top: 30%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+}
+
+.flash {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease, fadeOut 0.5s ease 4.5s forwards;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.flash.error {
+    background-color: red; 
+    color: white;
+}
+
+.flash.success {
+    background-color: green;
+    color: white;
+}
+
+.flash.danger {
+    background-color: gray;
+    color: white;
+}
+
+.flash.info {
+    background-color: black;
+    color: white;
+}
+
 main{
     display: flex;
     justify-content: center;
@@ -229,3 +265,4 @@ form a:hover{
     from { opacity: 1; transform: translateY(0); }
     to { opacity: 0; transform: translateY(-20px); }
 }
+
