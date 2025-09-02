@@ -52,7 +52,7 @@
 
                         <p><strong>Ano:</strong> {{ artigo.publication_year if artigo.publication_year else "N/A" }}</p>
                         
-                        <p><strong>DOI:</strong> 
+                        <p><strong>Artigo:</strong> 
                             {% if artigo.doi %}
                                 <a href="https://doi.org/{{ artigo.doi }}" target="_blank">{{ artigo.doi }}</a>
                             {% else %}
@@ -76,7 +76,7 @@
                     <strong><p>Adicionar atividade</p></strong>
                     <form action="{{url_for('adicionar_atividade')}}" method="post">
                         <button type="submit" class="botao_add_atv">
-                            <i class="fa-solid fa-plus"></i>
+                            <h class="fa-solid fa-plus"></i>
                         </button>
                     </form>
                 </div>

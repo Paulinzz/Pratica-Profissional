@@ -126,7 +126,7 @@ traducoes_comuns = {
 def dashboard():
     # busca sempre artigos relacionados a métodos de estudo
     query = "pomodoro|spaced repetition|active recall|mind map"
-    url = f"https://api.openalex.org/works?filter=title.search:{query},cited_by_count:>3&per-page=5"
+    url = f"https://api.openalex.org/works?filter=title.search:{query},cited_by_count:>3&per-page=10"
     response = requests.get(url)
 
     artigos = []
