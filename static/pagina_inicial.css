@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600&family=Poppins:wght@300;400;600&display=swap');
 
 * {
     margin: 0;
@@ -8,10 +8,11 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    padding: 10px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    color: #222;
+    background: #fff;
 }
 
 header {
@@ -20,15 +21,10 @@ header {
     padding: 10px 20px;
 }
 
-.logo-container {
-    width: auto;
-}
-
 .focusup-logo {
     display: flex;
     align-items: center;
-    gap: 8px; 
-    text-decoration: none;
+    gap: 8px;
     cursor: pointer;
 }
 
@@ -45,7 +41,7 @@ header {
 }
 
 @keyframes pulse {
-    0%, 100%{
+    0%, 100% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.7);
     }
@@ -53,7 +49,6 @@ header {
         transform: scale(1.1);
         box-shadow: 0 0 0 10px rgba(26, 115, 232, 0);
     }
-    
 }
 
 .checkmark {
@@ -69,7 +64,10 @@ header {
 .focusup-text {
     font-size: 40px;
     font-weight: bold;
+    color: #000000;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
 }
+
 main {
     flex: 1;
     display: flex;
@@ -82,105 +80,86 @@ main {
 .text_container {
     animation: fadeInUp 1s ease forwards;
     opacity: 0;
-    max-width: 800px; 
-    width: 100%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
-    text-align: justify;
     gap: 30px;
-    align-items: center;
+    background: rgba(255,255,255,0.85);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
-@keyframes fadeInUp{
+@keyframes fadeInUp {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-    to{
+    to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
 .text_container h1 {
-    font-size: 40px;
-    text-align: center;
+    font-size: 38px;
+    font-weight: 600;
+    color: #12468a;
 }
 
 .text_container p {
-    font-weight: normal;
-    font-size: 25px;
-    color: #555;
+    font-size: 20px;
+    color: #333;
+    line-height: 1.6;
 }
-.botoes{
+
+.botoes {
     display: flex;
     gap: 20px;
+    justify-content: center;
 }
-.cadastro a {
-    color: #EFF1F3;
-    font-weight: 400;
-    font-size: 20px;
-    text-decoration: none;
-}
-.botoes .cadastro{
-    background-color: #1a73e8;
+
+/* Botão estilizado */
+.botoes button {
     border-radius: 30px;
     min-width: 200px;
     min-height: 50px;
-    box-shadow: 0 0 3px black;
     border: none;
     cursor: pointer;
-}
-.login a {
-    color: #1a73e8;
-    font-weight: 400;
-    font-size: 20px;
-    text-decoration: none;
-
-}
-.botoes .login{
-    background-color: #EFF1F3;
-    border-radius: 30px;
-    min-width: 200px;
-    min-height: 50px;
-    box-shadow: 0 0 3px black;
-    border: none;
-    cursor: pointer;
-}
-
-.botoes .cadastro:hover{
-    background-color: #2e7d32;
-    transform: scale(1.03);   
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-.botoes .login:hover{
-    background-color: #2e7d32;
-    transform: scale(1.03);   
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-.login a {
-    color: #12468a;
-    font-weight: 400;
-    font-size: 20px;
-    text-decoration: none;
-    font-family: 'Poppins';
-    
-}
-.login a:hover{
-    color: white;
-    
-}
-.cadastro a {
-    color: #cacaca;
-    font-weight: 400;
-    font-size: 20px;
-    text-decoration: none;
-    font-family: 'Poppins';
-}
-
-.botoes .cadastro, .botoes .login {
+    font-size: 18px;
     transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
 }
-.login a, .cadastro a {
-    transition: color 0.3s ease;
+
+.botoes .cadastro {
+    background: linear-gradient(135deg, #1a73e8, #12468a);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.botoes .login {
+    background: #fff;
+    color: #12468a;
+    border: 2px solid #1a73e8;
+}
+
+/* Links dentro dos botões */
+.botoes button a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 50px;
+}
+
+.botoes .cadastro:hover {
+    transform: scale(1.05);
+}
+
+.botoes .login:hover {
+    transform: scale(1.05);
+    background: #2e7d32;
+    color: #fff;
+    border-color: #2e7d32;
 }
