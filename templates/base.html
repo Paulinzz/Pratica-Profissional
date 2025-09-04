@@ -73,10 +73,10 @@
                         <i class="fas fa-chevron-down arrow-icon"></i>
                     </h3>
                     <div class="footer-section-content">
-                        <p>Transformando a maneira como você gerencia suas atividades e alcança seus objetivos. Foque no que importa, nós cuidamos do resto.</p>
+                        <p> OpenSource, colaborativa e feita pra você. Gerencie suas atividades, alcance seus objetivos, viva o foco de verdade.</p>
                         <div class="social-links">
-                            <a href="#" class="social-link" aria-label="Facebook">
-                                <i class="fab fa-facebook-f"></i>
+                            <a href="https://github.com/Paulinzz/Pratica-Profissional" class="social-link" aria-label="Github">
+                                <i class="fab fa-github"></i>
                             </a>
                             <a href="#" class="social-link" aria-label="Instagram">
                                 <i class="fab fa-instagram"></i>
@@ -133,8 +133,8 @@
                         <ul>
                             <li><a href="#"><i class="fas fa-envelope"></i>Contato</a></li>
                             <li><a href="{{url_for('sobre_nos')}}"><i class="fas fa-info-circle"></i>Sobre Nós</a></li>
-                            <li><a href="#"><i class="fas fa-shield-alt"></i>Privacidade</a></li>
-                            <li><a href="#"><i class="fas fa-file-contract"></i>Termos de Uso</a></li>
+                            <li><a href="{{url_for('politica_privacidade')}}"><i class="fas fa-shield-alt"></i>Privacidade</a></li>
+                            <li><a href="{{url_for('termos_servico')}}"><i class="fas fa-file-contract"></i>Termos de Uso</a></li>
                             <li><a href="#"><i class="fas fa-bug"></i>Reportar Bug</a></li>
                         </ul>
                     </div>
@@ -145,7 +145,7 @@
 
             <div class="footer-bottom">
                 <p>&copy; 2025 FocusUp. Todos os direitos reservados.</p>
-                <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Serviço</a></p>
+                <p><a href="{{url_for('politica_privacidade')}}">Política de Privacidade</a> | <a href="{{url_for('termos_servico')}}">Termos de Serviço</a></p>
             </div>
         </div>
     </footer>

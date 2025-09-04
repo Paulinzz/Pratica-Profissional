@@ -350,6 +350,7 @@ i.fa-solid.fa-book{
     display: flex;
     flex-direction: column;
     max-width: 65%;
+    min-height: 600px;
     flex: 1;
     font-family: 'Inter';
     gap: 15px;
@@ -495,6 +496,7 @@ footer {
     margin-top: auto;
     width: 100%;
     position: relative;
+    border-radius: 5px;
 }
 
 .footer-container {
@@ -744,3 +746,6 @@ footer {
         padding: 15px 0;
     }
 }
+
+
+

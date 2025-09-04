@@ -229,6 +229,15 @@ def listar_notificacoes():
 def sobre_nos():
     return render_template("sobre.html")
 
+@app.route('/politica-privacidade')
+def politica_privacidade():
+    return render_template('politica_privacidade.html')
+
+@app.route('/termos-servico')  
+def termos_servico():
+    return render_template('termos_servico.html', 
+                         last_update="01 de Setembro de 2025", 
+                         version="1.0")
 
 if __name__ == "__main__":
     app.run(debug=True)
