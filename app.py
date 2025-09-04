@@ -96,7 +96,7 @@ def login():
             flash("Login realizado com sucesso!", "success")
             return redirect(url_for("dashboard"))
         else:
-            flash("Usuário ou senha inválidos.", "danger")
+            flash("Usuário ou senha inválidos.", "error")
 
     return render_template("login.html")
 
