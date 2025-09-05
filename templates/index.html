@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial - FocusUp</title>
-    <link rel="stylesheet" href="{{url_for ('static', filename = 'pagina_inicial.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='pagina_inicial.css')}}">
+    <link rel="icon" href="{{url_for('static', filename='imagens/correto.png')}}" type="image/x-icon">
+
 </head>
 <body>
+
     <header>
-       <div class="logo-container">
-        <div class="focusup-logo">
+        <div class="logo-container">
+            <div class="focusup-logo">
                 <div class="checkmark-container">
                     <div class="checkmark"></div>
                 </div>
                 <span class="focusup-text">FocusUp</span>
             </div>
         </div>
-        </header>
+    </header>
 
     <main>
-        <div class="text_container"> <h1>
-                Por que utilizar um gerenciador de estudos?
-            </h1>
+        <div class="text_container">
+            <h1>Por que utilizar um gerenciador de estudos?</h1>
             <p>
                 O software gerenciador de estudos surgiu da necessidade
                 de ajudar estudantes a organizarem melhor seu tempo e tarefas. 
@@ -38,10 +40,7 @@
                     <a href="{{url_for('login')}}">Login</a>
                 </button>
             </div>
-            </div>
-
-            
-        </main>
-
+        </div>
+    </main>
 </body>
 </html>

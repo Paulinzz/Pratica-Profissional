@@ -96,7 +96,7 @@ def login():
             flash("Login realizado com sucesso!", "success")
             return redirect(url_for("dashboard"))
         else:
-            flash("Usuário ou senha inválidos.", "danger")
+            flash("Usuário ou senha inválidos.", "error")
 
     return render_template("login.html")
 
@@ -169,7 +169,7 @@ def dashboard():
 def adicionar_materia():
     nome_materia = request.form.get("materia")
     if not nome_materia:
-        flash("Por favor, adicione o nome da matéria.", "danger")
+        flash("Por favor, adicione o nome da matéria.", "error")
     else:
         nova_materia = Materia(nome=nome_materia, user_id=current_user.id)
         db.session.add(nova_materia)
@@ -188,7 +188,7 @@ def adicionar_atividade():
         duracao = request.form.get("duracao")
 
         if not materia or not assunto:
-            flash("Informe pelo menos a matéria e o assunto primário.", "danger")
+            flash("Informe pelo menos a matéria e o assunto primário.", "error")
         else:
             nova_atividade = Atividade(
                 materia=materia,
@@ -228,6 +228,20 @@ def listar_notificacoes():
 @login_required
 def sobre_nos():
     return render_template("sobre.html")
+
+
+@app.route("/politica-privacidade")
+@login_required
+def politica_privacidade():
+    return render_template("politica_privacidade.html")
+
+
+@app.route("/termos-servico")
+@login_required
+def termos_servico():
+    return render_template(
+        "termos_servico.html", last_update="01 de Setembro de 2025", version="1.0"
+    )
 
 
 if __name__ == "__main__":

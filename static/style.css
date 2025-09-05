@@ -297,7 +297,7 @@ i.fa-solid.fa-book{
     flex-direction: column;
     gap: 15px;
     margin-top: 15px;
-    max-height: 400px; 
+    max-height: 500px; 
     overflow-y: auto;
     padding-right: 15px;
 }
@@ -350,6 +350,7 @@ i.fa-solid.fa-book{
     display: flex;
     flex-direction: column;
     max-width: 65%;
+    min-height: 600px;
     flex: 1;
     font-family: 'Inter';
     gap: 15px;
@@ -495,6 +496,7 @@ footer {
     margin-top: auto;
     width: 100%;
     position: relative;
+    border-radius: 5px;
 }
 
 .footer-container {
@@ -648,7 +650,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: none;
+    animation: pulse 2s infinite;
 }
 
 .footer-logo .checkmark {
@@ -744,3 +746,6 @@ footer {
         padding: 15px 0;
     }
 }
+
+
+
