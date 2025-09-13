@@ -105,6 +105,7 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
+    session.pop('_flashes' , None)
     logout_user()
     flash("Você foi desconectado.", "info")
     return redirect(url_for("index"))
