@@ -56,14 +56,14 @@ with app.app_context():
         print(f"❌ Erro ao conectar com o banco de dados: {e}")
         print("Verifique suas credenciais no arquivo .env")
 
-
 @app.route("/")
 def index():
     return render_template("index.html")
 
-
 @app.route("/cadastro", methods=["GET", "POST"])
 def register():
+    get_flashed_messages()
+
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
@@ -79,13 +79,15 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        flash("Cadastro realizado com sucesso! Faça login para continuar.", "success")
         return redirect(url_for("login"))
 
     return render_template("cadastro.html")
 
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    get_flashed_messages()
+
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
@@ -99,7 +101,6 @@ def login():
             flash("Usuário ou senha inválidos.", "error")
 
     return render_template("login.html")
-
 
 @app.route("/logout")
 @login_required
@@ -202,7 +203,8 @@ def adicionar_atividade():
             flash("Atividade adicionada com sucesso!", "success")
             return redirect(url_for("listar_atividades"))
 
-    return render_template("adicionar_atividade.html")
+    atividades = Atividade.query.filter_by(user_id=current_user.id).all()
+    return render_template("adicionar_atividade.html" , atividades=atividades)
 
 
 @app.route("/listar_atividades")
@@ -210,6 +212,7 @@ def adicionar_atividade():
 def listar_atividades():
     atividades = Atividade.query.filter_by(user_id=current_user.id).all()
     return render_template("listar_atividades.html", atividades=atividades)
+    
 
 
 @app.route("/ajuda")
