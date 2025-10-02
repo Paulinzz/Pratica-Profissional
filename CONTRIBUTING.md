@@ -31,8 +31,8 @@ Ensure you have **Python (version 3.9+)** and **`pip`** installed.
 2.  Clone your local copy:
 
     ```bash
-    git clone [https://github.com/](https://github.com/)[YOUR_USERNAME]/[PROJECT_NAME].git
-    cd [PROJECT_NAME]
+    git clone https://github.com/Paulinzz/Pratica-Profissional.git
+    cd Pratica-Profissional
     ```
 
 ### 2. Configure the Virtual Environment
