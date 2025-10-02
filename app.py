@@ -56,9 +56,11 @@ with app.app_context():
         print(f"❌ Erro ao conectar com o banco de dados: {e}")
         print("Verifique suas credenciais no arquivo .env")
 
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 @app.route("/cadastro", methods=["GET", "POST"])
 def register():
@@ -84,6 +86,7 @@ def register():
 
     return render_template("cadastro.html")
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     get_flashed_messages()
@@ -102,10 +105,11 @@ def login():
 
     return render_template("login.html")
 
+
 @app.route("/logout")
 @login_required
 def logout():
-    session.pop('_flashes' , None)
+    session.pop("_flashes", None)
     logout_user()
     flash("Você foi desconectado.", "info")
     return redirect(url_for("index"))
@@ -205,7 +209,7 @@ def adicionar_atividade():
             return redirect(url_for("listar_atividades"))
 
     atividades = Atividade.query.filter_by(user_id=current_user.id).all()
-    return render_template("adicionar_atividade.html" , atividades=atividades)
+    return render_template("adicionar_atividade.html", atividades=atividades)
 
 
 @app.route("/listar_atividades")
@@ -213,7 +217,6 @@ def adicionar_atividade():
 def listar_atividades():
     atividades = Atividade.query.filter_by(user_id=current_user.id).all()
     return render_template("listar_atividades.html", atividades=atividades)
-    
 
 
 @app.route("/ajuda")
