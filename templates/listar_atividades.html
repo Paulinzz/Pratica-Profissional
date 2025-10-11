@@ -1,0 +1,7 @@
+{% for atividade in atividades %}
+    <div>
+        <p>Matéria: {{ atividade.materia }}</p>
+        <p>Assunto: {{ atividade.assunto_primario }}</p>
+        <a href="{{ url_for('editar_atividade', atividade_id=atividade.id) }}">Editar</a> 
+    </div>
+{% endfor %}

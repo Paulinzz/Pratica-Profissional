@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar atividade
+{% endblock %}
+
+{% block conteudo %}
+
+    <main>
+        <div class="container_form_add-atv">
+            <h1>Editar atividade</h1>
+            <form action="{{ url_for('editar_atividade', atividade_id=atividade.id) }}" method="post" class="form_adicionar-atividade">
+                <label for="materia">Matéria:</label>
+                <input type="text" name="materia" value="{{ atividade.materia }}" placeholder="Ex: Matématica" required>
+                
+                <label for="assunto_primario">Assunto primário:</label>
+                <input type="text" name="assunto_primario" value="{{ atividade.assunto_primario }}" placeholder="Ex: Probabilidade" required>
+                
+                <label for="descricao">Descrição detalhada:</label>
+                <input type="text" name="descricao" value="{{ atividade.descricao if atividade.descricao is not none else '' }}" placeholder="Descrição detalhada sobre o que foi estudado">
+                
+                <label for="duracao">Duração:</label>
+                <input type="time" name="duracao" value="{{ atividade.duracao if atividade.duracao is not none else '' }}" placeholder="Ex: 3h">
+                
+                <button type="submit">Salvar Alterações</button>
+                <a href="{{ url_for('listar_atividades') }}" class="button-cancelar">Cancelar</a>
+            </form>
+        </div>
+        </main>
+
+{% endblock %}
