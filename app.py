@@ -218,12 +218,17 @@ def listar_atividades():
     atividades = Atividade.query.filter_by(user_id=current_user.id).all()
     return render_template("listar_atividades.html", atividades=atividades)
 
+
 @app.route("/editar_atividade/<int:atividade_id>", methods=["GET", "POST"])
 @login_required
 def editar_atividade(atividade_id):
-    atividade = Atividade.query.filter_by(id=atividade_id, user_id=current_user.id).first()
+    atividade = Atividade.query.filter_by(
+        id=atividade_id, user_id=current_user.id
+    ).first()
     if not atividade:
-        flash("Atividade não encontrada ou você não tem permissão para editá-la.", "error")
+        flash(
+            "Atividade não encontrada ou você não tem permissão para editá-la.", "error"
+        )
         return redirect(url_for("listar_atividades"))
 
     if request.method == "POST":
@@ -245,6 +250,7 @@ def editar_atividade(atividade_id):
             return redirect(url_for("listar_atividades"))
 
     return render_template("editar_atividade.html", atividade=atividade)
+
 
 @app.route("/ajuda")
 @login_required
