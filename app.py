@@ -221,8 +221,9 @@ def adicionar_atividade():
         .limit(5)
         .all()
     )
-    
+
     return render_template("adicionar_atividade.html", atividades=atividades)
+
 
 @app.route("/listar_atividades")
 @login_required
