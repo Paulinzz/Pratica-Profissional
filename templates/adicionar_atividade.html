@@ -11,20 +11,53 @@
             <h1>Adicionar nova atividade</h1>
             <form action="{{url_for('adicionar_atividade')}}" method="post" class="form_adicionar-atividade">
                 <label for="materia">Matéria:</label>
-                <input type="text" name="materia" placeholder="Ex: Matématica">
+                <input type="text" name="materia" placeholder="Ex: Matemática" required>
+                
                 <label for="assunto_primario">Assunto primário:</label>
-                <input type="text" name="assunto_primario" placeholder="Ex: Probabilidade">
-                <label for="descricao">Descrição detalhada:</label>
-                <input type="text" name="descricao" placeholder="Descrição detalhada sobre o que foi estudado">
+                <input type="text" name="assunto_primario" placeholder="Ex: Probabilidade" required>
+                
+                <label for="descricao">Descrição:</label>
+                <input type="text" name="descricao" placeholder="Descrição detalhada sobre o que foi estudado" rows="4">
+                
+                <label for="data">Data:</label>
+                <input type="date" name="data">
+                
                 <label for="duracao">Duração:</label>
-                <input type="time" name="duracao" placeholder="Ex: 3h">
+                <input type="time" name="duracao" placeholder="Ex: 03:00">
+                
                 <button type="submit">Adicionar</button>
             </form>
         </div>
         
         <div class="container_atividades_recentes">
-
+            <h2>Atividades Recentes</h2>
+            {% if atividades %}
+                <div class="lista-atividades">
+                    {% for atividade in atividades %}
+                    <div class="atividade-card">
+                        <div class="atividade-header">
+                            <h3>{{ atividade.materia }}</h3>
+                            <span class="duracao">{{ atividade.duracao if atividade.duracao else 'Sem duração' }}</span>
+                        </div>
+                        <div class="atividade-conteudo">
+                            <p class="assunto">{{ atividade.assunto_primario }}</p>
+                            {% if atividade.descricao %}
+                                <p class="descricao">{{ atividade.descricao }}</p>
+                            {% endif %}
+                            {% if atividade.data %}
+                                <p class="data"> {{ atividade.data.strftime('%d/%m/%Y') }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="sem-atividades">
+                    <p>Nenhuma atividade recente encontrada.</p>
+                    <p>Adicione sua primeira atividade!</p>                
+                </div>
+            {% endif %}
         </div>
-        </main>
+    </main>
 
 {% endblock %}

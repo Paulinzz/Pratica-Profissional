@@ -192,25 +192,37 @@ def adicionar_atividade():
         assunto = request.form.get("assunto_primario")
         descricao = request.form.get("descricao")
         duracao = request.form.get("duracao")
+        data = request.form.get("data")
 
         if not materia or not assunto:
             flash("Informe pelo menos a matéria e o assunto primário.", "error")
         else:
-            nova_atividade = Atividade(
-                materia=materia,
-                assunto_primario=assunto,
-                descricao=descricao,
-                duracao=duracao,
-                user_id=current_user.id,
-            )
-            db.session.add(nova_atividade)
-            db.session.commit()
-            flash("Atividade adicionada com sucesso!", "success")
-            return redirect(url_for("listar_atividades"))
+            try:
+                nova_atividade = Atividade(
+                    materia=materia,
+                    assunto_primario=assunto,
+                    descricao=descricao,
+                    duracao=duracao,
+                    data=data if data else None,
+                    user_id=current_user.id,
+                )
+                db.session.add(nova_atividade)
+                db.session.commit()
+                flash("Atividade adicionada com sucesso!", "success")
+                return redirect(url_for("adicionar_atividade"))
+            except Exception as e:
+                db.session.rollback()
+                flash(f"Erro ao adicionar atividade: {str(e)}", "error")
+                print(f"ERRO: {e}")
 
-    atividades = Atividade.query.filter_by(user_id=current_user.id).all()
+    atividades = (
+        Atividade.query.filter_by(user_id=current_user.id)
+        .order_by(Atividade.data_criacao.desc())
+        .limit(5)
+        .all()
+    )
+    
     return render_template("adicionar_atividade.html", atividades=atividades)
-
 
 @app.route("/listar_atividades")
 @login_required
