@@ -264,6 +264,41 @@ def editar_atividade(atividade_id):
 
     return render_template("editar_atividade.html", atividade=atividade)
 
+@app.route("/excluir_materia/<int:materia_id>", methods=["POST"])
+@login_required
+def excluir_materia(materia_id):
+    materia = Materia.query.filter_by(id=materia_id, user_id=current_user.id).first()
+    if not materia:
+        flash("Matéria não encontrada ou sem permissão para excluir.", "error")
+        return redirect(url_for("dashboard"))
+    try:
+        db.session.delete(materia)
+        db.session.commit()
+        flash("Matéria excluída com sucesso.", "success")
+    except Exception as e:
+        db.session.rollback()
+        print(f"ERRO ao excluir materia: {e}")
+        flash("Erro ao excluir matéria. Tente novamente mais tarde.", "error")
+    return redirect(url_for("dashboard"))
+
+
+@app.route("/excluir_atividade/<int:atividade_id>", methods=["POST"])
+@login_required
+def excluir_atividade(atividade_id):
+    atividade = Atividade.query.filter_by(id=atividade_id, user_id=current_user.id).first()
+    if not atividade:
+        flash("Atividade não encontrada ou sem permissão para excluir.", "error")
+        return redirect(url_for("listar_atividades"))
+    try:
+        db.session.delete(atividade)
+        db.session.commit()
+        flash("Atividade excluída com sucesso!", "success")
+    except Exception as e:
+        db.session.rollback()
+        print(f"ERRO ao excluir atividade: {e}")
+        flash("Erro ao excluir atividade. Tente novamente mais tarde.", "error")
+    return redirect(url_for("listar_atividades"))
+
 
 @app.route("/ajuda")
 @login_required

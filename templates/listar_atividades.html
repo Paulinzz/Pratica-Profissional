@@ -1,7 +1,18 @@
-{% for atividade in atividades %}
+{% if atividades %}
+  {% for atividade in atividades %}
     <div>
         <p>Matéria: {{ atividade.materia }}</p>
         <p>Assunto: {{ atividade.assunto_primario }}</p>
-        <a href="{{ url_for('editar_atividade', atividade_id=atividade.id) }}">Editar</a> 
+        <a href="{{ url_for('editar_atividade', atividade_id=atividade.id) }}">Editar</a>
+
+        <form method="post"
+              action="{{ url_for('excluir_atividade', atividade_id=atividade.id) }}"
+              style="display:inline;"
+              onsubmit="return confirm('Confirmar exclusão desta atividade?');">
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
     </div>
-{% endfor %}
+  {% endfor %}
+{% else %}
+  <p>Não há atividades cadastradas.</p>
+{% endif %}
