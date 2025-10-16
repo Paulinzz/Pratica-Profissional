@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -26,4 +27,6 @@ class Atividade(db.Model):
     assunto_primario = db.Column(db.String(100), nullable=False)
     descricao = db.Column(db.Text, nullable=True)
     duracao = db.Column(db.String(10), nullable=True)
+    data = db.Column(db.Date, nullable=True)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
