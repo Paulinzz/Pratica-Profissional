@@ -264,6 +264,7 @@ def editar_atividade(atividade_id):
 
     return render_template("editar_atividade.html", atividade=atividade)
 
+
 @app.route("/excluir_materia/<int:materia_id>", methods=["POST"])
 @login_required
 def excluir_materia(materia_id):
@@ -285,7 +286,9 @@ def excluir_materia(materia_id):
 @app.route("/excluir_atividade/<int:atividade_id>", methods=["POST"])
 @login_required
 def excluir_atividade(atividade_id):
-    atividade = Atividade.query.filter_by(id=atividade_id, user_id=current_user.id).first()
+    atividade = Atividade.query.filter_by(
+        id=atividade_id, user_id=current_user.id
+    ).first()
     if not atividade:
         flash("Atividade não encontrada ou sem permissão para excluir.", "error")
         return redirect(url_for("listar_atividades"))
