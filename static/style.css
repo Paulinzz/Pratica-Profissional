@@ -245,7 +245,46 @@ i.fa-solid.fa-plus{
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: 0.3s;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
 
+}
+
+i.fa-solid.fa-bell {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+i.fa-solid.fa-bell:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+i.fa-solid.fa-bell:active {
+    color: #1b5e20;
+    transform: scale(0.95);
+}
+
+.card-dash {
+    animation-delay: 0.1s;
+}
+
+.card-materias_mais_estudadas {
+    animation-delay: 0.2s;
+}
+
+.card-sobre {
+    animation-delay: 0.3s;
+}
+
+.card_artigo {
+    animation-delay: 0.4s;
+}
+
+.container_add-atividade {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    animation-delay: 0.5s;
 }
 
 .card-materias_mais_estudadas:hover, .card-sobre:hover, .card-dash:hover, .card_artigo:hover, .form_adicionar-atividade:hover
@@ -259,22 +298,6 @@ i.fa-solid.fa-plus{
     font-weight: 600;
     margin-bottom: 15px;
     color: #1a73e8;
-}
-
-i.fa-bell {
-    position: relative;
-}
-i.fa-bell::after {
-    content: "3"; /* quantidade de notificações, posteriormente iremos trocar por js, apenas estética  */ 
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: red;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 50%;
 }
 
 .title-card_artigo{
@@ -358,6 +381,9 @@ i.fa-solid.fa-book{
     flex: 1;
     font-family: 'Inter';
     gap: 15px;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    animation-delay: 0.1s;
 }
 .container_form_add-atv h1{
     font-size: 40px;
@@ -472,7 +498,10 @@ i.fa-solid.fa-book{
     box-shadow: 0 6px 12px rgba(0,0,0,0.2);
     border-radius: 30px;
     justify-content: space-between;
-    
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    animation-delay: 0.1s;
+
 }
 .container_nossa_hm{
     gap: 30px;
@@ -485,11 +514,17 @@ i.fa-solid.fa-book{
     box-shadow: 0 6px 12px rgba(0,0,0,0.2);
     background-color: #eff1f3;
     border-radius: 30px;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    animation-delay: 0.2s;
 }
 .nossa_missao{
     box-shadow: 0 6px 12px rgba(0,0,0,0.2);
     background-color: #eff1f3;
     border-radius: 30px;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    animation-delay: 0.3s;
 }
 
 
@@ -810,6 +845,9 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    animation-delay: 0.2s;
 }
 
 .container_atividades_recentes h2 {
@@ -1033,7 +1071,7 @@ footer {
 
 .busca i {
     position: absolute;
-    left: 18px;
+    right: 18px;
     top: 50%;
     transform: translateY(-50%);
     color: #1a73e8;
@@ -1043,7 +1081,7 @@ footer {
 
 .busca input {
     width: 100%;
-    padding: 14px 20px 14px 50px;
+    padding: 14px 50px 14px 20px;
     border: 2px solid #e0e0e0;
     border-radius: 30px;
     font-size: 15px;
@@ -1104,7 +1142,13 @@ footer {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     border: 2px solid transparent;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
 }
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
 
 .stat-card:hover {
     transform: translateY(-5px);
@@ -1152,6 +1196,9 @@ footer {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
     border: 2px solid transparent;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    animation-delay: 0.4s;
 }
 
 .atividade-item:hover {
@@ -1210,6 +1257,7 @@ footer {
     line-height: 1.6;
     overflow: hidden;
     display: -webkit-box;
+    line-clamp: 3;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
@@ -1414,43 +1462,462 @@ footer {
     footer {
         padding: 20px 0 15px 0;
     }
-    
+
     .footer-container {
         padding: 0 15px;
     }
-    
+
     .footer-content {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    
+
     .footer-section h3 {
         font-size: 1.1rem;
         padding: 12px 15px;
     }
-    
+
     .footer-section.active .footer-section-content {
         padding: 15px;
     }
-    
+
     .newsletter-form {
         flex-direction: column;
     }
-    
+
     .newsletter-form input {
         min-width: auto;
     }
-    
+
     .social-links {
         justify-content: center;
     }
-    
+
     .footer-logo .logo-text {
         font-size: 1.6rem;
     }
-    
+
     .footer-bottom {
         margin: 0 -15px -15px -15px;
         padding: 15px 0;
     }
+}
+
+/* Estilização do template "Ajuda" */
+
+.ajuda-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.ajuda-header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInDown 0.8s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ajuda-header h1 {
+    font-size: 42px;
+    color: #1a73e8;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.ajuda-header p {
+    font-size: 18px;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.busca-ajuda {
+    max-width: 600px;
+    margin: 0 auto 50px;
+    position: relative;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.busca-ajuda input {
+    width: 100%;
+    padding: 18px 55px 18px 25px;
+    border: 2px solid #e0e0e0;
+    border-radius: 50px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.busca-ajuda input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+}
+
+.busca-ajuda i {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1a73e8;
+    font-size: 20px;
+}
+
+.categorias-ajuda {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 60px;
+}
+
+.categoria-card {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.categoria-card:nth-child(1) { animation-delay: 0.1s; }
+.categoria-card:nth-child(2) { animation-delay: 0.2s; }
+.categoria-card:nth-child(3) { animation-delay: 0.3s; }
+.categoria-card:nth-child(4) { animation-delay: 0.4s; }
+
+.categoria-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(26, 115, 232, 0.15);
+    border-color: #1a73e8;
+}
+
+.categoria-icone {
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, #e3f2fd, #90caf9);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.categoria-icone i {
+    font-size: 32px;
+    color: #1a73e8;
+}
+
+.categoria-card h3 {
+    font-size: 22px;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.categoria-card p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.categoria-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.categoria-card li {
+    font-size: 14px;
+    color: #555;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+.categoria-card li:last-child {
+    border-bottom: none;
+}
+
+.categoria-card li:hover {
+    color: #1a73e8;
+    padding-left: 10px;
+}
+
+.categoria-card li::before {
+    content: "→";
+    margin-right: 10px;
+    color: #1a73e8;
+    font-weight: bold;
+}
+
+.faq-section {
+    background: white;
+    border-radius: 25px;
+    padding: 45px;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.faq-section h2 {
+    font-size: 32px;
+    color: #1a1a1a;
+    margin-bottom: 35px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.faq-item {
+    border-bottom: 2px solid #f0f0f0;
+    padding: 25px 0;
+    transition: all 0.3s ease;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-pergunta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.faq-pergunta:hover {
+    background-color: #f8f9fa;
+}
+
+.faq-pergunta h4 {
+    font-size: 18px;
+    color: #1a1a1a;
+    font-weight: 600;
+    flex: 1;
+}
+
+.faq-pergunta i {
+    color: #1a73e8;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-pergunta i {
+    transform: rotate(180deg);
+}
+
+.faq-resposta {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 10px;
+}
+
+.faq-item.active .faq-resposta {
+    max-height: 500px;
+    padding: 20px 10px 10px;
+}
+
+.faq-resposta p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.7;
+}
+
+.contato-rapido {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    border-radius: 25px;
+    padding: 45px;
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.contato-rapido h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.contato-rapido p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.95;
+}
+
+.contato-opcoes {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.contato-btn {
+    background: white;
+    color: #1a73e8;
+    padding: 15px 35px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contato-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background: #f8f9fa;
+}
+
+.contato-btn i {
+    font-size: 18px;
+}
+
+.tutoriais-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.tutorial-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.tutorial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.tutorial-thumb {
+    background: linear-gradient(135deg, #e3f2fd, #90caf9);
+    padding: 40px;
+    text-align: center;
+}
+
+.tutorial-thumb i {
+    font-size: 60px;
+    color: #1a73e8;
+}
+
+.tutorial-info {
+    padding: 25px;
+}
+
+.tutorial-info h4 {
+    font-size: 20px;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.tutorial-info p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.tutorial-info a {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.tutorial-info a:hover {
+    gap: 12px;
+    color: #0d47a1;
+}
+
+@media (max-width: 768px) {
+    .ajuda-header h1 {
+        font-size: 32px;
+    }
+
+    .categorias-ajuda {
+        grid-template-columns: 1fr;
+    }
+
+    .tutoriais-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .faq-section {
+        padding: 25px;
+    }
+
+    .contato-rapido {
+        padding: 30px 20px;
+    }
+
+    .contato-opcoes {
+        flex-direction: column;
+    }
+}
+
+.button-cancelar {
+    border: none;
+    cursor: pointer;
+    background-color: #f44336;
+    color: white;
+    height: 50px;
+    width: 100%;
+    max-width: 140px;
+    border-radius: 40px;
+    box-shadow: 0 0 2px black;
+    font-size: 20px;
+    font-family: 'Poppins';
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    line-height: 50px;
+    transition: all 0.3s ease;
+}
+
+.button-cancelar:hover {
+    background-color: #c62828;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }

@@ -9,6 +9,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
+    name = db.Column(db.String(150), nullable=True)
+    photo = db.Column(db.String(255), nullable=True)
     materias = db.relationship("Materia", backref="usuario", lazy=True)
     atividades = db.relationship("Atividade", backref="usuario", lazy=True)
 

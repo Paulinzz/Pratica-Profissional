@@ -1,0 +1,513 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Configurações - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .config-container {
+        min-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .config-header {
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        border-radius: 25px;
+        padding: 40px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 30px rgba(26, 115, 232, 0.3);
+        animation: slideInDown 0.6s ease;
+    }
+
+    @keyframes slideInDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .config-header h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .tabs-container {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        flex: 1;
+        min-width: 200px;
+        padding: 18px 30px;
+        background: rgba(255,255,255,0.7);
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #666;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .tab-btn.active {
+        background: white;
+        color: #1a73e8;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+    .config-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        animation: fadeInUp 0.6s ease;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .config-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .card-header i {
+        color: #1a73e8;
+        font-size: 24px;
+    }
+
+    .card-header h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+
+    .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .setting-item:hover {
+        background: #e9ecef;
+        transform: translateX(5px);
+    }
+
+    .setting-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .setting-info h4 {
+        font-size: 15px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 4px;
+    }
+
+    .setting-info p {
+        font-size: 13px;
+        color: #666;
+        margin: 0;
+    }
+
+    /* Toggle Switch */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 28px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.3s;
+        border-radius: 28px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    input:checked + .slider {
+        background-color: #4caf50;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(22px);
+    }
+
+    /* Tema Cards */
+    .theme-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .theme-card {
+        padding: 25px;
+        border: 3px solid #e0e0e0;
+        border-radius: 12px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .theme-card:hover {
+        border-color: #1a73e8;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .theme-card.active {
+        border-color: #1a73e8;
+        background: #e3f2fd;
+    }
+
+    .theme-card input {
+        display: none;
+    }
+
+    .theme-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .theme-label {
+        font-weight: 500;
+        font-size: 14px;
+        text-transform: capitalize;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .form-group select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .form-group select:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+    }
+
+    .action-btn {
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        cursor: pointer;
+        text-align: left;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .action-btn:hover {
+        border-color: #1a73e8;
+        background: white;
+        transform: translateX(5px);
+    }
+
+    .action-btn.danger {
+        background: #fff3e0;
+        border-color: #ff9800;
+        color: #f57c00;
+    }
+
+    .action-btn.danger:hover {
+        background: #ffe0b2;
+        border-color: #f57c00;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        color: white;
+        border: none;
+        padding: 18px 40px;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(46,125,50,0.3);
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(46,125,50,0.4);
+    }
+
+    @media (max-width: 768px) {
+        .config-header {
+            padding: 30px 25px;
+        }
+
+        .config-header h1 {
+            font-size: 28px;
+        }
+
+        .config-card {
+            padding: 25px;
+        }
+
+        .theme-options {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<main>
+    <div class="config-container">
+        <!-- Header -->
+        <div class="config-header">
+            <h1><i class="fa-solid fa-gear"></i> Configurações</h1>
+            <p style="font-size: 16px; opacity: 0.95;">Personalize sua experiência no FocusUp</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <a href="{{ url_for('perfil') }}" class="tab-btn">
+                <i class="fa-solid fa-user"></i>
+                Perfil
+            </a>
+            <a href="{{ url_for('configuracoes') }}" class="tab-btn active">
+                <i class="fa-solid fa-gear"></i>
+                Configurações
+            </a>
+        </div>
+
+        <!-- Seções -->
+        <div class="config-sections">
+            <!-- Notificações -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-bell"></i>
+                    <h3>Notificações</h3>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Notificações por Email</h4>
+                        <p>Receba atualizações importantes no seu email</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Notificações Push</h4>
+                        <p>Receba alertas no navegador</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Lembretes de Estudo</h4>
+                        <p>Receba lembretes automáticos de atividades</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Aparência -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-palette"></i>
+                    <h3>Aparência</h3>
+                </div>
+
+                <div class="form-group">
+                    <label>Tema</label>
+                    <div class="theme-options">
+                        <label class="theme-card active">
+                            <input type="radio" name="tema" value="claro" checked>
+                            <div class="theme-icon">☀️</div>
+                            <div class="theme-label">Claro</div>
+                        </label>
+                        
+                        <label class="theme-card">
+                            <input type="radio" name="tema" value="escuro">
+                            <div class="theme-icon">🌙</div>
+                            <div class="theme-label">Escuro</div>
+                        </label>
+                        
+                        <label class="theme-card">
+                            <input type="radio" name="tema" value="auto">
+                            <div class="theme-icon">🔄</div>
+                            <div class="theme-label">Automático</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Idioma</label>
+                    <select>
+                        <option value="pt-br">🇧🇷 Português (Brasil)</option>
+                        <option value="en">🇺🇸 English</option>
+                        <option value="es">🇪🇸 Español</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Privacidade e Segurança -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>Privacidade e Segurança</h3>
+                </div>
+
+                <button class="action-btn">
+                    <i class="fa-solid fa-download" style="color: #1a73e8;"></i>
+                    Baixar meus dados
+                </button>
+
+                <button class="action-btn">
+                    <i class="fa-solid fa-file-shield" style="color: #2e7d32;"></i>
+                    Política de Privacidade
+                </button>
+
+                <button class="action-btn">
+                    <i class="fa-solid fa-file-contract" style="color: #9c27b0;"></i>
+                    Termos de Serviço
+                </button>
+
+                <button class="action-btn danger" onclick="confirmarExclusao()">
+                    <i class="fa-solid fa-trash-can"></i>
+                    Excluir minha conta
+                </button>
+            </div>
+
+            <!-- Botão Salvar -->
+            <button class="btn-save">
+                <i class="fa-solid fa-floppy-disk"></i>
+                Salvar Configurações
+            </button>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Toggle tema cards
+    document.querySelectorAll('.theme-card').forEach(card => {
+        card.addEventListener('click', function() {
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            this.querySelector('input').checked = true;
+        });
+    });
+
+    // Confirmar exclusão de conta
+    function confirmarExclusao() {
+        if (confirm('⚠️ ATENÇÃO!\n\nTem certeza que deseja excluir sua conta?\n\nEsta ação é IRREVERSÍVEL e todos os seus dados serão permanentemente apagados:\n\n• Todas as atividades\n• Todas as matérias\n• Todo o progresso\n• Configurações personalizadas\n\nDigite "EXCLUIR" para confirmar.')) {
+            const confirmacao = prompt('Digite "EXCLUIR" para confirmar:');
+            if (confirmacao === 'EXCLUIR') {
+                alert('Conta excluída com sucesso. Você será redirecionado para a página inicial.');
+                // Aqui você adicionaria a lógica de exclusão
+            } else {
+                alert('Exclusão cancelada.');
+            }
+        }
+    }
+
+    // Salvar configurações com feedback
+    document.querySelector('.btn-save').addEventListener('click', function() {
+        // Animação de sucesso
+        const btn = this;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Salvo!';
+        btn.style.background = 'linear-gradient(135deg, #4caf50, #66bb6a)';
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = 'linear-gradient(135deg, #2e7d32, #43a047)';
+        }, 2000);
+    });
+</script>
+
+{% endblock %}

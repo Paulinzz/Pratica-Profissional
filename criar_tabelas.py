@@ -3,8 +3,9 @@ from app import app, db
 # Criar tabelas
 with app.app_context():
     try:
+        db.drop_all()
         db.create_all()
-        print("✅ Tabelas criadas com sucesso!")
+        print("✅ Tabelas recriadas com sucesso!")
 
         # Verificar quais tabelas foram criadas
         from sqlalchemy import inspect

@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Central de Ajuda - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+
+<main>
+    <div class="ajuda-container">
+        <!-- Header -->
+        <div class="ajuda-header">
+            <h1>Central de Ajuda</h1>
+            <p>Como podemos ajudar você a aproveitar melhor o FocusUp?</p>
+        </div>
+
+        <!-- Busca -->
+        <div class="busca-ajuda">
+            <input type="text" id="busca-input" placeholder="Busque por tópicos, tutoriais ou dúvidas...">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <!-- Categorias de Ajuda -->
+        <div class="categorias-ajuda">
+            <div class="categoria-card" onclick="scrollToSection('primeiros-passos')">
+                <div class="categoria-icone">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <h3>Primeiros Passos</h3>
+                <p>Aprenda o básico para começar a usar o FocusUp</p>
+                <ul>
+                    <li>Como criar uma conta</li>
+                    <li>Configurar seu perfil</li>
+                    <li>Navegar pela plataforma</li>
+                </ul>
+            </div>
+
+            <div class="categoria-card" onclick="scrollToSection('atividades')">
+                <div class="categoria-icone">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h3>Gerenciar Atividades</h3>
+                <p>Organize suas tarefas de estudo com eficiência</p>
+                <ul>
+                    <li>Adicionar novas atividades</li>
+                    <li>Editar e excluir tarefas</li>
+                    <li>Organizar por matéria</li>
+                </ul>
+            </div>
+
+            <div class="categoria-card" onclick="scrollToSection('dashboard')">
+                <div class="categoria-icone">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <h3>Dashboard</h3>
+                <p>Entenda seus gráficos e estatísticas</p>
+                <ul>
+                    <li>Interpretar gráficos</li>
+                    <li>Acompanhar progresso</li>
+                    <li>Artigos recomendados</li>
+                </ul>
+            </div>
+
+            <div class="categoria-card" onclick="scrollToSection('conta')">
+                <div class="categoria-icone">
+                    <i class="fa-solid fa-user-gear"></i>
+                </div>
+                <h3>Conta e Segurança</h3>
+                <p>Gerencie sua conta e mantenha seus dados seguros</p>
+                <ul>
+                    <li>Alterar senha</li>
+                    <li>Configurações de privacidade</li>
+                    <li>Excluir conta</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tutoriais em Vídeo -->
+        <div class="faq-section">
+            <h2>Tutoriais Rápidos</h2>
+            <div class="tutoriais-grid">
+                <div class="tutorial-card">
+                    <div class="tutorial-thumb">
+                        <i class="fa-solid fa-play-circle"></i>
+                    </div>
+                    <div class="tutorial-info">
+                        <h4>Como Adicionar uma Atividade</h4>
+                        <p>Aprenda a criar e organizar suas atividades de estudo em poucos passos.</p>
+                        <a href="{{ url_for('adicionar_atividade') }}">Acessar tutorial <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="tutorial-card">
+                    <div class="tutorial-thumb">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div class="tutorial-info">
+                        <h4>Utilizando o Dashboard</h4>
+                        <p>Descubra como acompanhar seu progresso através dos gráficos e estatísticas.</p>
+                        <a href="{{ url_for('dashboard') }}">Ver dashboard <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="tutorial-card">
+                    <div class="tutorial-thumb">
+                        <i class="fa-solid fa-list"></i>
+                    </div>
+                    <div class="tutorial-info">
+                        <h4>Gerenciando suas Atividades</h4>
+                        <p>Edite, organize e filtre suas atividades para uma melhor produtividade.</p>
+                        <a href="{{ url_for('listar_atividades') }}">Ver atividades <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-section" id="faq-section">
+            <h2>Perguntas Frequentes</h2>
+            
+            <div class="faq-item" id="primeiros-passos">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                    <h4>Como faço para criar minha primeira atividade?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-resposta">
+                    <p>Para criar sua primeira atividade, clique no botão verde "+" no dashboard ou acesse a página "Atividades" e clique em "Nova Atividade". Preencha os campos de matéria, assunto, descrição e duração. Depois, clique em "Adicionar" para salvar.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" id="atividades">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                    <h4>Posso editar uma atividade depois de criá-la?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-resposta">
+                    <p>Sim! Vá até a página "Listar Atividades", encontre a atividade que deseja editar e clique no ícone de lápis (editar). Faça as alterações necessárias e clique em "Salvar Alterações".</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                    <h4>Como funcionam os artigos recomendados?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-resposta">
+                    <p>O FocusUp utiliza a API OpenAlex para buscar artigos acadêmicos relevantes sobre técnicas de estudo, como Pomodoro, repetição espaçada e mapas mentais. Os artigos são selecionados com base em citações e relevância.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" id="dashboard">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                    <h4>O que significam os gráficos no dashboard?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-resposta">
+                    <p>O gráfico de linha mostra a quantidade de atividades criadas por dia, ajudando você a visualizar sua consistência. O gráfico de barras exibe as matérias mais estudadas, permitindo identificar áreas que precisam de mais atenção.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                    <h4>Posso usar o FocusUp no celular?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-resposta">
+                    <p>Sim! O FocusUp possui um design responsivo que se adapta a smartphones e tablets. Basta acessar através do navegador do seu dispositivo móvel.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" id="conta">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                    <h4>Como posso alterar minha senha?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-resposta">
+                    <p>Atualmente, para alterar sua senha, entre em contato com nossa equipe de suporte através do e-mail suporte@focusup.com.br. Estamos trabalhando em uma funcionalidade de alteração de senha diretamente na plataforma.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                    <h4>Meus dados estão seguros?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-resposta">
+                    <p>Sim! O FocusUp utiliza criptografia para armazenar senhas e segue as melhores práticas de segurança. Consulte nossa <a href="{{ url_for('politica_privacidade') }}" style="color: #1a73e8; text-decoration: underline;">Política de Privacidade</a> para mais detalhes.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                    <h4>O FocusUp é gratuito?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-resposta">
+                    <p>Sim! O FocusUp é um projeto educacional desenvolvido por estudantes do IFRN e é totalmente gratuito. Nosso objetivo é ajudar estudantes a organizarem melhor seus estudos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contato Rápido -->
+        <div class="contato-rapido">
+            <h2>Ainda precisa de ajuda?</h2>
+            <p>Nossa equipe está pronta para responder suas dúvidas</p>
+            <div class="contato-opcoes">
+                <a href="mailto:suporte@focusup.com.br" class="contato-btn">
+                    <i class="fa-solid fa-envelope"></i>
+                    Enviar E-mail
+                </a>
+                <a href="{{ url_for('sobre_nos') }}" class="contato-btn">
+                    <i class="fa-solid fa-users"></i>
+                    Sobre a Equipe
+                </a>
+                <a href="https://github.com/Paulinzz/Pratica-Profissional" target="_blank" class="contato-btn">
+                    <i class="fa-brands fa-github"></i>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+ <script type="" src="{{url_for('static', filename='scripts/ajuda.js')}}">    
+    </script>
+
+{% endblock %}

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data: {
                 labels: window.labelsDash,
                 datasets: [{
-                    label: 'Atividades por Dia',
+                    label: 'Atividades Registras por Dia',
                     data: window.dataDash,
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: gradientDash,
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Atividades por Dia',
+                        text: 'Atividades Registradas por Dia',
                         font: {
                             size: 18,
                             weight: 'bold'
