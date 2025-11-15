@@ -6,6 +6,7 @@ from flask_bcrypt import (
 )
 import os
 from dotenv import load_dotenv
+from sqlalchemy import func
 
 import requests
 
@@ -167,7 +168,17 @@ def dashboard():
             artigo["doi"] = artigo.get("doi")
             artigo["id"] = artigo.get("id")
 
-    return render_template("dashboard.html", artigos=artigos)
+    # Dados para gráficos
+    materias_count = db.session.query(Atividade.materia, func.count(Atividade.id)).filter_by(user_id=current_user.id).group_by(Atividade.materia).all()
+    activities_per_day = db.session.query(func.date(Atividade.data_criacao), func.count(Atividade.id)).filter_by(user_id=current_user.id).group_by(func.date(Atividade.data_criacao)).all()
+
+    # Preparar dados para Chart.js
+    labels_dash = [str(row[0]) for row in activities_per_day]
+    data_dash = [row[1] for row in activities_per_day]
+    labels_materias = [row[0] for row in materias_count]
+    data_materias = [row[1] for row in materias_count]
+
+    return render_template("dashboard.html", artigos=artigos, labels_dash=labels_dash, data_dash=data_dash, labels_materias=labels_materias, data_materias=data_materias)
 
 
 @app.route("/adicionar_materia", methods=["POST"])
