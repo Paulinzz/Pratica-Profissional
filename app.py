@@ -363,7 +363,9 @@ def termos_servico():
         "termos_servico.html", last_update="01 de Setembro de 2025", version="1.0"
     )
 
+
 # Adicione estas rotas no seu app.py, logo antes da rota /ajuda ou no final antes do if __name__ == "__main__":
+
 
 @app.route("/perfil")
 @login_required
@@ -374,19 +376,26 @@ def perfil():
     materias_count = Materia.query.filter_by(user_id=current_user.id).count()
     # Sequência: dias consecutivos com atividades (simplificado)
     from datetime import datetime, timedelta
+
     hoje = datetime.utcnow().date()
     sequencia = 0
     for i in range(30):  # últimos 30 dias
         data = hoje - timedelta(days=i)
-        if Atividade.query.filter_by(user_id=current_user.id).filter(db.func.date(Atividade.data_criacao) == data).first():
+        if (
+            Atividade.query.filter_by(user_id=current_user.id)
+            .filter(db.func.date(Atividade.data_criacao) == data)
+            .first()
+        ):
             sequencia += 1
         else:
             break
 
-    return render_template("perfil.html",
-                          atividades_count=atividades_count,
-                          materias_count=materias_count,
-                          sequencia=sequencia)
+    return render_template(
+        "perfil.html",
+        atividades_count=atividades_count,
+        materias_count=materias_count,
+        sequencia=sequencia,
+    )
 
 
 @app.route("/configuracoes")
@@ -423,17 +432,17 @@ def alterar_senha():
     senha_atual = request.form.get("senha_atual")
     nova_senha = request.form.get("nova_senha")
     confirmar_senha = request.form.get("confirmar_senha")
-    
+
     # Verificar se a senha atual está correta
     if not bcrypt.check_password_hash(current_user.password, senha_atual):
         flash("Senha atual incorreta!", "error")
         return redirect(url_for("perfil"))
-    
+
     # Verificar se as novas senhas coincidem
     if nova_senha != confirmar_senha:
         flash("As senhas não coincidem!", "error")
         return redirect(url_for("perfil"))
-    
+
     try:
         # Atualizar senha
         hashed_password = bcrypt.generate_password_hash(nova_senha).decode("utf-8")
@@ -443,7 +452,7 @@ def alterar_senha():
     except Exception as e:
         db.session.rollback()
         flash(f"Erro ao alterar senha: {str(e)}", "error")
-    
+
     return redirect(url_for("perfil"))
 
 
@@ -451,18 +460,18 @@ def alterar_senha():
 @login_required
 def upload_foto():
     """Faz upload da foto de perfil"""
-    if 'foto' not in request.files:
+    if "foto" not in request.files:
         flash("Nenhum arquivo enviado.", "error")
         return redirect(url_for("perfil"))
 
-    file = request.files['foto']
-    if file.filename == '':
+    file = request.files["foto"]
+    if file.filename == "":
         flash("Nenhum arquivo selecionado.", "error")
         return redirect(url_for("perfil"))
 
     if file and allowed_file(file.filename):
         filename = secure_filename(f"user_{current_user.id}_{file.filename}")
-        filepath = os.path.join(app.root_path, 'static', 'images', filename)
+        filepath = os.path.join(app.root_path, "static", "images", filename)
         file.save(filepath)
         current_user.photo = filename
         db.session.commit()
@@ -474,7 +483,12 @@ def upload_foto():
 
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in {
+        "png",
+        "jpg",
+        "jpeg",
+        "gif",
+    }
 
 
 @app.route("/salvar_configuracoes", methods=["POST"])
@@ -485,6 +499,7 @@ def salvar_configuracoes():
     # Por enquanto, apenas retorna sucesso
     flash("Configurações salvas com sucesso!", "success")
     return redirect(url_for("configuracoes"))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
