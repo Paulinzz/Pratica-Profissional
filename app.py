@@ -489,7 +489,9 @@ def remover_foto():
     try:
         # Remover o arquivo físico se existir
         if current_user.photo:
-            filepath = os.path.join(app.root_path, "static", "imagens", current_user.photo)
+            filepath = os.path.join(
+                app.root_path, "static", "imagens", current_user.photo
+            )
             if os.path.exists(filepath):
                 os.remove(filepath)
 
@@ -514,15 +516,24 @@ def baixar_dados():
                 "id": current_user.id,
                 "email": current_user.email,
                 "nome": current_user.name,
-                "data_cadastro": current_user.date_created.isoformat() if hasattr(current_user, 'date_created') else None,
-                "foto": current_user.photo
+                "data_cadastro": (
+                    current_user.date_created.isoformat()
+                    if hasattr(current_user, "date_created")
+                    else None
+                ),
+                "foto": current_user.photo,
             },
             "materias": [
                 {
                     "id": materia.id,
                     "nome": materia.nome,
-                    "data_criacao": materia.date_created.isoformat() if hasattr(materia, 'date_created') else None
-                } for materia in current_user.materias
+                    "data_criacao": (
+                        materia.date_created.isoformat()
+                        if hasattr(materia, "date_created")
+                        else None
+                    ),
+                }
+                for materia in current_user.materias
             ],
             "atividades": [
                 {
@@ -532,22 +543,27 @@ def baixar_dados():
                     "descricao": atividade.descricao,
                     "duracao": atividade.duracao,
                     "data": atividade.data.isoformat() if atividade.data else None,
-                    "data_criacao": atividade.data_criacao.isoformat()
-                } for atividade in current_user.atividades
+                    "data_criacao": atividade.data_criacao.isoformat(),
+                }
+                for atividade in current_user.atividades
             ],
-            "exportado_em": datetime.utcnow().isoformat()
+            "exportado_em": datetime.utcnow().isoformat(),
         }
 
         # Converter para JSON
         import json
+
         json_data = json.dumps(user_data, ensure_ascii=False, indent=2)
 
         # Criar resposta com arquivo para download
         from flask import Response
+
         response = Response(
             json_data,
-            mimetype='application/json',
-            headers={"Content-Disposition": "attachment;filename=meus_dados_focusup.json"}
+            mimetype="application/json",
+            headers={
+                "Content-Disposition": "attachment;filename=meus_dados_focusup.json"
+            },
         )
 
         return response
@@ -564,7 +580,9 @@ def excluir_conta():
     try:
         # Remover foto se existir
         if current_user.photo:
-            filepath = os.path.join(app.root_path, "static", "imagens", current_user.photo)
+            filepath = os.path.join(
+                app.root_path, "static", "imagens", current_user.photo
+            )
             if os.path.exists(filepath):
                 os.remove(filepath)
 
