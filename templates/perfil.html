@@ -6,77 +6,12 @@
 
 {% block conteudo %}
 <style>
-    .perfil-container {
+    .perfil-main {
         max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
-    }
-
-    .perfil-header {
-        background: linear-gradient(135deg, #1a73e8, #4285f4);
-        border-radius: 25px;
-        padding: 40px;
-        color: white;
-        margin-bottom: 30px;
-        box-shadow: 0 8px 30px rgba(26, 115, 232, 0.3);
-        animation: slideInDown 0.6s ease;
-    }
-
-    @keyframes slideInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .perfil-header h1 {
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    .tabs-container {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 30px;
-        flex-wrap: wrap;
-    }
-
-    .tab-btn {
-        flex: 1;
-        min-width: 200px;
-        padding: 18px 30px;
-        background: rgba(255,255,255,0.7);
-        border: none;
-        border-radius: 15px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        font-size: 16px;
-        font-weight: 600;
-        color: #666;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-
-    .tab-btn.active {
-        background: white;
-        color: #1a73e8;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transform: translateY(-2px);
-    }
-
-    .perfil-grid {
-        display: grid;
-        grid-template-columns: 350px 1fr;
-        gap: 30px;
-        animation: fadeInUp 0.6s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
     }
 
     @keyframes fadeInUp {
@@ -90,255 +25,435 @@
         }
     }
 
-    .perfil-sidebar {
-        background: white;
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        text-align: center;
-        height: fit-content;
+    .perfil-header {
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        border-radius: 30px;
+        padding: 50px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 30px rgba(26, 115, 232, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
     }
 
-    .foto-perfil-container {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 25px;
+    .perfil-header-info h1 {
+        font-size: 40px;
+        font-weight: 700;
+        margin-bottom: 10px;
     }
 
-    .foto-perfil {
-        width: 150px;
-        height: 150px;
+    .perfil-header-info p {
+        font-size: 18px;
+        opacity: 0.95;
+    }
+
+    .foto-perfil-header {
+        width: 120px;
+        height: 120px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #e3f2fd, #90caf9);
+        background: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 60px;
+        font-size: 50px;
         color: #1a73e8;
-        border: 5px solid white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border: 5px solid rgba(255,255,255,0.3);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.3s ease;
     }
 
-    .foto-perfil img {
+    .foto-perfil-header:hover {
+        transform: scale(1.05);
+    }
+
+    .foto-perfil-header img {
         width: 100%;
         height: 100%;
         border-radius: 50%;
         object-fit: cover;
     }
 
-    .btn-foto {
+    .btn-foto-header {
         position: absolute;
-        bottom: 5px;
-        right: 5px;
-        background: #1a73e8;
-        width: 40px;
-        height: 40px;
+        bottom: 0;
+        right: 0;
+        background: #2e7d32;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        border: none;
-        box-shadow: 0 2px 10px rgba(26,115,232,0.4);
+        border: 3px solid white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         transition: all 0.3s ease;
     }
 
-    .btn-foto:hover {
+    .btn-foto-header:hover {
         transform: scale(1.1);
-        box-shadow: 0 4px 15px rgba(26,115,232,0.6);
+        background: #1b5e20;
     }
 
-    .perfil-nome {
-        font-size: 24px;
+    .btn-remove-foto {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: #f44336;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 3px solid white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-remove-foto:hover {
+        transform: scale(1.1);
+        background: #d32f2f;
+    }
+
+    .tabs-container {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        flex: 1;
+        min-width: 200px;
+        padding: 20px 30px;
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-size: 18px;
         font-weight: 600;
-        color: #1a1a1a;
-        margin-bottom: 8px;
-    }
-
-    .perfil-email {
         color: #666;
-        font-size: 14px;
-        margin-bottom: 25px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    .stats-box {
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        border-radius: 15px;
-        padding: 25px;
-        margin-top: 20px;
+    .tab-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .tab-btn.active {
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        color: white;
+        border-color: #1a73e8;
+        box-shadow: 0 6px 20px rgba(26, 115, 232, 0.3);
+    }
+
+    .tab-btn i {
+        font-size: 22px;
+    }
+
+    .perfil-content {
+        display: flex;
+        gap: 30px;
+    }
+
+    .stats-sidebar {
+        flex: 0 0 350px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .stats-card {
+        background: white;
+        border-radius: 25px;
+        padding: 35px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .stats-card h3 {
+        font-size: 20px;
+        color: #1a1a1a;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .stats-card h3 i {
+        color: #1a73e8;
+        font-size: 24px;
     }
 
     .stat-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 15px;
+        padding: 18px 0;
+        border-bottom: 1px solid #f5f5f5;
     }
 
     .stat-item:last-child {
-        margin-bottom: 0;
+        border-bottom: none;
     }
 
     .stat-label {
         color: #666;
-        font-size: 14px;
+        font-size: 15px;
+        font-weight: 500;
     }
 
     .stat-value {
-        font-weight: 600;
-        font-size: 16px;
+        font-weight: 700;
+        font-size: 22px;
     }
 
     .stat-value.blue { color: #1a73e8; }
     .stat-value.green { color: #2e7d32; }
     .stat-value.orange { color: #ff9800; }
 
-    .perfil-content {
+    .forms-container {
+        flex: 1;
         display: flex;
         flex-direction: column;
         gap: 25px;
     }
 
-    .card {
+    .form-card {
         background: white;
-        border-radius: 20px;
-        padding: 35px;
+        border-radius: 25px;
+        padding: 40px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
     }
 
-    .card-header {
+    .form-card:hover {
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .form-card-header {
         display: flex;
         align-items: center;
         gap: 12px;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
         border-bottom: 2px solid #f0f0f0;
     }
 
-    .card-header i {
+    .form-card-header i {
         color: #1a73e8;
-        font-size: 24px;
+        font-size: 28px;
     }
 
-    .card-header h3 {
-        font-size: 20px;
+    .form-card-header h3 {
+        font-size: 24px;
         font-weight: 600;
         color: #1a1a1a;
+        margin: 0;
     }
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
 
     .form-group label {
         display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
+        margin-bottom: 10px;
+        font-weight: 600;
         color: #333;
-        font-size: 14px;
+        font-size: 15px;
     }
 
-    .form-group input,
-    .form-group select {
+    .fa-user{
+        color: white;
+    }
+
+    .form-group input {
         width: 100%;
-        padding: 12px 16px;
+        padding: 15px 20px;
         border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        font-size: 15px;
+        border-radius: 12px;
+        font-size: 16px;
         transition: all 0.3s ease;
         font-family: 'Poppins', sans-serif;
     }
 
-    .form-group input:focus,
-    .form-group select:focus {
+    .form-group input:focus {
         outline: none;
         border-color: #1a73e8;
         box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
     }
 
-    .password-input-wrapper {
+    .password-wrapper {
         position: relative;
     }
 
     .toggle-password {
         position: absolute;
-        right: 12px;
+        right: 15px;
         top: 50%;
         transform: translateY(-50%);
         background: none;
         border: none;
         cursor: pointer;
         color: #666;
-        padding: 5px;
+        padding: 8px;
+        transition: color 0.3s ease;
     }
 
-    .btn-primary, .btn-secondary {
-        padding: 14px 30px;
-        border-radius: 12px;
-        font-size: 15px;
+    .btn-submit {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 15px;
+        font-size: 17px;
         font-weight: 600;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 8px;
         transition: all 0.3s ease;
-        border: none;
-        text-decoration: none;
+        box-shadow: 0 6px 20px rgba(46,125,50,0.3);
     }
 
-    .btn-primary {
-        background: linear-gradient(135deg, #2e7d32, #43a047);
-        color: white;
-        box-shadow: 0 4px 15px rgba(46,125,50,0.3);
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(46,125,50,0.4);
+        background: linear-gradient(135deg, #388e3c, #66bb6a);
     }
 
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(46,125,50,0.4);
+    .user-info-display {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
     }
 
-    .btn-secondary {
-        background: linear-gradient(135deg, #1a73e8, #4285f4);
-        color: white;
-        box-shadow: 0 4px 15px rgba(26,115,232,0.3);
+    .user-detail {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid #ddd;
     }
 
-    .btn-secondary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(26,115,232,0.4);
+    .user-detail:last-child {
+        border-bottom: none;
     }
 
-    @media (max-width: 1024px) {
-        .perfil-grid {
-            grid-template-columns: 1fr;
+    .user-detail i {
+        color: #1a73e8;
+        font-size: 20px;
+        width: 25px;
+        text-align: center;
+    }
+
+    .user-detail-text {
+        flex: 1;
+    }
+
+    .user-detail-label {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 4px;
+    }
+
+    .user-detail-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+
+    @media (max-width: 1200px) {
+        .perfil-content {
+            flex-direction: column;
+        }
+
+        .stats-sidebar {
+            flex: 1;
         }
     }
 
     @media (max-width: 768px) {
         .perfil-header {
-            padding: 30px 25px;
+            flex-direction: column;
+            text-align: center;
+            padding: 35px;
         }
 
-        .perfil-header h1 {
-            font-size: 28px;
+        .perfil-header-info h1 {
+            font-size: 32px;
         }
 
         .tabs-container {
             flex-direction: column;
         }
 
-        .card {
+        .form-card {
             padding: 25px;
         }
+    }
+
+    .fa-key:hover {
+        color: white;
+        background-color: #43a047;
+        border: none;
+    }
+
+    .fa-floppy-disk:hover {
+        color: white;
+        background-color: #43a047;
+        border: none;
     }
 </style>
 
 <main>
-    <div class="perfil-container">
-        <!-- Header -->
+    <div class="perfil-main">
+        <!-- Header com foto -->
         <div class="perfil-header">
-            <h1><i class="fa-solid fa-user"></i> Meu Perfil</h1>
-            <p style="font-size: 16px; opacity: 0.95;">Gerencie suas informações pessoais e configurações</p>
+            <div class="perfil-header-info">
+                <h1>Meu Perfil</h1>
+                <p>Gerencie suas informações e acompanhe seu progresso</p>
+            </div>
+            <div class="foto-perfil-header" onclick="document.getElementById('fileInput').click()">
+                {% if current_user.photo %}
+                    <img src="{{ url_for('static', filename='imagens/' + current_user.photo) }}" alt="Foto de perfil">
+                {% else %}
+                    <i class="fa-solid fa-user"></i>
+                {% endif %}
+                <div class="btn-foto-header">
+                    <i class="fa-solid fa-camera" style="color: white; font-size: 16px;"></i>
+                </div>
+                {% if current_user.photo %}
+                <div class="btn-remove-foto" onclick="removerFoto()" title="Remover foto">
+                    <i class="fa-solid fa-trash" style="color: white; font-size: 14px;"></i>
+                </div>
+                {% endif %}
+            </div>
+            <form id="uploadForm" action="{{ url_for('upload_foto') }}" method="post" enctype="multipart/form-data" style="display: none;">
+                <input type="file" name="foto" id="fileInput" accept="image/*">
+            </form>
         </div>
 
         <!-- Tabs -->
@@ -353,30 +468,15 @@
             </a>
         </div>
 
-        <!-- Grid -->
-        <div class="perfil-grid">
-            <!-- Sidebar -->
-            <div class="perfil-sidebar">
-                <div class="foto-perfil-container">
-                    <div class="foto-perfil">
-                        {% if current_user.photo %}
-                            <img src="{{ url_for('static', filename='images/' + current_user.photo) }}" alt="Foto de perfil">
-                        {% else %}
-                            <i class="fa-solid fa-user"></i>
-                        {% endif %}
-                    </div>
-                    <button class="btn-foto" onclick="document.getElementById('fileInput').click()">
-                        <i class="fa-solid fa-camera" style="color: white;"></i>
-                    </button>
-                    <form id="uploadForm" action="{{ url_for('upload_foto') }}" method="post" enctype="multipart/form-data" style="display: none;">
-                        <input type="file" name="foto" id="fileInput" accept="image/*">
-                    </form>
-                </div>
-
-                <div class="perfil-nome">{{ current_user.name or current_user.email.split('@')[0].title() }}</div>
-                <div class="perfil-email">{{ current_user.email }}</div>
-
-                <div class="stats-box">
+        <!-- Conteúdo -->
+        <div class="perfil-content">
+            <!-- Sidebar com estatísticas -->
+            <div class="stats-sidebar">
+                <div class="stats-card">
+                    <h3>
+                        <i class="fa-solid fa-chart-simple"></i>
+                        Estatísticas
+                    </h3>
                     <div class="stat-item">
                         <span class="stat-label">Atividades</span>
                         <span class="stat-value blue">{{ atividades_count }}</span>
@@ -386,25 +486,46 @@
                         <span class="stat-value green">{{ materias_count }}</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">Sequência</span>
-                        <span class="stat-value orange">{{ sequencia }} dias</span>
+                        <span class="stat-label">Dias de Sequência</span>
+                        <span class="stat-value orange">{{ sequencia }}</span>
+                    </div>
+                </div>
+
+                <div class="stats-card">
+                    <h3>
+                        <i class="fa-solid fa-info-circle"></i>
+                        Informações da Conta
+                    </h3>
+                    <div class="user-detail">
+                        <i class="fa-solid fa-user"></i>
+                        <div class="user-detail-text">
+                            <div class="user-detail-label">Nome</div>
+                            <div class="user-detail-value">{{ current_user.name or current_user.email.split('@')[0].title() }}</div>
+                        </div>
+                    </div>
+                    <div class="user-detail">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div class="user-detail-text">
+                            <div class="user-detail-label">Email</div>
+                            <div class="user-detail-value">{{ current_user.email }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Conteúdo -->
-            <div class="perfil-content">
-                <!-- Informações Pessoais -->
-                <div class="card">
-                    <div class="card-header">
+            <!-- Formulários -->
+            <div class="forms-container">
+                <!-- Editar Informações -->
+                <div class="form-card">
+                    <div class="form-card-header">
                         <i class="fa-solid fa-pen-to-square"></i>
-                        <h3>Informações Pessoais</h3>
+                        <h3>Editar Informações</h3>
                     </div>
 
                     <form action="{{ url_for('atualizar_perfil') }}" method="post">
                         <div class="form-group">
                             <label>Nome Completo</label>
-                            <input type="text" name="nome" value="{{ current_user.name or current_user.email.split('@')[0].title() }}" placeholder="Seu nome">
+                            <input type="text" name="nome" value="{{ current_user.name or current_user.email.split('@')[0].title() }}" placeholder="Digite seu nome completo">
                         </div>
 
                         <div class="form-group">
@@ -412,7 +533,7 @@
                             <input type="email" name="email" value="{{ current_user.email }}" placeholder="seu@email.com">
                         </div>
 
-                        <button class="btn-primary" type="submit">
+                        <button class="btn-submit" type="submit">
                             <i class="fa-solid fa-floppy-disk"></i>
                             Salvar Alterações
                         </button>
@@ -420,8 +541,8 @@
                 </div>
 
                 <!-- Alterar Senha -->
-                <div class="card">
-                    <div class="card-header">
+                <div class="form-card">
+                    <div class="form-card-header">
                         <i class="fa-solid fa-lock"></i>
                         <h3>Alterar Senha</h3>
                     </div>
@@ -429,8 +550,8 @@
                     <form action="{{ url_for('alterar_senha') }}" method="post">
                         <div class="form-group">
                             <label>Senha Atual</label>
-                            <div class="password-input-wrapper">
-                                <input type="password" name="senha_atual" id="senhaAtual" placeholder="••••••••">
+                            <div class="password-wrapper">
+                                <input type="password" name="senha_atual" id="senhaAtual" placeholder="Digite sua senha atual" required>
                                 <button type="button" class="toggle-password" onclick="togglePassword('senhaAtual')">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
@@ -439,8 +560,8 @@
 
                         <div class="form-group">
                             <label>Nova Senha</label>
-                            <div class="password-input-wrapper">
-                                <input type="password" name="nova_senha" id="novaSenha" placeholder="••••••••">
+                            <div class="password-wrapper">
+                                <input type="password" name="nova_senha" id="novaSenha" placeholder="Digite a nova senha" required>
                                 <button type="button" class="toggle-password" onclick="togglePassword('novaSenha')">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
@@ -449,11 +570,16 @@
 
                         <div class="form-group">
                             <label>Confirmar Nova Senha</label>
-                            <input type="password" name="confirmar_senha" placeholder="••••••••">
+                            <div class="password-wrapper">
+                                <input type="password" name="confirmar_senha" id="confirmarSenha" placeholder="Confirme a nova senha" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirmarSenha')">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
 
-                        <button class="btn-secondary" type="submit">
-                            <i class="fa-solid fa-lock"></i>
+                        <button class="btn-submit" type="submit">
+                            <i class="fa-solid fa-key"></i>
                             Alterar Senha
                         </button>
                     </form>
@@ -464,6 +590,7 @@
 </main>
 
 <script>
+    // Toggle visualização de senha
     function togglePassword(inputId) {
         const input = document.getElementById(inputId);
         const icon = input.parentElement.querySelector('.toggle-password i');
@@ -479,19 +606,85 @@
         }
     }
 
-    // Preview da foto
+    // Preview e upload da foto
     document.getElementById('fileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
+            // Validar tipo de arquivo
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor, selecione um arquivo de imagem válido.');
+                return;
+            }
+
+            // Validar tamanho (máx 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('A imagem deve ter no máximo 5MB.');
+                return;
+            }
+
+            // Preview da imagem
             const reader = new FileReader();
             reader.onload = function(e) {
-                const fotoContainer = document.querySelector('.foto-perfil');
-                fotoContainer.innerHTML = `<img src="${e.target.result}" alt="Foto de perfil">`;
+                const fotoContainers = document.querySelectorAll('.foto-perfil-header');
+                fotoContainers.forEach(container => {
+                    container.innerHTML = `
+                        <img src="${e.target.result}" alt="Foto de perfil">
+                        <div class="btn-foto-header">
+                            <i class="fa-solid fa-camera" style="color: white; font-size: 16px;"></i>
+                        </div>
+                    `;
+                });
             };
             reader.readAsDataURL(file);
-            // Submit the form
+            
+            // Enviar formulário
             document.getElementById('uploadForm').submit();
         }
+    });
+
+    // Função para remover foto
+    function removerFoto() {
+        if (confirm('Tem certeza que deseja remover sua foto de perfil?')) {
+            fetch('{{ url_for("remover_foto") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Atualizar a interface
+                    const fotoContainer = document.querySelector('.foto-perfil-header');
+                    fotoContainer.innerHTML = `
+                        <i class="fa-solid fa-user"></i>
+                        <div class="btn-foto-header">
+                            <i class="fa-solid fa-camera" style="color: white; font-size: 16px;"></i>
+                        </div>
+                    `;
+                    alert('Foto removida com sucesso!');
+                    // Recarregar a página para atualizar o header
+                    location.reload();
+                } else {
+                    alert('Erro ao remover foto: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao remover foto.');
+            });
+        }
+    }
+
+    // Animação de sucesso no envio
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const btn = this.querySelector('.btn-submit');
+            if (btn) {
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
+                btn.disabled = true;
+            }
+        });
     });
 </script>
 

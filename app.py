@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import func
 from werkzeug.utils import secure_filename
+from datetime import datetime, timedelta
 
 import requests
 
@@ -69,6 +70,7 @@ def register():
     get_flashed_messages()
 
     if request.method == "POST":
+        name = request.form.get("name")
         email = request.form.get("email")
         password = request.form.get("password")
 
@@ -78,7 +80,7 @@ def register():
             return redirect(url_for("register"))
 
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-        new_user = User(email=email, password=hashed_password)
+        new_user = User(name=name, email=email, password=hashed_password)
 
         db.session.add(new_user)
         db.session.commit()
@@ -375,8 +377,6 @@ def perfil():
     atividades_count = Atividade.query.filter_by(user_id=current_user.id).count()
     materias_count = Materia.query.filter_by(user_id=current_user.id).count()
     # Sequência: dias consecutivos com atividades (simplificado)
-    from datetime import datetime, timedelta
-
     hoje = datetime.utcnow().date()
     sequencia = 0
     for i in range(30):  # últimos 30 dias
@@ -471,7 +471,7 @@ def upload_foto():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(f"user_{current_user.id}_{file.filename}")
-        filepath = os.path.join(app.root_path, "static", "images", filename)
+        filepath = os.path.join(app.root_path, "static", "imagens", filename)
         file.save(filepath)
         current_user.photo = filename
         db.session.commit()
@@ -480,6 +480,116 @@ def upload_foto():
         flash("Tipo de arquivo não permitido.", "error")
 
     return redirect(url_for("perfil"))
+
+
+@app.route("/remover_foto", methods=["POST"])
+@login_required
+def remover_foto():
+    """Remove a foto de perfil"""
+    try:
+        # Remover o arquivo físico se existir
+        if current_user.photo:
+            filepath = os.path.join(app.root_path, "static", "imagens", current_user.photo)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+
+        # Limpar o campo photo no banco
+        current_user.photo = None
+        db.session.commit()
+
+        return {"success": True, "message": "Foto removida com sucesso!"}, 200
+    except Exception as e:
+        db.session.rollback()
+        return {"success": False, "message": str(e)}, 500
+
+
+@app.route("/baixar_dados")
+@login_required
+def baixar_dados():
+    """Permite ao usuário baixar todos os seus dados"""
+    try:
+        # Coletar dados do usuário
+        user_data = {
+            "usuario": {
+                "id": current_user.id,
+                "email": current_user.email,
+                "nome": current_user.name,
+                "data_cadastro": current_user.date_created.isoformat() if hasattr(current_user, 'date_created') else None,
+                "foto": current_user.photo
+            },
+            "materias": [
+                {
+                    "id": materia.id,
+                    "nome": materia.nome,
+                    "data_criacao": materia.date_created.isoformat() if hasattr(materia, 'date_created') else None
+                } for materia in current_user.materias
+            ],
+            "atividades": [
+                {
+                    "id": atividade.id,
+                    "materia": atividade.materia,
+                    "assunto_primario": atividade.assunto_primario,
+                    "descricao": atividade.descricao,
+                    "duracao": atividade.duracao,
+                    "data": atividade.data.isoformat() if atividade.data else None,
+                    "data_criacao": atividade.data_criacao.isoformat()
+                } for atividade in current_user.atividades
+            ],
+            "exportado_em": datetime.utcnow().isoformat()
+        }
+
+        # Converter para JSON
+        import json
+        json_data = json.dumps(user_data, ensure_ascii=False, indent=2)
+
+        # Criar resposta com arquivo para download
+        from flask import Response
+        response = Response(
+            json_data,
+            mimetype='application/json',
+            headers={"Content-Disposition": "attachment;filename=meus_dados_focusup.json"}
+        )
+
+        return response
+
+    except Exception as e:
+        print(f"Erro ao baixar dados: {e}")
+        return {"error": "Erro interno do servidor"}, 500
+
+
+@app.route("/excluir_conta", methods=["POST"])
+@login_required
+def excluir_conta():
+    """Exclui permanentemente a conta do usuário"""
+    try:
+        # Remover foto se existir
+        if current_user.photo:
+            filepath = os.path.join(app.root_path, "static", "imagens", current_user.photo)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+
+        # Obter ID do usuário antes de deletar
+        user_id = current_user.id
+
+        # Logout do usuário
+        logout_user()
+
+        # Deletar todas as atividades e matérias do usuário
+        Atividade.query.filter_by(user_id=user_id).delete()
+        Materia.query.filter_by(user_id=user_id).delete()
+
+        # Deletar o usuário
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+
+        return {"success": True, "message": "Conta excluída com sucesso!"}, 200
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro ao excluir conta: {e}")
+        return {"success": False, "message": "Erro interno do servidor"}, 500
 
 
 def allowed_file(filename):

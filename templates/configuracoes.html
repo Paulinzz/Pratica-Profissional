@@ -259,6 +259,8 @@
     }
 
     .action-btn {
+        text-decoration: none;
+        font-family: 'Poppins', sans-serif;
         padding: 15px 20px;
         border: 2px solid #e0e0e0;
         border-radius: 12px;
@@ -273,6 +275,7 @@
         align-items: center;
         gap: 12px;
         margin-bottom: 15px;
+        color: black;
     }
 
     .action-btn:hover {
@@ -330,6 +333,113 @@
             grid-template-columns: 1fr;
         }
     }
+
+    .fa-sun{
+        color: #fbc02d;
+    }
+
+    .fa-moon{
+        color: #061052;
+    }
+
+    .fa-shield:hover{
+        color: #2e7d32;
+        background-color: white;
+    }
+
+    .fa-download:hover{
+        color: #1a73e8;
+        background-color: white;
+    }
+
+    .fa-file-contract:hover{
+        color: #9c27b0;
+        background-color: white;
+    }
+
+    .fa-trash-can:hover{
+        color: #d32f2f;
+        background-color: #ffeed4;
+    }
+
+    /* Language Selector */
+    .language-selector {
+        margin-top: 10px;
+    }
+
+    .language-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }
+
+    .language-option {
+        position: relative;
+        padding: 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .language-option:hover {
+        border-color: #1a73e8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+    }
+
+    .language-option.active {
+        border-color: #1a73e8;
+        background: #e3f2fd;
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+    }
+
+    .language-option input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .language-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .flag {
+        font-size: 24px;
+        width: 32px;
+        text-align: center;
+    }
+
+    .language-info {
+        flex: 1;
+    }
+
+    .language-name {
+        font-weight: 600;
+        font-size: 14px;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+    }
+
+    .language-region {
+        font-size: 12px;
+        color: #666;
+    }
+
+    @media (max-width: 768px) {
+        .language-options {
+            grid-template-columns: 1fr;
+        }
+    }
+
 </style>
 
 <main>
@@ -341,7 +451,7 @@
         </div>
 
         <!-- Tabs -->
-        <div class="tabs-container">
+         <div class="tabs-container">
             <a href="{{ url_for('perfil') }}" class="tab-btn">
                 <i class="fa-solid fa-user"></i>
                 Perfil
@@ -403,35 +513,81 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Tema</label>
+                    <label></label>
                     <div class="theme-options">
                         <label class="theme-card active">
                             <input type="radio" name="tema" value="claro" checked>
-                            <div class="theme-icon">☀️</div>
+                            <div class="theme-icon">
+                                <div>
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            </div>
                             <div class="theme-label">Claro</div>
                         </label>
                         
                         <label class="theme-card">
                             <input type="radio" name="tema" value="escuro">
-                            <div class="theme-icon">🌙</div>
+                            <div class="theme-icon">
+                                <div>
+                                <i class="fa-solid fa-moon"></i>
+                            </div>
+                            </div>
                             <div class="theme-label">Escuro</div>
                         </label>
                         
                         <label class="theme-card">
                             <input type="radio" name="tema" value="auto">
-                            <div class="theme-icon">🔄</div>
+                            <div class="theme-icon">
+                                <div>
+                                <i class="fa-solid fa-circle-half-stroke"></i>
+                            </div>
+
                             <div class="theme-label">Automático</div>
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Idioma</label>
-                    <select>
-                        <option value="pt-br">🇧🇷 Português (Brasil)</option>
-                        <option value="en">🇺🇸 English</option>
-                        <option value="es">🇪🇸 Español</option>
-                    </select>
+                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; font-size: 16px; font-weight: 600;">
+                        <i class="fa-solid fa-globe" style="color: #1a73e8; font-size: 18px;"></i>
+                        Idioma da Interface
+                    </label>
+                    <div class="language-selector">
+                        <div class="language-options">
+                            <label class="language-option active" for="lang-pt">
+                                <input type="radio" id="lang-pt" name="idioma" value="pt-br" checked>
+                                <div class="language-content">
+                                    <span class="flag">🇧🇷</span>
+                                    <div class="language-info">
+                                        <div class="language-name">Português</div>
+                                        <div class="language-region">Brasil</div>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="language-option" for="lang-en">
+                                <input type="radio" id="lang-en" name="idioma" value="en">
+                                <div class="language-content">
+                                    <span class="flag">🇺🇸</span>
+                                    <div class="language-info">
+                                        <div class="language-name">English</div>
+                                        <div class="language-region">United States</div>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="language-option" for="lang-es">
+                                <input type="radio" id="lang-es" name="idioma" value="es">
+                                <div class="language-content">
+                                    <span class="flag">🇪🇸</span>
+                                    <div class="language-info">
+                                        <div class="language-name">Español</div>
+                                        <div class="language-region">España</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -442,20 +598,20 @@
                     <h3>Privacidade e Segurança</h3>
                 </div>
 
-                <button class="action-btn">
+                <button class="action-btn" onclick="baixarDados()">
                     <i class="fa-solid fa-download" style="color: #1a73e8;"></i>
                     Baixar meus dados
                 </button>
 
-                <button class="action-btn">
-                    <i class="fa-solid fa-file-shield" style="color: #2e7d32;"></i>
+                <a href="{{ url_for('politica_privacidade') }}" class="action-btn">
+                    <i class="fa-solid fa-shield" style="color: #2e7d32;"></i>
                     Política de Privacidade
-                </button>
+                </a>
 
-                <button class="action-btn">
+                <a href="{{ url_for('termos_servico') }}" class="action-btn">
                     <i class="fa-solid fa-file-contract" style="color: #9c27b0;"></i>
                     Termos de Serviço
-                </button>
+                </a>
 
                 <button class="action-btn danger" onclick="confirmarExclusao()">
                     <i class="fa-solid fa-trash-can"></i>
@@ -482,13 +638,69 @@
         });
     });
 
+    // Toggle language options
+    document.querySelectorAll('.language-option').forEach(option => {
+        option.addEventListener('click', function() {
+            document.querySelectorAll('.language-option').forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            this.querySelector('input').checked = true;
+        });
+    });
+
+    // Baixar dados do usuário
+    function baixarDados() {
+        fetch('{{ url_for("baixar_dados") }}', {
+            method: 'GET',
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Erro ao baixar dados');
+            }
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'meus_dados_focusup.json';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            alert('Dados baixados com sucesso!');
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao baixar dados. Tente novamente.');
+        });
+    }
+
     // Confirmar exclusão de conta
     function confirmarExclusao() {
         if (confirm('⚠️ ATENÇÃO!\n\nTem certeza que deseja excluir sua conta?\n\nEsta ação é IRREVERSÍVEL e todos os seus dados serão permanentemente apagados:\n\n• Todas as atividades\n• Todas as matérias\n• Todo o progresso\n• Configurações personalizadas\n\nDigite "EXCLUIR" para confirmar.')) {
             const confirmacao = prompt('Digite "EXCLUIR" para confirmar:');
             if (confirmacao === 'EXCLUIR') {
-                alert('Conta excluída com sucesso. Você será redirecionado para a página inicial.');
-                // Aqui você adicionaria a lógica de exclusão
+                // Chamar API de exclusão
+                fetch('{{ url_for("excluir_conta") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Conta excluída com sucesso. Você será redirecionado para a página inicial.');
+                        window.location.href = '{{ url_for("index") }}';
+                    } else {
+                        alert('Erro ao excluir conta: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao excluir conta. Tente novamente.');
+                });
             } else {
                 alert('Exclusão cancelada.');
             }

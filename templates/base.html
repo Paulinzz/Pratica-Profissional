@@ -44,6 +44,14 @@
             color: white;
             font-weight: 600;
             font-size: 16px;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         .user-name {
@@ -221,15 +229,19 @@
         <div class="user-dropdown" id="userDropdown">
             <div class="user-info" onclick="toggleDropdown()">
                 <div class="user-avatar">
-                    {{ current_user.email[0].upper() }}
+                    {% if current_user.photo %}
+                        <img src="{{ url_for('static', filename='imagens/' + current_user.photo) }}" alt="Foto de perfil">
+                    {% else %}
+                        {{ (current_user.name or current_user.email)[0].upper() }}
+                    {% endif %}
                 </div>
-                <span class="user-name">{{ current_user.email.split('@')[0].title() }}</span>
+                <span class="user-name">{{ current_user.name or current_user.email.split('@')[0].title() }}</span>
                 <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
             </div>
 
             <div class="dropdown-menu">
                 <div class="dropdown-header">
-                    <div class="dropdown-header-name">{{ current_user.email.split('@')[0].title() }}</div>
+                    <div class="dropdown-header-name">{{ current_user.name or current_user.email.split('@')[0].title() }}</div>
                     <div class="dropdown-header-email">{{ current_user.email }}</div>
                 </div>
 

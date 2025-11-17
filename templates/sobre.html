@@ -1,31 +1,379 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Sobre nós
+    Sobre o FocusUp
 {% endblock %}
 
-{% block  conteudo %}
-    <main class="main_sobre">
-        <div class="quem_somos">
-            <div class="title">
-                <h1>Quem somos?</h1>
-                <p>Conheça a equipe por trás do FocusUp</p>
+{% block conteudo %}
+<style>
+    .main_sobre {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .hero-section {
+        margin: 50px 0 60px 0;
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        border-radius: 25px;
+        padding: 60px 40px;
+        color: white;
+        text-align: center;
+        margin-bottom: 50px;
+        box-shadow: 0 8px 30px rgba(26, 115, 232, 0.3);
+        animation: slideInDown 0.6s ease;
+    }
+
+    .fa-users {
+        color: white;
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-section h1 {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .hero-section p {
+        font-size: 20px;
+        opacity: 0.95;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .section {
+        margin-bottom: 60px;
+        animation: fadeInUp 0.6s ease;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .section h2 {
+        font-size: 32px;
+        font-weight: 600;
+        color: #1a1a1a;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .section p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #666;
+        max-width: 800px;
+        margin: 0 auto 20px;
+        text-align: center;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-card i {
+        font-size: 48px;
+        color: #1a73e8;
+        margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .team-section {
+        background: #f8f9fa;
+        border-radius: 25px;
+        padding: 50px 40px;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        justify-items: center;
+    }
+
+    .last-member {
+        grid-column: 2;
+    }
+
+    .team-member {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+    }
+
+    .team-member:hover {
+        transform: translateY(-5px);
+    }
+
+    .team-member .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e3f2fd, #90caf9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: #1a73e8;
+        margin: 0 auto 20px;
+        border: 4px solid white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .team-member .avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .team-member h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .team-member .role {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .team-member .bio {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .mission-vision {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
+    .mission-card, .vision-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        text-align: center;
+    }
+
+    .mission-card i, .vision-card i {
+        font-size: 48px;
+        color: #1a73e8;
+        margin-bottom: 20px;
+    }
+
+    .mission-card h3, .vision-card h3 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        border-radius: 25px;
+        padding: 50px 40px;
+        color: white;
+        text-align: center;
+    }
+
+    .cta-section h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    .cta-section p {
+        font-size: 18px;
+        margin-bottom: 30px;
+        opacity: 0.95;
+    }
+
+    .btn-cta {
+        background: white;
+        color: #2e7d32;
+        padding: 15px 30px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 40px 20px;
+        }
+
+        .hero-section h1 {
+            font-size: 32px;
+        }
+
+        .mission-vision {
+            grid-template-columns: 1fr;
+        }
+
+        .features-grid, .team-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<main class="main_sobre">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1><i class="fa-solid fa-users"></i> Sobre o FocusUp</h1>
+        <p>Conheça a história, missão e a equipe por trás do seu gerenciador de estudos favorito</p>
+    </section>
+
+    <!-- Nossa História -->
+    <section class="section">
+        <h2>Nossa História</h2>
+        <p>O FocusUp nasceu como um projeto de prática profissional em um Instituto Federal, com o objetivo de criar uma ferramenta prática e eficiente para estudantes. Desenvolvido por alunos apaixonados por tecnologia e educação, o projeto evoluiu de uma ideia simples para uma aplicação completa que ajuda milhares de estudantes a organizarem seus estudos de forma mais produtiva e consciente.</p>
+        <p>Desde sua concepção, o FocusUp tem se dedicado a transformar a experiência de estudo, combinando tecnologia moderna com princípios pedagógicos sólidos para criar um ambiente de aprendizado mais focado e eficiente.</p>
+    </section>
+
+    <!-- Funcionalidades -->
+    <section class="section">
+        <h2>O que oferecemos</h2>
+        <p>Descubra as ferramentas poderosas que fazem do FocusUp a escolha ideal para estudantes</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fa-solid fa-calendar-days"></i>
+                <h3>Agenda Inteligente</h3>
+                <p>Organize seus estudos por dias, matérias e prioridades com nossa agenda interativa.</p>
             </div>
-            <div class="img_equipe">
-                <img src="{{ url_for('static', filename='imagens/sobre.png') }}" alt="Equipe">
+            <div class="feature-card">
+                <i class="fa-solid fa-check-circle"></i>
+                <h3>Checklist Interativo</h3>
+                <p>Marque conteúdos como concluídos e acompanhe seu progresso em tempo real.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-clock"></i>
+                <h3>Modo Pomodoro</h3>
+                <p>Mantenha o foco com ciclos produtivos de estudo e pausa otimizados.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-chart-line"></i>
+                <h3>Dashboard Analítico</h3>
+                <p>Visualize estatísticas detalhadas sobre seu desempenho e evolução.</p>
             </div>
         </div>
-        <div class="container_nossa_hm">
-            <div class="nossa_historia">
-                <div class="title">
-                    <h1>Nossa história</h1>
-                </div>
+    </section>
+
+    <!-- Missão e Visão -->
+    <section class="section">
+        <div class="mission-vision">
+            <div class="mission-card">
+                <i class="fa-solid fa-bullseye"></i>
+                <h3>Nossa Missão</h3>
+                <p>Empoderar estudantes com ferramentas tecnológicas que promovam um aprendizado mais eficiente, consciente e equilibrado, transformando a jornada acadêmica em uma experiência gratificante e sustentável.</p>
             </div>
-            <div class="nossa_missao">
-                <div class="title">
-                    <h1>Nossa missão</h1>
-                </div>
+            <div class="vision-card">
+                <i class="fa-solid fa-eye"></i>
+                <h3>Nossa Visão</h3>
+                <p>Ser a plataforma de referência para gerenciamento de estudos, inspirando uma nova geração de estudantes a alcançarem seus objetivos acadêmicos com foco, estratégia e bem-estar.</p>
             </div>
         </div>
-    </main>
+    </section>
+
+    <!-- Equipe -->
+    <section class="section team-section">
+        <h2>Conheça Nossa Equipe</h2>
+        <p>Os talentosos desenvolvedores por trás do FocusUp</p>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h4>João Paulo</h4>
+                <div class="role">Desenvolvedor Full-Stack</div>
+                <div class="bio">Especialista em Flask e JavaScript, responsável pela arquitetura backend e integrações dinâmicas do front-end.</div>
+            </div>
+            <div class="team-member">
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h4>Flauber Sauan</h4>
+                <div class="role">Designer UX/UI e Desenvolvedor Front-End </div>
+                <div class="bio">Criadora da experiência do usuário intuitiva e das interfaces modernas que tornam o FocusUp agradável de usar. </div>
+            </div>
+            <div class="team-member">
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h4>Alan Pereira</h4>
+                <div class="role">Especialista em Banco de Dados</div>
+                <div class="bio">Gerencia a estrutura de dados com SQLAlchemy, garantindo segurança e eficiência no armazenamento de informações.</div>
+            </div>
+            <div class="team-member">
+                <div class="avatar">
+                    <img src="{{url_for('static', filename='imagens/membros/abraao.jpg')}}" alt="Abraão Ferreira">
+                </div>
+                <h4>Abraão Ferreira</h4>
+                <div class="role">Analista de Qualidade</div>
+                <div class="bio">Garante que cada funcionalidade seja testada e refinada para oferecer a melhor experiência possível aos usuários.</div>
+            </div>
+
+            <div class="team-member">
+                <div class="avatar">
+                    <img src="{{ url_for('static', filename='imagens/membros/JoseEzequiel.jpeg') }}" alt="José Ezequiel">
+                </div>
+                <h4>José Ezequiel</h4>
+                <div class="role">Desenvolvedor Front-End</div>
+                <div class="bio">Especialista em interfaces responsivas e animações, responsável por criar experiências visuais envolventes e acessíveis para todos os usuários.</div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}
