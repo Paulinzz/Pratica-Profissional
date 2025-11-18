@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Adicionar Matéria
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .btn-edit-materia-small {
+        background: #fff3e0;
+        color: #f57c00;
+        border: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-edit-materia-small:hover {
+        background: #f57c00;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .btn-delete-materia-small {
+        background: #ffebee;
+        color: #d32f2f;
+        border: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .btn-delete-materia-small:hover {
+        background: #d32f2f;
+        color: white;
+        transform: scale(1.1);
+    }
+</style>
+
+    <main>
+        <div class="container_form_add-atv">
+            <h1>Adicionar nova matéria</h1>
+            <form action="{{ url_for('adicionar_materia') }}" method="post" class="form_adicionar-atividade">
+                <label for="materia">Nome da Matéria:</label>
+                <input type="text" name="materia" placeholder="Ex: Matemática" required maxlength="100">
+
+                <button type="submit">Adicionar Matéria</button>
+            </form>
+        </div>
+
+        <div class="container_atividades_recentes">
+            <h2>Matérias Cadastradas</h2>
+            {% if materias %}
+                <div class="lista-atividades">
+                    {% for materia in materias %}
+                    <div class="atividade-card">
+                        <div class="atividade-header">
+                            <h3>{{ materia.nome }}</h3>
+                            <div style="display: flex; gap: 5px;">
+                                <a href="{{ url_for('editar_materia', materia_id=materia.id) }}" class="btn-edit-materia-small" title="Editar matéria">
+                                    <i class="fa-solid fa-edit" style="font-size: 12px;"></i>
+                                </a>
+                                <form method="post"
+                                      action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
+                                      style="display: inline;"
+                                      onsubmit="return confirm('Tem certeza que deseja excluir a matéria {{ materia.nome }}?');">
+                                    <button type="submit" class="btn-delete-materia-small">
+                                        <i class="fa-solid fa-trash" style="font-size: 12px;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="atividade-conteudo">
+                            <p class="assunto">Matéria cadastrada</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="sem-atividades">
+                    <p>Nenhuma matéria cadastrada ainda.</p>
+                    <p>Adicione sua primeira matéria!</p>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+{% endblock %}

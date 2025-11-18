@@ -101,7 +101,7 @@ def testar_flask_models():
     print("-" * 30)
 
     try:
-        from models import db, User, Materia, Atividade
+        from models.models import db, User, Materia, Atividade
 
         print("✅ Modelos importados com sucesso")
 

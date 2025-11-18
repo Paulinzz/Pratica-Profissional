@@ -5,6 +5,182 @@
 {% endblock %}
 
 {% block conteudo %}
+<style>
+    /* Adicione estes estilos ao seu style.css ou aqui */
+    .materias-lista {
+        margin-top: 20px;
+        display: flex;
+        gap: 25px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scrollbar-width: thin;
+        scrollbar-color: #1a73e8 #f1f1f1;
+    }
+
+    .materias-lista::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .materias-lista::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .materias-lista::-webkit-scrollbar-thumb {
+        background: #1a73e8;
+        border-radius: 4px;
+    }
+
+    .materias-lista::-webkit-scrollbar-thumb:hover {
+        background: #1557b0;
+    }
+
+    .materia-item {
+        display: flex;
+        font-size: 12px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        width: 200px;
+        height: 150px;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .materia-item:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .materias-lista {
+            gap: 15px;
+        }
+
+        .materia-item {
+            width: 180px;
+            height: 100px;
+            padding: 12px;
+        }
+
+        .materia-nome {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .materias-lista {
+            gap: 10px;
+        }
+
+        .materia-item {
+            width: 160px;
+            height: 90px;
+            padding: 10px;
+        }
+
+        .materia-nome {
+            font-size: 13px;
+        }
+
+        .btn-edit-materia,
+        .btn-delete-materia {
+            width: 25px;
+            height: 25px;
+        }
+    }
+
+    .materia-nome {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .btn-delete-materia {
+        background: #ffebee;
+        color: #d32f2f;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .btn-delete-materia:hover {
+        background: #d32f2f;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .form-add-materia {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-add-materia input {
+        flex: 1;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .form-add-materia input:focus {
+        outline: none;
+        border-color: #1a73e8;
+    }
+
+    .btn-add-materia {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-add-materia:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+    }
+
+    .link-pomodoro {
+        display: inline-block;
+        background: linear-gradient(135deg, #ff9800, #f57c00);
+        color: white;
+        padding: 8px 32px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(255,152,0,0.2);
+        font-size: 14px;
+    }
+
+    .link-pomodoro:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255,152,0,0.3);
+        color: white;
+    }
+
+</style>
+
     <main>
         <div class="left-content">
             <div class="card-dash">
@@ -12,7 +188,51 @@
             </div>
             <div class="container-case">
                 <div class="card-materias_mais_estudadas">
-                    <canvas id="chartMaterias"></canvas>
+                    <div style="width: 100%; padding: 20px;">
+                     <h2>Minhas Matérias</h2>
+                     <p style="margin-bottom: 20px; color: #666;">
+                         <a href="{{ url_for('adicionar_materia_page') }}" style="color: #1a73e8; text-decoration: none;">
+                             <i class="fa-solid fa-plus"></i> Adicionar nova ou editar matérias
+                         </a>
+                     </p>
+
+                        <!-- Lista de matérias -->
+                        <div class="materias-lista">
+                             {% if sorted_materias %}
+                                 {% for materia in sorted_materias %}
+                                 <div class="materia-item">
+                                     <span class="materia-nome" style="word-break: break-word; text-align: center; display: block;">
+                                         <i class="fa-solid fa-book"></i> {{ materia.nome }}
+                                     </span>
+                                         <div style="font-size: 12px; color: #666; margin-top: 8px; text-align: center;">
+                                         {% set tempo = tempo_por_materia.get(materia.nome, 0) %}
+                                         {% if tempo > 0 %}
+                                             Tempo estudado: {{ tempo // 60 }}h {{ tempo % 60 }}min
+                                         {% else %}
+                                             Nenhum tempo registrado
+                                         {% endif %}
+                                     </div>
+                                     <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;">
+                                         <form method="post"
+                                               action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
+                                               style="display: inline;"
+                                               onsubmit="return confirm('Tem certeza que deseja excluir a matéria {{ materia.nome }}?');">
+                                             <button type="submit" class="btn-delete-materia">
+                                                 <i class="fa-solid fa-trash" style="font-size: 12px;"></i>
+                                             </button>
+                                         </form>
+                                     </div>
+                                 </div>
+                                 {% endfor %}
+                             {% else %}
+                                 <p style="text-align: center; color: #999; padding: 40px 20px;">
+                                     <i class="fa-solid fa-folder-open" style="font-size: 48px; display: block; margin-bottom: 15px;"></i>
+                                     Nenhuma matéria cadastrada.<br>
+                                     Adicione sua primeira matéria acima!
+                                 </p>
+                             {% endif %}
+                         </div>
+                    </div>
                 </div>
                 <div class="card-sobre">
                         <div class="title_card-sobre">
@@ -29,63 +249,69 @@
         </div>
 
         <div class="right-content">
-<div class="card_artigo">
-    <div class="title-card_artigo">
-        <h2>Artigos Recomendados</h2>
-        <i class="fa-solid fa-book"></i>
-    </div>
-    <div class="artigos-container">
-        {% if artigos %}
-            {% for artigo in artigos %}
-                <div class="artigo-card">
-                    <div class="artigo-info">
-                        <h3>{{ artigo.title_pt if artigo.title_pt else artigo.title }}</h3>
-                        <p>{{ artigo.abstract_pt if artigo.abstract_pt else "Resumo não disponível" }}</p>
-                        
-                        <p><strong>Autores:</strong> 
-                            {% if artigo.authorships %}
-                                {{ artigo.authorships | map(attribute='author.display_name') | join(', ') }}
-                            {% else %}
-                                Não informado
-                            {% endif %}
-                        </p>
-
-                        <p><strong>Ano:</strong> {{ artigo.publication_year if artigo.publication_year else "N/A" }}</p>
-                        
-                        <p><strong>Artigo:</strong> 
-                            {% if artigo.doi %}
-                                <a href="https://doi.org/{{ artigo.doi }}" target="_blank">{{ artigo.doi }}</a>
-                            {% else %}
-                                Não disponível
-                            {% endif %}
-                        </p>
-
-                        <a href="{{ artigo.id if artigo.id else artigo.url }}" target="_blank">Ler mais...</a>
-                    </div>
+            <div class="card_artigo">
+                <div class="title-card_artigo">
+                    <h2>Artigos Recomendados</h2>
+                    <i class="fa-solid fa-book"></i>
                 </div>
-            {% endfor %}
-        {% else %}
-            <p>Nenhum artigo encontrado.</p>
-        {% endif %}
-    </div>
-</div>
+                <div class="artigos-container">
+                    {% if artigos %}
+                        {% for artigo in artigos %}
+                            <div class="artigo-card">
+                                <div class="artigo-info">
+                                    <h3>{{ artigo.title_pt if artigo.title_pt else artigo.title }}</h3>
+                                    <p>{{ artigo.abstract_pt if artigo.abstract_pt else "Resumo não disponível" }}</p>
+                                    
+                                    <p><strong>Autores:</strong> 
+                                        {% if artigo.authorships %}
+                                            {{ artigo.authorships | map(attribute='author.display_name') | join(', ') }}
+                                        {% else %}
+                                            Não informado
+                                        {% endif %}
+                                    </p>
 
+                                    <p><strong>Ano:</strong> {{ artigo.publication_year if artigo.publication_year else "N/A" }}</p>
+                                    
+                                    <p><strong>Artigo:</strong> 
+                                        {% if artigo.doi %}
+                                            <a href="https://doi.org/{{ artigo.doi }}" target="_blank">{{ artigo.doi }}</a>
+                                        {% else %}
+                                            Não disponível
+                                        {% endif %}
+                                    </p>
+
+                                    <a href="{{ artigo.id if artigo.id else artigo.url }}" target="_blank">Ler mais...</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Nenhum artigo encontrado.</p>
+                    {% endif %}
+                </div>
+            </div>
 
             <div class="container_add-atividade">
-                <div class="add-atividade">
-                    <strong><p>Adicionar atividade</p></strong>
-                    <form action="{{url_for('adicionar_atividade')}}" method="post">
-                        <button type="submit" class="botao_add_atv">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </form>
+                <div style="display: flex; flex-direction: column; gap: 15px; align-items: flex-end;">
+                    <!-- Botão Pomodoro -->
+                    <a href="{{ url_for('pomodoro') }}" class="link-pomodoro">
+                        <i class="fa-solid fa-clock"></i> Modo Pomodoro
+                    </a>
+                    
+                    <!-- Botão Adicionar Atividade -->
+                    <div class="add-atividade">
+                        <strong><p>Adicionar atividade</p></strong>
+                        <form action="{{url_for('adicionar_atividade')}}" method="get">
+                            <button type="submit" class="botao_add_atv">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // Está com erros no console, mas funciona normalmente, então por enquanto vou deixar assim
         // Passar dados do Jinja2 para JavaScript
         window.labelsDash = {{ labels_dash | tojson }};
         window.dataDash = {{ data_dash | tojson }};
@@ -96,5 +322,3 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='scripts/grafico.js') }}"></script>
 {% endblock %}
-
-

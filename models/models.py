@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     photo = db.Column(db.String(255), nullable=True)
     materias = db.relationship("Materia", backref="usuario", lazy=True)
     atividades = db.relationship("Atividade", backref="usuario", lazy=True)
+    notificacoes = db.relationship("Notificacao", backref="usuario", lazy=True, cascade="all, delete-orphan")
 
 
 class Materia(db.Model):
@@ -32,3 +33,16 @@ class Atividade(db.Model):
     data = db.Column(db.Date, nullable=True)
     data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+
+class Notificacao(db.Model):
+    __tablename__ = "tb_notificacoes"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    tipo = db.Column(db.String(50), nullable=False)  # 'lembrete', 'conquista', 'sistema'
+    titulo = db.Column(db.String(200), nullable=False)
+    mensagem = db.Column(db.Text, nullable=False)
+    lida = db.Column(db.Boolean, default=False)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    link = db.Column(db.String(255), nullable=True)  # URL para redirecionar
+    icone = db.Column(db.String(50), default="fa-bell")  # Ícone Font Awesome

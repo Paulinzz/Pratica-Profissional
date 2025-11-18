@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar Matéria
+{% endblock %}
+
+{% block conteudo %}
+
+    <main>
+        <div class="container_form_add-atv">
+            <h1>Editar Matéria</h1>
+            <form action="{{ url_for('editar_materia', materia_id=materia.id) }}" method="post" class="form_adicionar-atividade">
+                <label for="nome">Nome da Matéria:</label>
+                <input type="text" name="nome" value="{{ materia.nome }}" required maxlength="100">
+
+                <button type="submit">Salvar Alterações</button>
+                <a href="{{ url_for('dashboard') }}" style="display: inline-block; margin-top: 10px; color: #666; text-decoration: none;">Cancelar</a>
+            </form>
+        </div>
+    </main>
+
+{% endblock %}

@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data: {
                 labels: window.labelsMaterias,
                 datasets: [{
-                    label: 'Número de Atividades',
+                    label: 'Tempo Gasto (minutos)',
                     data: window.dataMaterias,
                     backgroundColor: colors.slice(0, window.labelsMaterias.length),
                     borderColor: colors.slice(0, window.labelsMaterias.length).map(color => color.replace('0.8', '1')),
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Matérias Mais Estudadas',
+                        text: 'Tempo Gasto por Matéria',
                         font: {
                             size: 18,
                             weight: 'bold'
@@ -132,7 +132,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         cornerRadius: 8,
                         callbacks: {
                             label: function(context) {
-                                return context.parsed.y + ' atividades';
+                                const minutos = context.parsed.y;
+                                const horas = Math.floor(minutos / 60);
+                                const mins = minutos % 60;
+                                if (horas > 0) {
+                                    return horas + 'h ' + mins + 'min';
+                                } else {
+                                    return mins + ' minutos';
+                                }
                             }
                         }
                     }

@@ -664,11 +664,11 @@
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = 'meus_dados_focusup.json';
+            a.download = 'relatorio_dados_focusup.pdf';
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
-            alert('Dados baixados com sucesso!');
+            alert('Relatório PDF baixado com sucesso!');
         })
         .catch(error => {
             console.error('Erro:', error);

@@ -5,23 +5,133 @@
 {% endblock %}
 
 {% block conteudo %}
+<style>
+    .form_adicionar-atividade select,
+    .form_adicionar-atividade input[type="text"],
+    .form_adicionar-atividade input[type="date"],
+    .form_adicionar-atividade input[type="time"],
+    .form_adicionar-atividade textarea {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 16px;
+        font-family: 'Inter', sans-serif;
+        background: white;
+        transition: all 0.3s ease;
+        margin-bottom: 5px;
+        box-sizing: border-box;
+    }
+
+    .form_adicionar-atividade select:focus,
+    .form_adicionar-atividade input[type="text"]:focus,
+    .form_adicionar-atividade input[type="date"]:focus,
+    .form_adicionar-atividade input[type="time"]:focus,
+    .form_adicionar-atividade textarea:focus {
+        border-color: #1a73e8;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form_adicionar-atividade select {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 16px;
+        padding-right: 45px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+    .form_adicionar-atividade input[type="date"]::-webkit-calendar-picker-indicator {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M3 9h18v12H3z'/%3e%3cpath d='M9 3v6'/%3e%3cpath d='M15 3v6'/%3e%3cpath d='M21 13H3'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 20px;
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .form_adicionar-atividade input[type="time"]::-webkit-calendar-picker-indicator {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3ccircle cx='12' cy='12' r='10'/%3e%3cpolyline points='12,6 12,12 16,14'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 20px;
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .form_adicionar-atividade input::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+
+    .form_adicionar-atividade label {
+        font-weight: 600;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form_adicionar-atividade button[type="submit"] {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #1a73e8, #0d47a1);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        font-family: 'Poppins', sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
+    }
+
+    .form_adicionar-atividade button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26, 115, 232, 0.4);
+        background: linear-gradient(135deg, #0d47a1, #1a73e8);
+    }
+
+    .form_adicionar-atividade button[type="submit"]:active {
+        transform: translateY(0);
+    }
+</style>
 
     <main>
         <div class="container_form_add-atv">
             <h1>Adicionar nova atividade</h1>
             <form action="{{url_for('adicionar_atividade')}}" method="post" class="form_adicionar-atividade">
                 <label for="materia">Matéria:</label>
-                <input type="text" name="materia" placeholder="Ex: Matemática" required>
+                <select name="materia" required>
+                    <option value="">Selecione uma matéria</option>
+                    {% for materia in materias %}
+                    <option value="{{ materia.nome }}">{{ materia.nome }}</option>
+                    {% endfor %}
+                </select>
+                <a href="{{ url_for('adicionar_materia_page') }}" style="display: block; margin-top: 10px; color: #1a73e8; text-decoration: none;">+ Adicionar nova matéria</a>
                 
                 <label for="assunto_primario">Assunto primário:</label>
                 <input type="text" name="assunto_primario" placeholder="Ex: Probabilidade" required>
-                
+
                 <label for="descricao">Descrição:</label>
-                <input type="text" name="descricao" placeholder="Descrição detalhada sobre o que foi estudado" rows="4">
-                
+                <textarea name="descricao" placeholder="Descrição detalhada sobre o que foi estudado" rows="4" style="width: 100%; padding: 15px 20px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; font-family: 'Inter', sans-serif; background: white; transition: all 0.3s ease; margin-bottom: 5px; box-sizing: border-box; resize: vertical; min-height: 80px;"></textarea>
+
                 <label for="data">Data:</label>
                 <input type="date" name="data">
-                
+
                 <label for="duracao">Duração:</label>
                 <input type="time" name="duracao" placeholder="Ex: 03:00">
                 

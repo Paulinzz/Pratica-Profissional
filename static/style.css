@@ -261,7 +261,7 @@ i.fa-solid.fa-bell:hover {
 }
 
 i.fa-solid.fa-bell:active {
-    color: #1b5e20;
+    color: #ffffff;
     transform: scale(0.95);
 }
 
@@ -271,6 +271,7 @@ i.fa-solid.fa-bell:active {
 
 .card-materias_mais_estudadas {
     animation-delay: 0.2s;
+    max-width: 800px;
 }
 
 .card-sobre {
