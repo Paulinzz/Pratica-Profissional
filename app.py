@@ -30,10 +30,10 @@ app = Flask(__name__)
 
 # =============== CONFIGURAÇÕES DE SEGURANÇA - FocusUp ===============
 
-app.config['SESSION_COOKIE_SECURE'] = True  # somente envios via HTTPS
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
+app.config["SESSION_COOKIE_SECURE"] = True  # somente envios via HTTPS
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=24)
 
 # Configuração para MySQL usando variáveis de ambiente
 DB_HOST = os.getenv("DB_HOST", "localhost")
@@ -58,75 +58,76 @@ login_manager.login_view = "login"
 
 # =============== VALIDADORES ===============
 
+
 class Validadores:
     """Classe com validadores de dados"""
-    
+
     @staticmethod
     def validar_email(email):
         """Valida formato de email"""
         if not email or len(email) > 150:
             return False, "Email inválido ou muito longo"
-        
-        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         if not re.match(pattern, email):
             return False, "Formato de email inválido"
-        
+
         return True, "Email válido"
-    
+
     @staticmethod
     def validar_senha(senha):
         """Valida complexidade da senha"""
         if not senha or len(senha) < 6:
             return False, "A senha deve ter no mínimo 6 caracteres"
-        
+
         if len(senha) > 100:
             return False, "A senha deve ter no máximo 100 caracteres"
-        
+
         # Verificar se tem pelo menos uma letra e um número
         tem_letra = any(c.isalpha() for c in senha)
         tem_numero = any(c.isdigit() for c in senha)
-        
+
         if not (tem_letra and tem_numero):
             return False, "A senha deve conter letras e números"
-        
+
         return True, "Senha válida"
-    
+
     @staticmethod
     def validar_nome(nome):
         """Valida nome do usuário"""
         if not nome or len(nome) < 3:
             return False, "O nome deve ter no mínimo 3 caracteres"
-        
+
         if len(nome) > 150:
             return False, "O nome deve ter no máximo 150 caracteres"
-        
+
         # Permitir apenas letras, espaços e acentos
-        if not re.match(r'^[a-zA-ZÀ-ÿ\s]+$', nome):
+        if not re.match(r"^[a-zA-ZÀ-ÿ\s]+$", nome):
             return False, "O nome deve conter apenas letras"
-        
+
         return True, "Nome válido"
-    
+
     @staticmethod
     def validar_materia(nome_materia):
         """Valida nome da matéria"""
         if not nome_materia or len(nome_materia) < 2:
             return False, "O nome da matéria deve ter no mínimo 2 caracteres"
-        
+
         if len(nome_materia) > 100:
             return False, "O nome da matéria deve ter no máximo 100 caracteres"
-        
+
         return True, "Matéria válida"
-    
+
     @staticmethod
     def validar_duracao(duracao):
         """Valida formato de duração (HH:MM)"""
         if not duracao:
             return True, "Duração opcional"
-        
-        pattern = r'^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'
+
+        pattern = r"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
         if not re.match(pattern, duracao):
             return False, "Formato de duração inválido. Use HH:MM (ex: 02:30)"
-        
+
         return True, "Duração válida"
 
 
@@ -148,45 +149,51 @@ with app.app_context():
 tentativas_login = {}
 tentativas_cadastro = {}
 
+
 def limpar_tentativas_antigas():
     """Remove tentativas antigas (mais de 15 minutos)"""
     tempo_limite = datetime.utcnow() - timedelta(minutes=15)
-    
+
     for dicionario in [tentativas_login, tentativas_cadastro]:
         ips_remover = [
-            ip for ip, (count, timestamp) in dicionario.items()
+            ip
+            for ip, (count, timestamp) in dicionario.items()
             if timestamp < tempo_limite
         ]
         for ip in ips_remover:
             del dicionario[ip]
 
+
 def verificar_rate_limit(ip, dicionario, max_tentativas=5):
     """
     Verifica se o IP excedeu o limite de tentativas
-    
+
     Args:
         ip: IP do cliente
         dicionario: tentativas_login ou tentativas_cadastro
         max_tentativas: número máximo de tentativas permitidas
-    
+
     Returns:
         (permitido, mensagem)
     """
     limpar_tentativas_antigas()
-    
+
     if ip in dicionario:
         count, timestamp = dicionario[ip]
-        
+
         # Se passou 15 minutos, resetar
         if datetime.utcnow() - timestamp > timedelta(minutes=15):
             dicionario[ip] = (1, datetime.utcnow())
             return True, "Permitido"
-        
+
         # Se excedeu tentativas
         if count >= max_tentativas:
             tempo_restante = 15 - (datetime.utcnow() - timestamp).seconds // 60
-            return False, f"Muitas tentativas. Tente novamente em {tempo_restante} minutos."
-        
+            return (
+                False,
+                f"Muitas tentativas. Tente novamente em {tempo_restante} minutos.",
+            )
+
         # Incrementar contador
         dicionario[ip] = (count + 1, timestamp)
         return True, "Permitido"
@@ -204,7 +211,7 @@ def criar_notificacao(user_id, tipo, titulo, mensagem, link=None, icone="fa-bell
             titulo=titulo,
             mensagem=mensagem,
             link=link,
-            icone=icone
+            icone=icone,
         )
         db.session.add(notificacao)
         db.session.commit()
@@ -218,13 +225,14 @@ def parse_duration_to_minutes(duracao):
     if not duracao:
         return 0
     try:
-        hours, minutes = map(int, duracao.split(':'))
+        hours, minutes = map(int, duracao.split(":"))
         return hours * 60 + minutes
     except:
         return 0
 
 
 # =============== PROTEÇÃO CSRF flask wtf que romerito ensinou, add dps ===============
+
 
 @app.before_request
 def csrf_protect():
@@ -233,7 +241,7 @@ def csrf_protect():
         # Verificar se é uma requisição AJAX (pode confiar mais)
         if request.is_json:
             return
-        
+
         # Verificar referer
         referer = request.headers.get("Referer")
         if referer and not referer.startswith(request.host_url):
@@ -252,12 +260,14 @@ def register():
     if request.method == "POST":
         # Rate limiting
         ip = request.remote_addr
-        permitido, mensagem = verificar_rate_limit(ip, tentativas_cadastro, max_tentativas=3)
-        
+        permitido, mensagem = verificar_rate_limit(
+            ip, tentativas_cadastro, max_tentativas=3
+        )
+
         if not permitido:
             flash(mensagem, "error")
             return redirect(url_for("register"))
-        
+
         name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "")
@@ -267,13 +277,13 @@ def register():
         if not valido:
             flash(msg, "error")
             return redirect(url_for("register"))
-        
+
         # Validar email
         valido, msg = Validadores.validar_email(email)
         if not valido:
             flash(msg, "error")
             return redirect(url_for("register"))
-        
+
         # Validar senha
         valido, msg = Validadores.validar_senha(password)
         if not valido:
@@ -292,7 +302,7 @@ def register():
 
             db.session.add(new_user)
             db.session.commit()
-            
+
             # Criar notificação de boas-vindas
             criar_notificacao(
                 user_id=new_user.id,
@@ -300,10 +310,12 @@ def register():
                 titulo="Bem-vindo ao FocusUp! 🎉",
                 mensagem="Sua conta foi criada com sucesso! Comece adicionando suas primeiras atividades.",
                 link="/dashboard",
-                icone="fa-rocket"
+                icone="fa-rocket",
             )
 
-            flash("Cadastro realizado com sucesso! Faça login para continuar.", "success")
+            flash(
+                "Cadastro realizado com sucesso! Faça login para continuar.", "success"
+            )
             return redirect(url_for("login"))
         except Exception as e:
             db.session.rollback()
@@ -320,35 +332,37 @@ def login():
     if request.method == "POST":
         # Rate limiting
         ip = request.remote_addr
-        permitido, mensagem = verificar_rate_limit(ip, tentativas_login, max_tentativas=5)
-        
+        permitido, mensagem = verificar_rate_limit(
+            ip, tentativas_login, max_tentativas=5
+        )
+
         if not permitido:
             flash(mensagem, "error")
             return redirect(url_for("login"))
-        
+
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "")
-        
+
         # Validar email
         valido, msg = Validadores.validar_email(email)
         if not valido:
             flash("Email ou senha inválidos.", "error")
             return redirect(url_for("login"))
-        
+
         user = User.query.filter_by(email=email).first()
 
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
-            
+
             # Criar notificação de login
             criar_notificacao(
                 user_id=user.id,
                 tipo="sistema",
                 titulo="Login realizado",
                 mensagem=f"Você fez login em {datetime.utcnow().strftime('%d/%m/%Y às %H:%M')}",
-                icone="fa-right-to-bracket"
+                icone="fa-right-to-bracket",
             )
-            
+
             flash("Login realizado com sucesso!", "success")
             return redirect(url_for("dashboard"))
         else:
@@ -421,6 +435,7 @@ def dashboard():
 
     # Dados para gráficos - tempo gasto por matéria
     from sqlalchemy import func as sql_func
+
     atividades_com_duracao = (
         db.session.query(Atividade.materia, Atividade.duracao)
         .filter_by(user_id=current_user.id)
@@ -449,6 +464,7 @@ def dashboard():
 
     def get_tempo(item):
         return item[1]
+
     materia_tempo.sort(key=get_tempo, reverse=True)
     sorted_materias = [m[0] for m in materia_tempo]
     activities_per_day = (
@@ -478,37 +494,36 @@ def dashboard():
 @login_required
 def adicionar_materia():
     nome_materia = request.form.get("materia", "").strip()
-    
+
     # Validar nome da matéria
     valido, msg = Validadores.validar_materia(nome_materia)
     if not valido:
         flash(msg, "error")
         return redirect(url_for("dashboard"))
-    
+
     # Verificar se já existe
     materia_existe = Materia.query.filter_by(
-        nome=nome_materia,
-        user_id=current_user.id
+        nome=nome_materia, user_id=current_user.id
     ).first()
-    
+
     if materia_existe:
         flash(f"A matéria '{nome_materia}' já está cadastrada.", "error")
         return redirect(url_for("dashboard"))
-    
+
     try:
         nova_materia = Materia(nome=nome_materia, user_id=current_user.id)
         db.session.add(nova_materia)
         db.session.commit()
-        
+
         # Criar notificação
         criar_notificacao(
             user_id=current_user.id,
             tipo="sistema",
             titulo="Matéria Adicionada! 📚",
             mensagem=f"A matéria '{nome_materia}' foi adicionada com sucesso.",
-            icone="fa-book"
+            icone="fa-book",
         )
-        
+
         flash(f"Matéria '{nome_materia}' adicionada com sucesso!", "success")
         return redirect(url_for("adicionar_materia_page"))
     except Exception as e:
@@ -540,7 +555,9 @@ def adicionar_materia_page():
 
     # Obter matérias do usuário e ordenar por tempo gasto
     all_materias = Materia.query.filter_by(user_id=current_user.id).all()
-    sorted_materias = sorted(all_materias, key=lambda m: tempo_por_materia.get(m.nome, 0), reverse=True)
+    sorted_materias = sorted(
+        all_materias, key=lambda m: tempo_por_materia.get(m.nome, 0), reverse=True
+    )
 
     return render_template("adicionar_materia.html", materias=sorted_materias)
 
@@ -562,18 +579,18 @@ def adicionar_atividade():
         if not materia or len(materia) < 2:
             flash("Informe o nome da matéria (mínimo 2 caracteres).", "error")
             return redirect(url_for("adicionar_atividade"))
-        
+
         if not assunto or len(assunto) < 2:
             flash("Informe o assunto primário (mínimo 2 caracteres).", "error")
             return redirect(url_for("adicionar_atividade"))
-        
+
         # Validar duração
         if duracao:
             valido, msg = Validadores.validar_duracao(duracao)
             if not valido:
                 flash(msg, "error")
                 return redirect(url_for("adicionar_atividade"))
-        
+
         try:
             nova_atividade = Atividade(
                 materia=materia,
@@ -585,7 +602,7 @@ def adicionar_atividade():
             )
             db.session.add(nova_atividade)
             db.session.commit()
-            
+
             # Criar notificações
             criar_notificacao(
                 user_id=current_user.id,
@@ -593,7 +610,7 @@ def adicionar_atividade():
                 titulo="Atividade Criada! ✅",
                 mensagem=f"'{assunto}' de {materia} foi adicionada com sucesso.",
                 link="/listar_atividades",
-                icone="fa-check-circle"
+                icone="fa-check-circle",
             )
 
             # Notificação de lembrete para amanhã
@@ -602,9 +619,9 @@ def adicionar_atividade():
                 tipo="lembrete",
                 titulo="Lembrete de Estudo 📚",
                 mensagem=f"Não esqueça de revisar '{assunto}' amanhã!",
-                icone="fa-calendar-check"
+                icone="fa-calendar-check",
             )
-            
+
             flash("Atividade adicionada com sucesso!", "success")
             return redirect(url_for("adicionar_atividade"))
         except Exception as e:
@@ -618,7 +635,9 @@ def adicionar_atividade():
         .all()
     )
 
-    return render_template("adicionar_atividade.html", atividades=atividades, materias=materias)
+    return render_template(
+        "adicionar_atividade.html", atividades=atividades, materias=materias
+    )
 
 
 @app.route("/listar_atividades")
@@ -679,9 +698,11 @@ def editar_materia(materia_id):
             return redirect(url_for("editar_materia", materia_id=materia_id))
 
         # Verificar se já existe outra matéria com esse nome
-        materia_existente = Materia.query.filter_by(
-            nome=nome, user_id=current_user.id
-        ).filter(Materia.id != materia_id).first()
+        materia_existente = (
+            Materia.query.filter_by(nome=nome, user_id=current_user.id)
+            .filter(Materia.id != materia_id)
+            .first()
+        )
 
         if materia_existente:
             flash(f"Já existe uma matéria com o nome '{nome}'.", "error")
@@ -746,17 +767,17 @@ def ajuda():
 @app.route("/listar_noticacoes")
 @login_required
 def listar_notificacoes():
-    tipo_filtro = request.args.get('tipo', 'todos')
-    lida_filtro = request.args.get('lida', 'todos')
+    tipo_filtro = request.args.get("tipo", "todos")
+    lida_filtro = request.args.get("lida", "todos")
 
     query = Notificacao.query.filter_by(user_id=current_user.id)
 
-    if tipo_filtro != 'todos':
+    if tipo_filtro != "todos":
         query = query.filter_by(tipo=tipo_filtro)
 
-    if lida_filtro == 'lidas':
+    if lida_filtro == "lidas":
         query = query.filter_by(lida=True)
-    elif lida_filtro == 'nao_lidas':
+    elif lida_filtro == "nao_lidas":
         query = query.filter_by(lida=False)
 
     notificacoes = query.order_by(Notificacao.data_criacao.desc()).all()
@@ -765,12 +786,14 @@ def listar_notificacoes():
     total_notificacoes = len(notificacoes)
     nao_lidas = sum(1 for n in notificacoes if not n.lida)
 
-    return render_template("listar_notificacoes.html",
-                         notificacoes=notificacoes,
-                         tipo_filtro=tipo_filtro,
-                         lida_filtro=lida_filtro,
-                         total_notificacoes=total_notificacoes,
-                         nao_lidas=nao_lidas)
+    return render_template(
+        "listar_notificacoes.html",
+        notificacoes=notificacoes,
+        tipo_filtro=tipo_filtro,
+        lida_filtro=lida_filtro,
+        total_notificacoes=total_notificacoes,
+        nao_lidas=nao_lidas,
+    )
 
 
 @app.route("/marcar_notificacao_lida/<int:notificacao_id>", methods=["POST"])
@@ -806,7 +829,9 @@ def excluir_notificacao(notificacao_id):
 @app.route("/marcar_todas_lidas", methods=["POST"])
 @login_required
 def marcar_todas_lidas():
-    Notificacao.query.filter_by(user_id=current_user.id, lida=False).update({"lida": True})
+    Notificacao.query.filter_by(user_id=current_user.id, lida=False).update(
+        {"lida": True}
+    )
     db.session.commit()
     return {"success": True}, 200
 
@@ -985,7 +1010,13 @@ def baixar_dados():
         from reportlab.lib import colors
         from reportlab.lib.pagesizes import letter, A4
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+        from reportlab.platypus import (
+            SimpleDocTemplate,
+            Paragraph,
+            Spacer,
+            Table,
+            TableStyle,
+        )
         from reportlab.lib.units import inch
         from io import BytesIO
 
@@ -997,104 +1028,146 @@ def baixar_dados():
 
         # Título do documento
         title_style = ParagraphStyle(
-            'CustomTitle',
-            parent=styles['Heading1'],
+            "CustomTitle",
+            parent=styles["Heading1"],
             fontSize=24,
             spaceAfter=30,
-            alignment=1  # Centralizado
+            alignment=1,  # Centralizado
         )
         story.append(Paragraph("Relatório de Dados - FocusUp", title_style))
         story.append(Spacer(1, 12))
 
         # Informações do usuário
-        story.append(Paragraph("Informações do Usuário", styles['Heading2']))
+        story.append(Paragraph("Informações do Usuário", styles["Heading2"]))
         user_data = [
             ["ID", str(current_user.id)],
             ["Nome", current_user.name or "N/A"],
             ["Email", current_user.email],
-            ["Data de Cadastro", current_user.date_created.strftime('%d/%m/%Y %H:%M') if hasattr(current_user, "date_created") and current_user.date_created else "N/A"],
-            ["Foto", current_user.photo or "N/A"]
+            [
+                "Data de Cadastro",
+                (
+                    current_user.date_created.strftime("%d/%m/%Y %H:%M")
+                    if hasattr(current_user, "date_created")
+                    and current_user.date_created
+                    else "N/A"
+                ),
+            ],
+            ["Foto", current_user.photo or "N/A"],
         ]
 
-        user_table = Table(user_data, colWidths=[2*inch, 4*inch])
-        user_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 12),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black)
-        ]))
+        user_table = Table(user_data, colWidths=[2 * inch, 4 * inch])
+        user_table.setStyle(
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, 0), colors.lightblue),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+                    ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("FONTSIZE", (0, 0), (-1, 0), 12),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                    ("BACKGROUND", (0, 1), (-1, -1), colors.white),
+                    ("GRID", (0, 0), (-1, -1), 1, colors.black),
+                ]
+            )
+        )
         story.append(user_table)
         story.append(Spacer(1, 20))
 
         # Matérias
-        story.append(Paragraph("Matérias Cadastradas", styles['Heading2']))
+        story.append(Paragraph("Matérias Cadastradas", styles["Heading2"]))
         if current_user.materias:
             materias_data = [["Nome", "Data de Criação"]]
             for materia in current_user.materias:
-                data_criacao = materia.date_created.strftime('%d/%m/%Y %H:%M') if hasattr(materia, "date_created") and materia.date_created else "N/A"
+                data_criacao = (
+                    materia.date_created.strftime("%d/%m/%Y %H:%M")
+                    if hasattr(materia, "date_created") and materia.date_created
+                    else "N/A"
+                )
                 materias_data.append([materia.nome, data_criacao])
 
-            materias_table = Table(materias_data, colWidths=[3*inch, 3*inch])
-            materias_table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.lightgreen),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 12),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black)
-            ]))
+            materias_table = Table(materias_data, colWidths=[3 * inch, 3 * inch])
+            materias_table.setStyle(
+                TableStyle(
+                    [
+                        ("BACKGROUND", (0, 0), (-1, 0), colors.lightgreen),
+                        ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+                        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+                        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                        ("FONTSIZE", (0, 0), (-1, 0), 12),
+                        ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                        ("BACKGROUND", (0, 1), (-1, -1), colors.white),
+                        ("GRID", (0, 0), (-1, -1), 1, colors.black),
+                    ]
+                )
+            )
             story.append(materias_table)
         else:
-            story.append(Paragraph("Nenhuma matéria cadastrada.", styles['Normal']))
+            story.append(Paragraph("Nenhuma matéria cadastrada.", styles["Normal"]))
         story.append(Spacer(1, 20))
 
         # Atividades
-        story.append(Paragraph("Histórico de Atividades", styles['Heading2']))
+        story.append(Paragraph("Histórico de Atividades", styles["Heading2"]))
         if current_user.atividades:
             atividades_data = [["Matéria", "Assunto", "Duração", "Data", "Descrição"]]
 
             # Limitar a 50 atividades mais recentes para não sobrecarregar o PDF
-            atividades_recentes = sorted(current_user.atividades, key=lambda x: x.data_criacao, reverse=True)[:50]
+            atividades_recentes = sorted(
+                current_user.atividades, key=lambda x: x.data_criacao, reverse=True
+            )[:50]
 
             for atividade in atividades_recentes:
-                data_formatada = atividade.data.strftime('%d/%m/%Y') if atividade.data else "N/A"
-                descricao_curta = (atividade.descricao[:50] + "...") if atividade.descricao and len(atividade.descricao) > 50 else atividade.descricao or "N/A"
-                atividades_data.append([
-                    atividade.materia,
-                    atividade.assunto_primario,
-                    atividade.duracao or "N/A",
-                    data_formatada,
-                    descricao_curta
-                ])
+                data_formatada = (
+                    atividade.data.strftime("%d/%m/%Y") if atividade.data else "N/A"
+                )
+                descricao_curta = (
+                    (atividade.descricao[:50] + "...")
+                    if atividade.descricao and len(atividade.descricao) > 50
+                    else atividade.descricao or "N/A"
+                )
+                atividades_data.append(
+                    [
+                        atividade.materia,
+                        atividade.assunto_primario,
+                        atividade.duracao or "N/A",
+                        data_formatada,
+                        descricao_curta,
+                    ]
+                )
 
-            atividades_table = Table(atividades_data, colWidths=[1.5*inch, 1.5*inch, 1*inch, 1.2*inch, 2.3*inch])
-            atividades_table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.lightyellow),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 10),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black),
-                ('FONTSIZE', (0, 1), (-1, -1), 8),
-            ]))
+            atividades_table = Table(
+                atividades_data,
+                colWidths=[1.5 * inch, 1.5 * inch, 1 * inch, 1.2 * inch, 2.3 * inch],
+            )
+            atividades_table.setStyle(
+                TableStyle(
+                    [
+                        ("BACKGROUND", (0, 0), (-1, 0), colors.lightyellow),
+                        ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+                        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+                        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                        ("FONTSIZE", (0, 0), (-1, 0), 10),
+                        ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                        ("BACKGROUND", (0, 1), (-1, -1), colors.white),
+                        ("GRID", (0, 0), (-1, -1), 1, colors.black),
+                        ("FONTSIZE", (0, 1), (-1, -1), 8),
+                    ]
+                )
+            )
             story.append(atividades_table)
 
             if len(current_user.atividades) > 50:
-                story.append(Paragraph(f"<i>Mostrando as 50 atividades mais recentes de um total de {len(current_user.atividades)}.</i>", styles['Normal']))
+                story.append(
+                    Paragraph(
+                        f"<i>Mostrando as 50 atividades mais recentes de um total de {len(current_user.atividades)}.</i>",
+                        styles["Normal"],
+                    )
+                )
         else:
-            story.append(Paragraph("Nenhuma atividade registrada.", styles['Normal']))
+            story.append(Paragraph("Nenhuma atividade registrada.", styles["Normal"]))
         story.append(Spacer(1, 20))
 
         # Estatísticas
-        story.append(Paragraph("Estatísticas Gerais", styles['Heading2']))
+        story.append(Paragraph("Estatísticas Gerais", styles["Heading2"]))
 
         # Calcular estatísticas
         total_atividades = len(current_user.atividades)
@@ -1105,7 +1178,7 @@ def baixar_dados():
         for atividade in current_user.atividades:
             if atividade.duracao:
                 try:
-                    horas, minutos = map(int, atividade.duracao.split(':'))
+                    horas, minutos = map(int, atividade.duracao.split(":"))
                     tempo_total += horas * 60 + minutos
                 except:
                     pass
@@ -1115,39 +1188,46 @@ def baixar_dados():
 
         # Data e hora de Brasília (UTC-3)
         from datetime import timezone, timedelta
+
         brasilia_tz = timezone(timedelta(hours=-3))
-        data_exportacao = datetime.now(brasilia_tz).strftime('%d/%m/%Y %H:%M:%S')
+        data_exportacao = datetime.now(brasilia_tz).strftime("%d/%m/%Y %H:%M:%S")
 
         stats_data = [
             ["Total de Atividades", str(total_atividades)],
             ["Total de Matérias", str(total_materias)],
             ["Tempo Total Estudado", f"{horas_totais}h {minutos_restantes}min"],
-            ["Data de Exportação", data_exportacao + " (Horário de Brasília)"]
+            ["Data de Exportação", data_exportacao + " (Horário de Brasília)"],
         ]
 
-        stats_table = Table(stats_data, colWidths=[3*inch, 3*inch])
-        stats_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightcoral),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 12),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black)
-        ]))
+        stats_table = Table(stats_data, colWidths=[3 * inch, 3 * inch])
+        stats_table.setStyle(
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, 0), colors.lightcoral),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+                    ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("FONTSIZE", (0, 0), (-1, 0), 12),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                    ("BACKGROUND", (0, 1), (-1, -1), colors.white),
+                    ("GRID", (0, 0), (-1, -1), 1, colors.black),
+                ]
+            )
+        )
         story.append(stats_table)
         story.append(Spacer(1, 20))
 
         # Rodapé
         footer_style = ParagraphStyle(
-            'Footer',
-            parent=styles['Normal'],
+            "Footer",
+            parent=styles["Normal"],
             fontSize=10,
             textColor=colors.gray,
-            alignment=1
+            alignment=1,
         )
-        story.append(Paragraph("Relatório gerado automaticamente pelo FocusUp", footer_style))
+        story.append(
+            Paragraph("Relatório gerado automaticamente pelo FocusUp", footer_style)
+        )
 
         # Gerar PDF
         doc.build(story)
@@ -1155,19 +1235,22 @@ def baixar_dados():
 
         # Retornar PDF como resposta
         from flask import Response
+
         response = Response(
             buffer.getvalue(),
-            mimetype='application/pdf',
+            mimetype="application/pdf",
             headers={
                 "Content-Disposition": f"attachment;filename=relatorio_dados_focusup_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.pdf"
-            }
+            },
         )
 
         return response
 
     except ImportError:
         # Fallback para JSON se reportlab não estiver instalado
-        return {"error": "Biblioteca PDF não instalada. Execute: pip install reportlab"}, 500
+        return {
+            "error": "Biblioteca PDF não instalada. Execute: pip install reportlab"
+        }, 500
     except Exception as e:
         print(f"Erro ao gerar PDF: {e}")
         return {"error": "Erro interno do servidor"}, 500
@@ -1228,6 +1311,7 @@ def salvar_configuracoes():
     flash("Configurações salvas com sucesso!", "success")
     return redirect(url_for("configuracoes"))
 
+
 @app.route("/pomodoro")
 @login_required
 def pomodoro():
@@ -1240,11 +1324,11 @@ def pomodoro():
 def salvar_sessao_pomodoro():
     """Salva uma sessão de Pomodoro concluída"""
     data = request.get_json()
-    
+
     materia = data.get("materia", "Geral")
     tipo = data.get("tipo", "trabalho")  # trabalho ou pausa
     duracao = data.get("duracao", 25)  # em minutos
-    
+
     try:
         # Criar notificação de conquista
         if tipo == "trabalho":
@@ -1253,15 +1337,16 @@ def salvar_sessao_pomodoro():
                 tipo="conquista",
                 titulo="🍅 Pomodoro Concluído!",
                 mensagem=f"Você completou {duracao} minutos de foco em {materia}. Continue assim!",
-                icone="fa-trophy"
+                icone="fa-trophy",
             )
-        
+
         return {"success": True, "message": "Sessão salva com sucesso!"}, 200
     except Exception as e:
         return {"success": False, "message": str(e)}, 500
 
 
 # =============== HANDLER DE ERROS ===============
+
 
 @app.errorhandler(404)
 def not_found(error):
