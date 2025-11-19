@@ -1,0 +1,676 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Notificações - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .notificacoes-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .notif-header {
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        border-radius: 25px;
+        padding: 40px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 30px rgba(26, 115, 232, 0.3);
+        animation: slideInDown 0.6s ease;
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .notif-header h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .notif-stats {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .stat-badge {
+        background: rgba(255,255,255,0.2);
+        padding: 10px 20px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .filters-bar {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .filter-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 12px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        background: white;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        color: #666;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .filter-btn:hover {
+        border-color: #1a73e8;
+        color: #1a73e8;
+        transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        color: white;
+        border-color: #1a73e8;
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-action {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-mark-all {
+        background: linear-gradient(135deg, #4caf50, #66bb6a);
+        color: white;
+    }
+
+    .btn-mark-all:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .notificacoes-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .notificacao-card {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        animation: fadeInUp 0.6s ease;
+        position: relative;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .notificacao-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .notificacao-card.nao-lida {
+        background: linear-gradient(135deg, #e3f2fd, #f8f9fa);
+        border-left-color: #1a73e8;
+    }
+
+    .notificacao-card.lida {
+        opacity: 0.7;
+        border-left-color: #e0e0e0;
+    }
+
+    .notif-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 15px;
+    }
+
+    .notif-info {
+        flex: 1;
+    }
+
+    .notif-tipo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .notif-tipo.sistema {
+        background: #e3f2fd;
+        color: #1a73e8;
+    }
+
+    .notif-tipo.lembrete {
+        background: #fff3e0;
+        color: #f57c00;
+    }
+
+    .notif-tipo.conquista {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .notif-titulo {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .notif-titulo i {
+        font-size: 24px;
+    }
+
+    .notif-mensagem {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+    .notif-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .notif-data {
+        font-size: 13px;
+        color: #999;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .notif-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .notif-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-marcar-lida {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .btn-marcar-lida:hover {
+        background: #c8e6c9;
+        transform: scale(1.05);
+    }
+
+    .btn-excluir {
+        background: #ffebee;
+        color: #d32f2f;
+    }
+
+    .btn-excluir:hover {
+        background: #ffcdd2;
+        transform: scale(1.05);
+    }
+
+    .btn-ver-mais {
+        background: #e3f2fd;
+        color: #1a73e8;
+        text-decoration: none;
+    }
+
+    .btn-ver-mais:hover {
+        background: #bbdefb;
+        transform: scale(1.05);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .empty-icon {
+        font-size: 80px;
+        color: #e0e0e0;
+        margin-bottom: 20px;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .empty-state h2 {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .empty-state p {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .badge-unread {
+        background: #f44336;
+        color: white;
+        font-size: 11px;
+        font-weight: bold;
+        padding: 4px 10px;
+        border-radius: 12px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .filters-bar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .filter-group {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .action-buttons {
+            width: 100%;
+        }
+
+        .btn-action {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .notif-footer {
+            flex-direction: column;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .notif-actions {
+            width: 100%;
+        }
+
+        .notif-btn {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+
+    .fa-envelope, .fa-envelope-open{
+        color: white;
+    }
+
+    .notif-header i {
+        margin-right: 10px;
+        color: white;
+    }
+
+    .filter-btn i {
+        color: #666;
+        transition: color 0.2s ease;
+    }
+
+    .filter-btn.active i {
+        color: #ffffff;
+    }
+
+    .fa-check-double, .fa-check, .fa-arrow-right:hover {
+        color: inherit;
+        background: none;
+
+
+    }
+
+    .fa-trash:hover{
+        background: linear-gradient(135deg, #ff5252, #ff1744);
+        color: white;
+    }
+
+</style>
+
+<main>
+    <div class="notificacoes-container">
+        <!-- Header -->
+        <div class="notif-header">
+            <h1><i class="fa-solid fa-bell"></i> Notificações</h1>
+            <div class="notif-stats">
+                <div class="stat-badge">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>{{ total_notificacoes }} Total</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fa-solid fa-envelope-open"></i>
+                    <span>{{ nao_lidas }} Não Lidas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <span style="font-weight: 600; color: #666;">Filtrar por:</span>
+                <a href="{{ url_for('listar_notificacoes', tipo='todos', lida=lida_filtro) }}" 
+                   class="filter-btn {{ 'active' if tipo_filtro == 'todos' else '' }}">
+                    <i class="fa-solid fa-list"></i> Todas
+                </a>
+                <a href="{{ url_for('listar_notificacoes', tipo='sistema', lida=lida_filtro) }}" 
+                   class="filter-btn {{ 'active' if tipo_filtro == 'sistema' else '' }}">
+                    <i class="fa-solid fa-gear"></i> Sistema
+                </a>
+                <a href="{{ url_for('listar_notificacoes', tipo='lembrete', lida=lida_filtro) }}" 
+                   class="filter-btn {{ 'active' if tipo_filtro == 'lembrete' else '' }}">
+                    <i class="fa-solid fa-calendar"></i> Lembretes
+                </a>
+                <a href="{{ url_for('listar_notificacoes', tipo='conquista', lida=lida_filtro) }}" 
+                   class="filter-btn {{ 'active' if tipo_filtro == 'conquista' else '' }}">
+                    <i class="fa-solid fa-trophy"></i> Conquistas
+                </a>
+            </div>
+
+            <div class="filter-group">
+                <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='todos') }}" 
+                   class="filter-btn {{ 'active' if lida_filtro == 'todos' else '' }}">
+                    Todas
+                </a>
+                <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='nao_lidas') }}" 
+                   class="filter-btn {{ 'active' if lida_filtro == 'nao_lidas' else '' }}">
+                    Não Lidas
+                </a>
+                <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='lidas') }}" 
+                   class="filter-btn {{ 'active' if lida_filtro == 'lidas' else '' }}">
+                    Lidas
+                </a>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-action btn-mark-all" onclick="marcarTodasLidas()">
+                    <i class="fa-solid fa-check-double"></i>
+                    Marcar Todas como Lidas
+                </button>
+            </div>
+        </div>
+
+        <!-- Lista de Notificações -->
+        {% if notificacoes %}
+            <div class="notificacoes-list">
+                {% for notif in notificacoes %}
+                <div class="notificacao-card {{ 'nao-lida' if not notif.lida else 'lida' }}" data-id="{{ notif.id }}">
+                    {% if not notif.lida %}
+                    <span class="badge-unread">NOVO</span>
+                    {% endif %}
+
+                    <div class="notif-header-row">
+                        <div class="notif-info">
+                            <span class="notif-tipo {{ notif.tipo }}">
+                                <i class="fa-solid {{ notif.icone }}"></i>
+                                {{ notif.tipo.capitalize() }}
+                            </span>
+                            
+                            <h3 class="notif-titulo">
+                                <i class="fa-solid {{ notif.icone }}" style="color: 
+                                    {% if notif.tipo == 'sistema' %}#1a73e8
+                                    {% elif notif.tipo == 'lembrete' %}#f57c00
+                                    {% else %}#2e7d32{% endif %};"></i>
+                                {{ notif.titulo }}
+                            </h3>
+                            
+                            <p class="notif-mensagem">{{ notif.mensagem }}</p>
+                        </div>
+                    </div>
+
+                    <div class="notif-footer">
+                        <div class="notif-data">
+                            <i class="fa-regular fa-clock"></i>
+                            {{ notif.data_criacao.strftime('%d/%m/%Y às %H:%M') }}
+                        </div>
+
+                        <div class="notif-actions">
+                            {% if notif.link %}
+                            <a href="{{ notif.link }}" class="notif-btn btn-ver-mais">
+                                <i class="fa-solid fa-arrow-right"></i>
+                                Ver Mais
+                            </a>
+                            {% endif %}
+
+                            {% if not notif.lida %}
+                            <button class="notif-btn btn-marcar-lida" onclick="marcarLida({{ notif.id }})">
+                                <i class="fa-solid fa-check"></i>
+                                Marcar Lida
+                            </button>
+                            {% endif %}
+
+                            <button class="notif-btn btn-excluir" onclick="excluirNotificacao({{ notif.id }})">
+                                <i class="fa-solid fa-trash"></i>
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fa-solid fa-inbox"></i>
+                </div>
+                <h2>Nenhuma notificação encontrada</h2>
+                <p>
+                    {% if lida_filtro == 'nao_lidas' %}
+                    Você não tem notificações não lidas no momento.
+                    {% elif lida_filtro == 'lidas' %}
+                    Você não tem notificações lidas.
+                    {% else %}
+                    Você não tem nenhuma notificação ainda.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</main>
+
+<script>
+    function marcarLida(notifId) {
+        fetch(`/marcar_notificacao_lida/${notifId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const card = document.querySelector(`[data-id="${notifId}"]`);
+                card.classList.remove('nao-lida');
+                card.classList.add('lida');
+                
+                const badge = card.querySelector('.badge-unread');
+                if (badge) badge.remove();
+                
+                const btnMarcar = card.querySelector('.btn-marcar-lida');
+                if (btnMarcar) btnMarcar.remove();
+
+                // Atualizar contador
+                atualizarContador();
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao marcar notificação como lida.');
+        });
+    }
+
+    function excluirNotificacao(notifId) {
+        if (!confirm('Tem certeza que deseja excluir esta notificação?')) {
+            return;
+        }
+
+        fetch(`/excluir_notificacao/${notifId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const card = document.querySelector(`[data-id="${notifId}"]`);
+                card.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    card.remove();
+                    
+                    // Verificar se ainda há notificações
+                    if (document.querySelectorAll('.notificacao-card').length === 0) {
+                        location.reload();
+                    } else {
+                        atualizarContador();
+                    }
+                }, 300);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao excluir notificação.');
+        });
+    }
+
+    function marcarTodasLidas() {
+        if (!confirm('Marcar todas as notificações como lidas?')) {
+            return;
+        }
+
+        fetch('/marcar_todas_lidas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao marcar todas como lidas.');
+        });
+    }
+
+    function atualizarContador() {
+        // Atualizar badge no header
+        fetch('/api/notificacoes_nao_lidas')
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.getElementById('notificationBadge');
+                if (badge) {
+                    if (data.nao_lidas > 0) {
+                        badge.textContent = data.nao_lidas > 99 ? '99+' : data.nao_lidas;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            });
+    }
+
+    // Animação de fadeOut
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+
+{% endblock %}

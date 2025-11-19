@@ -1,0 +1,683 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Modo Pomodoro - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .pomodoro-container {
+        width: 100%;;
+        margin: 0 auto;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .pomodoro-header {
+        background: linear-gradient(135deg, #ff9800, #f57c00);
+        border-radius: 25px;
+        padding: 40px;
+        color: white;
+        margin-bottom: 40px;
+        box-shadow: 0 8px 30px rgba(255, 152, 0, 0.3);
+        animation: slideInDown 0.6s ease;
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .pomodoro-header h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .timer-card {
+        background: white;
+        border-radius: 30px;
+        padding: 50px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        animation: fadeInUp 0.6s ease;
+        min-height: 800px;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .timer-display {
+        font-size: 72px;
+        font-weight: 700;
+        color: #1a73e8;
+        font-family: 'Courier New', monospace;
+        margin: 40px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .timer-display.work-mode {
+        color: #ff9800;
+    }
+
+    .timer-display.break-mode {
+        color: #4caf50;
+    }
+
+    .mode-selector {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .mode-btn {
+        padding: 15px 30px;
+        border: 2px solid #e0e0e0;
+        border-radius: 15px;
+        background: white;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: #666;
+    }
+
+    .mode-btn.active {
+        background: linear-gradient(135deg, #ff9800, #f57c00);
+        color: white;
+        border-color: #ff9800;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+    }
+
+    .mode-btn:hover:not(.active) {
+        border-color: #ff9800;
+        transform: translateY(-2px);
+    }
+
+    .controls {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 40px;
+        margin: 80px auto 20px; /* sobe a div para cima; ajuste o valor conforme necessário */
+        position: relative;
+        z-index: 5; /* garante que fique acima do timer */
+    }
+
+    .control-btn {
+        padding: 20px 50px;
+        border: none;
+        border-radius: 20px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn-start {
+        background: linear-gradient(135deg, #4caf50, #66bb6a);
+        color: white;
+    }
+
+    .btn-start:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn-pause {
+        background: linear-gradient(135deg, #ff9800, #fb8c00);
+        color: white;
+    }
+
+    .btn-pause:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+    }
+
+    .btn-reset {
+        background: linear-gradient(135deg, #f44336, #e53935);
+        color: white;
+    }
+
+    .btn-reset:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
+    }
+
+    .session-info {
+        background: #f8f9fa;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .session-info h3 {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .info-item {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .info-label {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a73e8;
+    }
+
+    .materia-selector {
+        margin-bottom: 30px;
+    }
+
+    .materia-selector label {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .materia-selector select {
+        width: 100%;
+        max-width: 400px;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .materia-selector select:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+    }
+
+    .progress-ring {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin: 0 auto 40px;
+    }
+
+    .progress-ring svg {
+        transform: rotate(-90deg);
+    }
+
+    .progress-ring-circle {
+        stroke: #e0e0e0;
+        fill: transparent;
+        stroke-width: 10;
+    }
+
+    .progress-ring-progress {
+        stroke: #ff9800;
+        fill: transparent;
+        stroke-width: 10;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 1s linear;
+    }
+
+    .progress-ring.break-mode .progress-ring-progress {
+        stroke: #4caf50;
+    }
+
+    .tips-card {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        border-radius: 20px;
+        padding: 30px;
+        text-align: left;
+    }
+
+    .tips-card h3 {
+        font-size: 20px;
+        color: #1a73e8;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tips-card ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .tips-card li {
+        padding: 10px 0;
+        color: #555;
+        display: flex;
+        align-items: start;
+        gap: 10px;
+    }
+
+    .tips-card li:before {
+        content: "🍅";
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+        .timer-display {
+            font-size: 64px;
+        }
+
+        .controls {
+            flex-direction: column;
+        }
+
+        .control-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .mode-selector {
+            flex-direction: column;
+        }
+
+        .progress-ring {
+            width: 200px;
+            height: 200px;
+        }
+    }
+
+    .sound-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: -50px auto 20px; /* sobe a div para cima; ajuste o valor conforme necessário */
+        position: relative;
+        z-index: 5; /* garante que fique acima do timer */
+    }
+
+    .sound-toggle label {
+        font-size: 16px;
+        color: #666;
+        cursor: pointer;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 28px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.3s;
+        border-radius: 28px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #4caf50;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(22px);
+    }
+
+
+
+</style>
+
+<main>
+    <div class="pomodoro-container">
+        <div class="pomodoro-header">
+            <h1><i class="fa-solid fa-clock"></i> Modo Pomodoro</h1>
+            <p>Mantenha o foco com a técnica Pomodoro</p>
+        </div>
+
+        <div class="timer-card">
+            <!-- Seletor de Modo -->
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="work" onclick="changeMode('work')">
+                    <i class="fa-solid fa-brain"></i> Foco (25min)
+                </button>
+                <button class="mode-btn" data-mode="short" onclick="changeMode('short')">
+                    <i class="fa-solid fa-coffee"></i> Pausa Curta (5min)
+                </button>
+                <button class="mode-btn" data-mode="long" onclick="changeMode('long')">
+                    <i class="fa-solid fa-couch"></i> Pausa Longa (15min)
+                </button>
+            </div>
+
+            <!-- Seletor de Matéria -->
+            <div class="materia-selector">
+                <label for="materia">O que você está estudando?</label>
+                <select id="materia-select">
+                    <option value="Geral">Geral</option>
+                    {% if current_user.materias %}
+                        {% for materia in current_user.materias %}
+                        <option value="{{ materia.nome }}">{{ materia.nome }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+
+            <!-- Anel de Progresso -->
+            <div class="progress-ring" id="progressRing">
+                <svg width="300" height="300">
+                    <circle class="progress-ring-circle" cx="150" cy="150" r="140"></circle>
+                    <circle class="progress-ring-progress" cx="150" cy="150" r="140" 
+                            id="progressCircle" 
+                            stroke-dasharray="879.645943" 
+                            stroke-dashoffset="879.645943"></circle>
+                </svg>
+                <!-- Timer Display -->
+                <div class="timer-display work-mode" id="timerDisplay">25:00</div>
+            </div>
+
+            <!-- Som -->
+            <div class="sound-toggle">
+                <label for="soundToggle">
+                    <i class="fa-solid fa-volume-high"></i> Som de Notificação
+                </label>
+                <label class="switch">
+                    <input type="checkbox" id="soundToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- Controles -->
+            <div class="controls">
+                <button class="control-btn btn-start" id="startBtn" onclick="startTimer()">
+                    <i class="fa-solid fa-play"></i> Iniciar
+                </button>
+                <button class="control-btn btn-pause" id="pauseBtn" onclick="pauseTimer()" style="display: none;">
+                    <i class="fa-solid fa-pause"></i> Pausar
+                </button>
+                <button class="control-btn btn-reset" onclick="resetTimer()">
+                    <i class="fa-solid fa-rotate-right"></i> Reiniciar
+                </button>
+            </div>
+        </div>
+
+        <!-- Informações da Sessão -->
+        <div class="session-info">
+            <h3>Estatísticas da Sessão</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Pomodoros Completos</div>
+                    <div class="info-value" id="pomodorosCount">0</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Tempo Total (min)</div>
+                    <div class="info-value" id="totalTime">0</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Sessão Atual</div>
+                    <div class="info-value" id="currentSession">Foco</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dicas -->
+        <div class="tips-card">
+            <h3><i class="fa-solid fa-lightbulb"></i> Dicas para usar o Pomodoro</h3>
+            <ul>
+                <li>Escolha uma tarefa específica antes de iniciar</li>
+                <li>Elimine todas as distrações durante o período de foco</li>
+                <li>Use as pausas para descansar completamente - levante, alongue-se</li>
+                <li>Após 4 pomodoros, faça uma pausa mais longa (15-30 minutos)</li>
+                <li>Não interrompa um pomodoro no meio - se algo urgir, pause e reinicie depois</li>
+                <li>Use as estatísticas para melhorar sua produtividade ao longo do tempo</li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<script>
+    let timerInterval;
+    let timeLeft;
+    let isRunning = false;
+    let currentMode = 'work';
+    let pomodorosCompleted = 0;
+    let totalMinutes = 0;
+
+    const modes = {
+        work: { duration: 25 * 60, label: 'Foco', color: '#ff9800' },
+        short: { duration: 5 * 60, label: 'Pausa Curta', color: '#4caf50' },
+        long: { duration: 15 * 60, label: 'Pausa Longa', color: '#2196f3' }
+    };
+
+    // Inicializar
+    resetTimer();
+
+    function changeMode(mode) {
+        if (isRunning) {
+            if (!confirm('Deseja parar o timer atual e mudar de modo?')) {
+                return;
+            }
+            pauseTimer();
+        }
+
+        currentMode = mode;
+        
+        // Atualizar botões
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+
+        // Atualizar display
+        const display = document.getElementById('timerDisplay');
+        display.className = `timer-display ${mode === 'work' ? 'work-mode' : 'break-mode'}`;
+        
+        const ring = document.getElementById('progressRing');
+        ring.className = `progress-ring ${mode === 'work' ? '' : 'break-mode'}`;
+
+        document.getElementById('currentSession').textContent = modes[mode].label;
+
+        resetTimer();
+    }
+
+    function startTimer() {
+        if (isRunning) return;
+
+        isRunning = true;
+        document.getElementById('startBtn').style.display = 'none';
+        document.getElementById('pauseBtn').style.display = 'flex';
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateDisplay();
+            updateProgress();
+
+            if (timeLeft <= 0) {
+                completeSession();
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        isRunning = false;
+        clearInterval(timerInterval);
+        document.getElementById('startBtn').style.display = 'flex';
+        document.getElementById('pauseBtn').style.display = 'none';
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        timeLeft = modes[currentMode].duration;
+        updateDisplay();
+        updateProgress();
+    }
+
+    function updateDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById('timerDisplay').textContent = 
+            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function updateProgress() {
+        const totalDuration = modes[currentMode].duration;
+        const progress = (totalDuration - timeLeft) / totalDuration;
+        const circumference = 879.645943;
+        const offset = circumference * (1 - progress);
+        document.getElementById('progressCircle').style.strokeDashoffset = offset;
+    }
+
+    function completeSession() {
+        pauseTimer();
+        
+        // Tocar som se habilitado
+        if (document.getElementById('soundToggle').checked) {
+            playNotificationSound();
+        }
+
+        // Atualizar estatísticas
+        if (currentMode === 'work') {
+            pomodorosCompleted++;
+            totalMinutes += 25;
+            document.getElementById('pomodorosCount').textContent = pomodorosCompleted;
+            document.getElementById('totalTime').textContent = totalMinutes;
+
+            // Salvar sessão
+            salvarSessao();
+
+            // Sugerir próximo modo
+            const nextMode = pomodorosCompleted % 4 === 0 ? 'long' : 'short';
+            if (confirm(`Pomodoro completo! 🎉\n\nGostaria de fazer uma ${modes[nextMode].label}?`)) {
+                changeMode(nextMode);
+                startTimer();
+            }
+        } else {
+            if (confirm('Pausa completa! Pronto para voltar ao foco?')) {
+                changeMode('work');
+                startTimer();
+            }
+        }
+    }
+
+    function playNotificationSound() {
+        // Som simples usando Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+    }
+
+    function salvarSessao() {
+        const materia = document.getElementById('materia-select').value;
+        
+        fetch('{{ url_for("salvar_sessao_pomodoro") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                materia: materia,
+                tipo: currentMode,
+                duracao: modes[currentMode].duration / 60
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Sessão salva com sucesso!');
+            }
+        })
+        .catch(error => console.error('Erro ao salvar sessão:', error));
+    }
+
+    // Notificação de navegador
+    if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+    }
+
+    // Prevenir que a página seja fechada durante um timer ativo
+    window.addEventListener('beforeunload', (e) => {
+        if (isRunning) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+
+    // Título da página dinâmico
+    setInterval(() => {
+        if (isRunning) {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.title = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} - ${modes[currentMode].label} - FocusUp`;
+        } else {
+            document.title = 'Modo Pomodoro - FocusUp';
+        }
+    }, 1000);
+</script>
+
+{% endblock %}
