@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar Meta - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .form-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .form-header h1 {
+        color: #1a73e8;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .form-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .meta-form {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 16px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .form-group select {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 16px;
+        padding-right: 45px;
+    }
+
+    .status-group {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .status-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-option input[type="radio"] {
+        width: auto;
+        margin: 0;
+    }
+
+    .status-option label {
+        margin: 0;
+        font-weight: normal;
+        cursor: pointer;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+        width: 60%;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
+    }
+
+    .btn-cancel {
+        background: #f5f5f5;
+        color: #666;
+        border: 2px solid #e0e0e0;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        width: 60%;
+    }
+
+    .btn-cancel:hover {
+        background: #e0e0e0;
+        border-color: #ccc;
+        color: #333;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 10px;
+        }
+
+        .meta-form {
+            padding: 25px;
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-submit,
+        .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .status-group {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<main>
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fa-solid fa-edit"></i> Editar Meta</h1>
+            <p>Ajuste os detalhes da sua meta conforme necessário</p>
+        </div>
+
+        <form action="{{ url_for('editar_meta', meta_id=meta.id) }}" method="post" class="meta-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <div class="form-group">
+                <label for="titulo">Título da Meta *</label>
+                <input type="text" id="titulo" name="titulo" value="{{ meta.titulo }}" required maxlength="200">
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao">{{ meta.descricao or '' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="materia_id">Matéria Relacionada</label>
+                <select id="materia_id" name="materia_id">
+                    <option value="">Nenhuma matéria selecionada</option>
+                    {% for materia in materias %}
+                    <option value="{{ materia.id }}" {{ 'selected' if meta.materia_id == materia.id else '' }}>
+                        {{ materia.nome }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="data_limite">Data Limite</label>
+                <input type="date" id="data_limite" name="data_limite"
+                       value="{{ meta.data_limite.strftime('%Y-%m-%d') if meta.data_limite else '' }}">
+            </div>
+
+            <div class="form-group">
+                <label>Status da Meta</label>
+                <div class="status-group">
+                    <div class="status-option">
+                        <input type="radio" id="status_ativo" name="status" value="ativo"
+                               {{ 'checked' if meta.status == 'ativo' else '' }}>
+                        <label for="status_ativo">
+                            <i class="fa-solid fa-play-circle" style="color: #1a73e8;"></i>
+                            Ativa
+                        </label>
+                    </div>
+                    <div class="status-option">
+                        <input type="radio" id="status_concluido" name="status" value="concluido"
+                               {{ 'checked' if meta.status == 'concluido' else '' }}>
+                        <label for="status_concluido">
+                            <i class="fa-solid fa-check-circle" style="color: #2e7d32;"></i>
+                            Concluída
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-save"></i>
+                    Salvar Alterações
+                </button>
+                <a href="{{ url_for('listar_metas') }}" class="btn-cancel">
+                    <i class="fa-solid fa-times"></i>
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

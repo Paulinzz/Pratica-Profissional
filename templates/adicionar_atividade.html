@@ -114,6 +114,7 @@
         <div class="container_form_add-atv">
             <h1>Adicionar nova atividade</h1>
             <form action="{{url_for('adicionar_atividade')}}" method="post" class="form_adicionar-atividade">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <label for="materia">Matéria:</label>
                 <select name="materia" required>
                     <option value="">Selecione uma matéria</option>

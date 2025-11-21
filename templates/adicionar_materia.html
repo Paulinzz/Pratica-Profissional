@@ -52,6 +52,7 @@
         <div class="container_form_add-atv">
             <h1>Adicionar nova matéria</h1>
             <form action="{{ url_for('adicionar_materia') }}" method="post" class="form_adicionar-atividade">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <label for="materia">Nome da Matéria:</label>
                 <input type="text" name="materia" placeholder="Ex: Matemática" required maxlength="100">
 

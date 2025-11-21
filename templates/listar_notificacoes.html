@@ -409,6 +409,10 @@
         color: white;
     }
 
+    .fa-target{
+        color: #2e7d32;
+    }
+
 </style>
 
 <main>
@@ -621,10 +625,13 @@
             return;
         }
 
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         fetch('/marcar_todas_lidas', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
             }
         })
         .then(response => response.json())

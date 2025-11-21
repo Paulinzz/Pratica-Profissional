@@ -1,0 +1,433 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Calendário - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .calendario-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .calendario-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .calendario-header h1 {
+        color: #1a73e8;
+        font-size: 2.5rem;
+        margin: 0;
+    }
+
+    .calendario-info {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .legenda-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .legenda-cor {
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+    }
+
+    .calendario-wrapper {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    #calendario {
+        height: 700px;
+    }
+
+    /* Estilos do FullCalendar customizados */
+    .fc {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .fc-header-toolbar {
+        margin-bottom: 1.5em !important;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .fc-button {
+        background: #1a73e8 !important;
+        border: none !important;
+        color: white !important;
+        font-weight: 600 !important;
+        padding: 8px 16px !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .fc-button:hover {
+        background: #0d47a1 !important;
+        transform: translateY(-1px);
+    }
+
+    .fc-button:not(:disabled).fc-button-active,
+    .fc-button:not(:disabled):active {
+        background: #0d47a1 !important;
+        box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3) !important;
+    }
+
+    .fc-today-button {
+        background: #2e7d32 !important;
+    }
+
+    .fc-today-button:hover {
+        background: #1b5e20 !important;
+    }
+
+    .fc-day-today {
+        background: #e3f2fd !important;
+    }
+
+    .fc-event {
+        border-radius: 6px;
+        border: none;
+        padding: 2px 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .fc-event:hover {
+        transform: scale(1.02);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .fc-event-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Modal de detalhes do evento */
+    .evento-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .fa-times:hover{
+        color: #1a73e8;
+        background-color: #e0e0e0;
+    }
+
+    .fa-edit:hover{
+        background-color: #f57c00;
+        color: #1a73e8;
+
+    }
+
+    .evento-modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .evento-modal-content {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        max-width: 500px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+        to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .evento-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .evento-modal-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin: 0;
+    }
+
+    .evento-modal-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+        padding: 5px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .evento-modal-close:hover {
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    .evento-detalhes {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .evento-detalhe {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .evento-detalhe i {
+        color: #1a73e8;
+        font-size: 18px;
+        margin-top: 2px;
+        min-width: 20px;
+    }
+
+    .evento-detalhe-content {
+        flex: 1;
+    }
+
+    .evento-detalhe-label {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .evento-detalhe-value {
+        font-size: 16px;
+        color: #1a1a1a;
+        line-height: 1.4;
+    }
+
+    .evento-acoes {
+        margin-top: 25px;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .btn-evento {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 14px;
+    }
+
+    .btn-editar {
+        background: #fff3e0;
+        color: #f57c00;
+    }
+
+    .btn-editar:hover {
+        background: #f57c00;
+        color: white;
+    }
+
+    .btn-fechar {
+        background: #f5f5f5;
+        color: #666;
+    }
+
+    .btn-fechar:hover {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    @media (max-width: 768px) {
+        .calendario-container {
+            padding: 10px;
+        }
+
+        .calendario-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .calendario-header h1 {
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .calendario-info {
+            justify-content: center;
+        }
+
+        .calendario-wrapper {
+            padding: 15px;
+        }
+
+        #calendario {
+            height: 500px;
+        }
+
+        .evento-modal-content {
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .evento-acoes {
+            flex-direction: column;
+        }
+
+        .btn-evento {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    /* Modo Escuro */
+    body.dark-mode .calendario-wrapper {
+        background: #2d2d2d;
+    }
+
+    body.dark-mode .evento-modal-content {
+        background: #2d2d2d;
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .evento-modal-title {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .evento-detalhe-value {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .btn-evento {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .btn-editar {
+        background: #333;
+        color: #f57c00;
+    }
+
+    body.dark-mode .btn-editar:hover {
+        background: #f57c00;
+        color: #333;
+    }
+
+    body.dark-mode .btn-fechar {
+        background: #333;
+        color: #666;
+    }
+
+    body.dark-mode .btn-fechar:hover {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+</style>
+
+<main>
+    <div class="calendario-container">
+        <div class="calendario-header">
+            <h1><i class="fa-solid fa-calendar"></i> Calendário</h1>
+            <div class="calendario-info">
+                <div class="legenda-item">
+                    <div class="legenda-cor" style="background: #1a73e8;"></div>
+                    <span>Atividades</span>
+                </div>
+                <div class="legenda-item">
+                    <div class="legenda-cor" style="background: #ff9800;"></div>
+                    <span>Metas Ativas</span>
+                </div>
+                <div class="legenda-item">
+                    <div class="legenda-cor" style="background: #2e7d32;"></div>
+                    <span>Metas Concluídas</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendario-wrapper">
+            <div id="calendario"></div>
+        </div>
+    </div>
+
+    <!-- Modal de detalhes do evento -->
+    <div id="eventoModal" class="evento-modal">
+        <div class="evento-modal-content">
+            <div class="evento-modal-header">
+                <h2 id="eventoTitle" class="evento-modal-title">Detalhes do Evento</h2>
+                <button class="evento-modal-close" onclick="fecharModal()">&times;</button>
+            </div>
+            <div id="eventoDetalhes" class="evento-detalhes">
+                <!-- Conteúdo será preenchido dinamicamente -->
+            </div>
+            <div class="evento-acoes">
+                <button id="btnEditar" class="btn-evento btn-editar" style="display: none;">
+                    <i class="fa-solid fa-edit"></i>
+                    Editar
+                </button>
+                <button class="btn-evento btn-fechar" onclick="fecharModal()">
+                    <i class="fa-solid fa-times"></i>
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script type="" src="{{ url_for('static', filename='scripts/calendario.js') }}"></script>
+
+{% endblock %}

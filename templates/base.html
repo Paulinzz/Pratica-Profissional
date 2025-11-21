@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="{{url_for('static', filename='imagens/correto.png')}}" type="image/x-icon">
@@ -198,6 +199,259 @@
                 right: -10px;
             }
         }
+
+        /* Toggle Modo Escuro */
+        .theme-toggle {
+            margin-left: 15px;
+        }
+
+        .theme-toggle-btn {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .theme-toggle-btn:hover {
+            background: #e0e0e0;
+            border-color: #1a73e8;
+            color: #1a73e8;
+            transform: scale(1.05);
+        }
+
+        .theme-toggle-btn.dark {
+            background: #333;
+            border-color: #555;
+            color: #fff;
+        }
+
+        .theme-toggle-btn.dark:hover {
+            background: #555;
+            border-color: #1a73e8;
+        }
+
+        /* Modo Escuro */
+        body.dark-mode {
+            background: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .header-main {
+            background: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+
+        body.dark-mode header {
+            background: #1e1e1e;
+        }
+
+        body.dark-mode .links a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .links a:hover {
+            color: #1a73e8;
+        }
+
+        body.dark-mode .user-info {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .user-info:hover {
+            background: #333;
+        }
+
+        body.dark-mode .dropdown-menu {
+            background: #2d2d2d;
+            border: 1px solid #444;
+        }
+
+        body.dark-mode .dropdown-header {
+            border-bottom: 1px solid #444;
+        }
+
+        body.dark-mode .dropdown-item {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .dropdown-item:hover {
+            background: #333;
+        }
+
+        body.dark-mode .dropdown-divider {
+            background: #444;
+        }
+
+        body.dark-mode footer {
+            background: #1e1e1e;
+            border-top: 1px solid #333;
+        }
+
+        body.dark-mode .footer-section h3 {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .footer-section-content a {
+            color: #ccc;
+        }
+
+        body.dark-mode .footer-section-content a:hover {
+            color: #1a73e8;
+        }
+
+        body.dark-mode .footer-bottom {
+            border-top: 1px solid #333;
+        }
+
+        /* Menu Mobile */
+        .mobile-menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        .notifications {
+            margin-left: 15px;
+        }
+
+        .notifications-mobile {
+            display: none;
+            margin-left: 10px;
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .mobile-menu-overlay.active {
+            display: block;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding-top: 60px;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            background: linear-gradient(135deg, #1a73e8, #4285f4);
+            color: white;
+        }
+
+        .mobile-menu-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .mobile-menu-content {
+            padding: 20px 0;
+        }
+
+        .mobile-menu-item {
+            display: block;
+            padding: 15px 20px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-item:hover {
+            background: #f8f9fa;
+            color: #1a73e8;
+            padding-left: 30px;
+        }
+
+        .mobile-menu-item i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Responsividade Mobile */
+        @media (max-width: 768px) {
+            .links {
+                display: none;
+            }
+
+            .theme-toggle {
+                display: none;
+            }
+
+            .notifications {
+                display: none;
+            }
+
+            .mobile-menu-toggle,
+            .notifications-mobile {
+                display: block;
+            }
+
+            .user-dropdown {
+                margin-left: auto;
+            }
+
+            .dropdown-menu {
+                right: -10px;
+                left: auto;
+            }
+        }
+
+        /* Modo Escuro - Menu Mobile */
+        body.dark-mode .mobile-menu {
+            background: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .mobile-menu-item {
+            color: #e0e0e0;
+            border-bottom: 1px solid #444;
+        }
+
+        body.dark-mode .mobile-menu-item:hover {
+            background: #333;
+        }
     </style>
 </head>
 <body>
@@ -213,17 +467,33 @@
                 <span class="focusup-text">FocusUp</span>
             </div>
         </div>
-        <div class="links">
-            <a href="{{url_for('dashboard')}}">Início</a>
-            <a href="{{url_for('listar_atividades')}}">Atividades</a>
-            <a href="{{url_for('ajuda')}}">Ajuda</a>
-            <div style="position: relative;">
-                <a href="{{url_for('listar_notificacoes')}}" style="position: relative; " id="notificationLink">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
-                </a>
-            </div>
-        </div>
+         <!-- Menu Hamburguer para Mobile -->
+         <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+             <i class="fa-solid fa-bars"></i>
+         </div>
+
+         <div class="links">
+             <a href="{{url_for('dashboard')}}">Início</a>
+             <a href="{{url_for('listar_atividades')}}">Atividades</a>
+             <a href="{{url_for('listar_metas')}}">Metas</a>
+             <a href="{{url_for('calendario')}}">Calendário</a>
+             <a href="{{url_for('ajuda')}}">Ajuda</a>
+         </div>
+
+         <!-- Toggle Modo Escuro -->
+         <div class="theme-toggle">
+             <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()">
+                 <i class="fa-solid fa-moon" id="themeIcon"></i>
+             </button>
+         </div>
+
+         <!-- Notificações -->
+         <div class="notifications">
+             <a href="{{url_for('listar_notificacoes')}}" style="position: relative;" id="notificationLink">
+                 <i class="fa-solid fa-bell"></i>
+                 <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+             </a>
+         </div>
 
         <!-- Dropdown de Usuário -->
         <div class="user-dropdown" id="userDropdown">
@@ -288,7 +558,42 @@
     {% endblock %}
     
     </div>
-    
+
+    <!-- Menu Mobile -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <button class="mobile-menu-close" onclick="closeMobileMenu()">&times;</button>
+            <h3><i class="fa-solid fa-bars"></i> Menu</h3>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="{{url_for('dashboard')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+                <i class="fa-solid fa-home"></i> Início
+            </a>
+            <a href="{{url_for('listar_atividades')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+                <i class="fa-solid fa-tasks"></i> Atividades
+            </a>
+            <a href="{{url_for('listar_metas')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+                <i class="fa-solid fa-target"></i> Metas
+            </a>
+            <a href="{{url_for('calendario')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+                <i class="fa-solid fa-calendar"></i> Calendário
+            </a>
+            <a href="{{url_for('ajuda')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+                <i class="fa-solid fa-circle-question"></i> Ajuda
+            </a>
+            <div style="border-top: 1px solid #e0e0e0; margin: 10px 0;"></div>
+            <a href="{{url_for('perfil')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+                <i class="fa-solid fa-user"></i> Meu Perfil
+            </a>
+            <a href="{{url_for('configuracoes')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+                <i class="fa-solid fa-gear"></i> Configurações
+            </a>
+            <a href="{{url_for('logout')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+                <i class="fa-solid fa-right-from-bracket"></i> Sair
+            </a>
+        </div>
+    </div>
 
     {% block footer %}
     <footer>
@@ -386,62 +691,22 @@
         </div>
     </footer>
 
+    <script src="{{url_for('static', filename='scripts/main.js')}}"></script>
+
     <script>
-        // Toggle do dropdown de usuário
-        function toggleDropdown() {
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('active');
-        }
-
-        // Fechar dropdown ao clicar fora
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('userDropdown');
-            if (!dropdown.contains(event.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-
-        // Footer toggle
-        function toggleFooterSection(element) {
-            const section = element.parentElement;
-            section.classList.toggle('active');
-        }
-
-        // Função para atualizar badge de notificações
-        function updateNotificationBadge() {
-            fetch('/api/notificacoes_nao_lidas')
-                .then(response => response.json())
-                .then(data => {
-                    const badge = document.getElementById('notificationBadge');
-                    if (data.nao_lidas > 0) {
-                        badge.textContent = data.nao_lidas > 99 ? '99+' : data.nao_lidas;
-                        badge.style.display = 'inline-block';
-                    } else {
-                        badge.style.display = 'none';
-                    }
-                })
-                .catch(error => console.error('Erro ao buscar notificações:', error));
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const footerSections = document.querySelectorAll('.footer-section h3');
-            footerSections.forEach(function(header) {
-                header.addEventListener('click', function() {
-                    footerSections.forEach(function(otherHeader) {
-                        if (otherHeader !== header) {
-                            otherHeader.parentElement.classList.remove('active');
-                        }
-                    });
+        // Inicializar tema baseado na preferência do usuário
+        {% if current_user.is_authenticated %}
+            {% if current_user.tema_escuro %}
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.body.classList.add('dark-mode');
+                    document.getElementById('themeIcon').classList.remove('fa-moon');
+                    document.getElementById('themeIcon').classList.add('fa-sun');
+                    document.getElementById('themeToggle').classList.add('dark');
                 });
-            });
-
-            // Atualizar badge de notificações
-            updateNotificationBadge();
-
-            // Atualizar badge a cada 30 segundos
-            setInterval(updateNotificationBadge, 30000);
-        });
+            {% endif %}
+        {% endif %}
     </script>
+
     {% endblock %}
 </body>
 </html>

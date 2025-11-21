@@ -21,6 +21,18 @@ Com ele, a jornada de aprendizado se transforma em algo mais claro, mais conscie
 ---
 
 ## 🚀 Funcionalidades
+**📆 Calendário Interativo: visualize atividades e metas em um calendário completo**
+
+**🎯 Sistema de Metas: defina e acompanhe suas metas de estudo**
+
+**🏆 Gamificação com Badges: conquiste badges por conquistas como primeira atividade, meta concluída, etc.**
+
+**🔔 Notificações Push: receba alertas no navegador para novas notificações**
+
+**📊 Relatórios Avançados: baixe relatórios PDF com estatísticas detalhadas**
+
+**🌙 Modo Escuro: alterne entre temas claro e escuro**
+
 **📆 Agenda de Estudos: organize por dias, matérias e prioridades**
 
 **✅ Checklist Interativo: marque conteúdos como concluídos**

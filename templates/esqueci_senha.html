@@ -3,31 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Esqueci minha senha</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='formularios.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="{{url_for('static', filename='imagens/correto.png')}}" type="image/x-icon">
-
 </head>
 <body>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flash-container">
-                {% for category, message in messages %}
-                <div class="flash {{ category }}">{{ message }}</div>
-                {% endfor %}
-            </div>  
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
         {% endif %}
     {% endwith %}
-    
+
     <header>
-        <h1>Login</h1>
+        <h1>Esqueci minha senha</h1>
     </header>
 
     <main>
-        <!-- Adicionada a action e o method para o formulário, q estava faltando -->
-        <form action="{{ url_for('login') }}" method="POST">
+        <form action="{{ url_for('esqueci_senha') }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <div class="logo-container">
                 <div class="focusup-logo">
@@ -37,22 +35,18 @@
                     <span class="focusup-text">FocusUp</span>
                 </div>
             </div>
-            
+
+            <p style="text-align: center; margin-bottom: 20px; color: #666;">
+                Digite seu email cadastrado e enviaremos instruções para redefinir sua senha.
+            </p>
+
             <div class="email">
-                <i class="fa-regular fa-user"></i>
-                <!-- Adicionado o atributo name="email, q estava faltando" -->
+                <i class="fa-regular fa-envelope"></i>
                 <input type="email" name="email" placeholder="E-mail" required>
             </div>
-            
-            <div class="senha">
-                <i class="fa-solid fa-key"></i>
-                <!-- Adicionado o atributo name="password" -->
-                <input type="password" name="password" placeholder="Senha" required>
-            </div>
-            
-            <button type="submit">Entrar</button>
-            <a href="{{url_for('register')}}">Não tem uma conta? entre aqui</a>
-            <a href="{{url_for('esqueci_senha')}}" style="display: block; margin-top: 10px; color: #666; text-decoration: none;">Esqueci minha senha</a>
+
+            <button type="submit">Enviar instruções</button>
+            <a href="{{url_for('login')}}">Voltar ao login</a>
         </form>
     </main>
 </body>

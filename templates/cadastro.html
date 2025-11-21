@@ -29,6 +29,7 @@
     <main>
         <!-- Adicionada a action e o method para o formulário -->
         <form action="{{ url_for('register') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <div class="logo-container">
                 <div class="focusup-logo">
                     <div class="checkmark-container">

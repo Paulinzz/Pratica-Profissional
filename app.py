@@ -4,15 +4,19 @@ from flask_login import *
 from flask_bcrypt import (
     Bcrypt,
 )
+from flask_wtf.csrf import CSRFProtect
+from flask_mail import Mail
 import os
 from dotenv import load_dotenv
 from sqlalchemy import func
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+import secrets
 
 import requests
 import re
 from functools import wraps
+import bleach
 
 from models.models import (
     db,
@@ -20,6 +24,9 @@ from models.models import (
     Materia,
     Atividade,
     Notificacao,
+    Meta,
+    Badge,
+    UserBadge,
 )
 
 # Carregar variáveis de ambiente
@@ -48,8 +55,22 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "Chave1234")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+# Configurações de email
+app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER", "smtp.gmail.com")
+app.config["MAIL_PORT"] = int(os.getenv("MAIL_PORT", 587))
+app.config["MAIL_USE_TLS"] = os.getenv("MAIL_USE_TLS", "True").lower() == "true"
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = os.getenv(
+    "MAIL_DEFAULT_SENDER", app.config["MAIL_USERNAME"]
+)
+
 db.init_app(app)
 bcrypt = Bcrypt(app)
+mail = Mail(app)
+
+# Inicializar proteção CSRF
+csrf = CSRFProtect(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -76,19 +97,20 @@ class Validadores:
 
     @staticmethod
     def validar_senha(senha):
-        """Valida complexidade da senha"""
+        """Valida complexidade da senha com regex"""
         if not senha or len(senha) < 6:
             return False, "A senha deve ter no mínimo 6 caracteres"
 
         if len(senha) > 100:
             return False, "A senha deve ter no máximo 100 caracteres"
 
-        # Verificar se tem pelo menos uma letra e um número
-        tem_letra = any(c.isalpha() for c in senha)
-        tem_numero = any(c.isdigit() for c in senha)
-
-        if not (tem_letra and tem_numero):
-            return False, "A senha deve conter letras e números"
+        # Regex para validar: pelo menos uma maiúscula, uma minúscula, um dígito e um caractere especial
+        pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]"
+        if not re.match(pattern, senha):
+            return (
+                False,
+                "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um dígito e um caractere especial (@$!%*?&)",
+            )
 
         return True, "Senha válida"
 
@@ -130,15 +152,135 @@ class Validadores:
 
         return True, "Duração válida"
 
+    @staticmethod
+    def sanitizar_texto(texto):
+        """Sanitiza texto removendo tags HTML perigosas"""
+        if not texto:
+            return texto
+
+        # Lista de tags permitidas (básicas e seguras)
+        allowed_tags = [
+            "p",
+            "br",
+            "strong",
+            "em",
+            "u",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "ul",
+            "ol",
+            "li",
+            "blockquote",
+        ]
+        allowed_attributes = {}
+
+        # Sanitizar o texto
+        texto_sanitizado = bleach.clean(
+            texto, tags=allowed_tags, attributes=allowed_attributes, strip=True
+        )
+
+        return texto_sanitizado
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+def criar_badges_padrao():
+    """Cria badges padrão se não existirem"""
+    badges = [
+        {
+            "nome": "Primeira Atividade",
+            "descricao": "Adicionou sua primeira atividade",
+            "icone": "fa-plus",
+            "categoria": "atividade",
+            "criterio": "primeira_atividade",
+            "pontos": 10,
+        },
+        {
+            "nome": "Meta Concluída",
+            "descricao": "Concluiu sua primeira meta",
+            "icone": "fa-check",
+            "categoria": "meta",
+            "criterio": "primeira_meta_concluida",
+            "pontos": 20,
+        },
+        {
+            "nome": "Estudioso",
+            "descricao": "Estudou por 10 horas",
+            "icone": "fa-clock",
+            "categoria": "tempo",
+            "criterio": "10_horas",
+            "pontos": 30,
+        },
+        {
+            "nome": "Dedicado",
+            "descricao": "Adicionou 5 matérias",
+            "icone": "fa-book",
+            "categoria": "materia",
+            "criterio": "5_materias",
+            "pontos": 25,
+        },
+    ]
+
+    for badge_data in badges:
+        if not Badge.query.filter_by(nome=badge_data["nome"]).first():
+            badge = Badge(**badge_data)
+            db.session.add(badge)
+    db.session.commit()
+
+
+def verificar_e_conceder_badge(user_id, criterio):
+    """Verifica se o usuário atende ao critério e concede o badge se não tiver"""
+    user = User.query.get(user_id)
+    badge = Badge.query.filter_by(criterio=criterio).first()
+    if not badge:
+        return
+
+    # Verificar se já tem
+    if UserBadge.query.filter_by(user_id=user_id, badge_id=badge.id).first():
+        return
+
+    # Verificar condição
+    conceder = False
+    if criterio == "primeira_atividade":
+        conceder = len(user.atividades) >= 1
+    elif criterio == "primeira_meta_concluida":
+        conceder = (
+            Meta.query.filter_by(user_id=user_id, status="concluido").count() >= 1
+        )
+    elif criterio == "10_horas":
+        tempo_total = 0
+        for atividade in user.atividades:
+            tempo_total += parse_duration_to_minutes(atividade.duracao or "0")
+        conceder = tempo_total >= 600  # 10 horas
+    elif criterio == "5_materias":
+        conceder = len(user.materias) >= 5
+
+    if conceder:
+        user_badge = UserBadge(user_id=user_id, badge_id=badge.id)
+        db.session.add(user_badge)
+        db.session.commit()
+
+        # Notificação
+        criar_notificacao(
+            user_id=user_id,
+            tipo="conquista",
+            titulo=f"🏆 Badge Conquistado: {badge.nome}!",
+            mensagem=f"Parabéns! Você ganhou o badge '{badge.nome}' - {badge.descricao}",
+            icone="fa-trophy",
+        )
+
+
 with app.app_context():
     try:
         db.create_all()
+        criar_badges_padrao()
         print("✅ Banco de dados conectado com sucesso!")
     except Exception as e:
         print(f"❌ Erro ao conectar com o banco de dados: {e}")
@@ -231,21 +373,8 @@ def parse_duration_to_minutes(duracao):
         return 0
 
 
-# =============== PROTEÇÃO CSRF flask wtf que romerito ensinou, add dps ===============
-
-
-@app.before_request
-def csrf_protect():
-    """Proteção básica contra CSRF para métodos POST/PUT/DELETE"""
-    if request.method in ["POST", "PUT", "DELETE"]:
-        # Verificar se é uma requisição AJAX (pode confiar mais)
-        if request.is_json:
-            return
-
-        # Verificar referer
-        referer = request.headers.get("Referer")
-        if referer and not referer.startswith(request.host_url):
-            return "CSRF attack detected", 403
+# =============== PROTEÇÃO CSRF ===============
+# Proteção CSRF implementada com flask-wtf (CSRFProtect)
 
 
 @app.route("/")
@@ -307,7 +436,7 @@ def register():
             criar_notificacao(
                 user_id=new_user.id,
                 tipo="sistema",
-                titulo="Bem-vindo ao FocusUp! 🎉",
+                titulo="Bem-vindo ao FocusUp!",
                 mensagem="Sua conta foi criada com sucesso! Comece adicionando suas primeiras atividades.",
                 link="/dashboard",
                 icone="fa-rocket",
@@ -370,6 +499,102 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("login.html")
+
+
+@app.route("/esqueci_senha", methods=["GET", "POST"])
+def esqueci_senha():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+
+        # Validar email
+        valido, msg = Validadores.validar_email(email)
+        if not valido:
+            flash(msg, "error")
+            return redirect(url_for("esqueci_senha"))
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            # Gerar token seguro
+            token = secrets.token_urlsafe(32)
+            expires = datetime.utcnow() + timedelta(hours=1)  # Expira em 1 hora
+
+            user.reset_token = token
+            user.reset_expires = expires
+            db.session.commit()
+
+            # Enviar email
+            try:
+                from flask_mail import Message
+
+                msg = Message("Redefinição de Senha - FocusUp", recipients=[email])
+                msg.body = f"""
+Olá {user.name or 'usuário'},
+
+Você solicitou a redefinição de senha da sua conta no FocusUp.
+
+Para redefinir sua senha, clique no link abaixo:
+{url_for('resetar_senha', token=token, _external=True)}
+
+Este link expira em 1 hora.
+
+Se você não solicitou esta redefinição, ignore este email.
+
+Atenciosamente,
+Equipe FocusUp
+                """
+                mail.send(msg)
+                flash(
+                    "Email de redefinição enviado! Verifique sua caixa de entrada.",
+                    "success",
+                )
+            except Exception as e:
+                print(f"Erro ao enviar email: {e}")
+                flash("Erro ao enviar email. Tente novamente mais tarde.", "error")
+        else:
+            # Mesmo se não existir, mostrar mensagem de sucesso para não revelar se email existe
+            flash(
+                "Se o email estiver cadastrado, você receberá instruções para redefinir a senha.",
+                "info",
+            )
+
+        return redirect(url_for("login"))
+
+    return render_template("esqueci_senha.html")
+
+
+@app.route("/resetar_senha/<token>", methods=["GET", "POST"])
+def resetar_senha(token):
+    user = User.query.filter_by(reset_token=token).first()
+
+    if not user or user.reset_expires < datetime.utcnow():
+        flash("Link de redefinição inválido ou expirado.", "error")
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        senha = request.form.get("senha", "")
+        confirmar_senha = request.form.get("confirmar_senha", "")
+
+        if senha != confirmar_senha:
+            flash("As senhas não coincidem.", "error")
+            return redirect(url_for("resetar_senha", token=token))
+
+        # Validar nova senha
+        valido, msg = Validadores.validar_senha(senha)
+        if not valido:
+            flash(msg, "error")
+            return redirect(url_for("resetar_senha", token=token))
+
+        # Atualizar senha
+        hashed_password = bcrypt.generate_password_hash(senha).decode("utf-8")
+        user.password = hashed_password
+        user.reset_token = None
+        user.reset_expires = None
+        db.session.commit()
+
+        flash("Senha redefinida com sucesso! Faça login com sua nova senha.", "success")
+        return redirect(url_for("login"))
+
+    return render_template("resetar_senha.html", token=token)
 
 
 @app.route("/logout")
@@ -478,6 +703,13 @@ def dashboard():
     labels_dash = [str(row[0]) for row in activities_per_day]
     data_dash = [row[1] for row in activities_per_day]
 
+    # Estatísticas de metas
+    metas_ativas = Meta.query.filter_by(user_id=current_user.id, status="ativo").count()
+    metas_concluidas = Meta.query.filter_by(
+        user_id=current_user.id, status="concluido"
+    ).count()
+    total_metas = metas_ativas + metas_concluidas
+
     return render_template(
         "dashboard.html",
         artigos=artigos,
@@ -487,6 +719,9 @@ def dashboard():
         data_materias=data_materias,
         tempo_por_materia=tempo_por_materia,
         sorted_materias=sorted_materias,
+        metas_ativas=metas_ativas,
+        metas_concluidas=metas_concluidas,
+        total_metas=total_metas,
     )
 
 
@@ -523,6 +758,9 @@ def adicionar_materia():
             mensagem=f"A matéria '{nome_materia}' foi adicionada com sucesso.",
             icone="fa-book",
         )
+
+        # Verificar badge
+        verificar_e_conceder_badge(current_user.id, "5_materias")
 
         flash(f"Matéria '{nome_materia}' adicionada com sucesso!", "success")
         return redirect(url_for("adicionar_materia_page"))
@@ -570,8 +808,12 @@ def adicionar_atividade():
 
     if request.method == "POST":
         materia = request.form.get("materia", "").strip()
-        assunto = request.form.get("assunto_primario", "").strip()
-        descricao = request.form.get("descricao", "").strip()
+        assunto = Validadores.sanitizar_texto(
+            request.form.get("assunto_primario", "").strip()
+        )
+        descricao = Validadores.sanitizar_texto(
+            request.form.get("descricao", "").strip()
+        )
         duracao = request.form.get("duracao", "").strip()
         data = request.form.get("data", "").strip()
 
@@ -622,6 +864,10 @@ def adicionar_atividade():
                 icone="fa-calendar-check",
             )
 
+            # Verificar badges
+            verificar_e_conceder_badge(current_user.id, "primeira_atividade")
+            verificar_e_conceder_badge(current_user.id, "10_horas")
+
             flash("Atividade adicionada com sucesso!", "success")
             return redirect(url_for("adicionar_atividade"))
         except Exception as e:
@@ -661,8 +907,8 @@ def editar_atividade(atividade_id):
 
     if request.method == "POST":
         materia = request.form.get("materia")
-        assunto = request.form.get("assunto_primario")
-        descricao = request.form.get("descricao")
+        assunto = Validadores.sanitizar_texto(request.form.get("assunto_primario"))
+        descricao = Validadores.sanitizar_texto(request.form.get("descricao"))
         duracao = request.form.get("duracao")
 
         if not materia or not assunto:
@@ -863,9 +1109,6 @@ def termos_servico():
     )
 
 
-# Adicione estas rotas no seu app.py, logo antes da rota /ajuda ou no final antes do if __name__ == "__main__":
-
-
 @app.route("/perfil")
 @login_required
 def perfil():
@@ -887,11 +1130,15 @@ def perfil():
         else:
             break
 
+    # Badges do usuário
+    user_badges = UserBadge.query.filter_by(user_id=current_user.id).all()
+
     return render_template(
         "perfil.html",
         atividades_count=atividades_count,
         materias_count=materias_count,
         sequencia=sequencia,
+        user_badges=user_badges,
     )
 
 
@@ -906,7 +1153,7 @@ def configuracoes():
 @login_required
 def atualizar_perfil():
     """Atualiza informações do perfil"""
-    nome = request.form.get("nome")
+    nome = Validadores.sanitizar_texto(request.form.get("nome"))
     email = request.form.get("email")
 
     try:
@@ -1306,8 +1553,6 @@ def allowed_file(filename):
 @login_required
 def salvar_configuracoes():
     """Salva as configurações do usuário"""
-    # Aqui você pode adicionar lógica para salvar preferências em uma tabela separada
-    # Por enquanto, apenas retorna sucesso
     flash("Configurações salvas com sucesso!", "success")
     return redirect(url_for("configuracoes"))
 
@@ -1342,6 +1587,284 @@ def salvar_sessao_pomodoro():
 
         return {"success": True, "message": "Sessão salva com sucesso!"}, 200
     except Exception as e:
+        return {"success": False, "message": str(e)}, 500
+
+
+# =============== SISTEMA DE METAS ===============
+
+
+@app.route("/metas")
+@login_required
+def listar_metas():
+    """Lista todas as metas do usuário"""
+    status_filtro = request.args.get("status", "todos")
+    query = Meta.query.filter_by(user_id=current_user.id)
+
+    if status_filtro != "todos":
+        query = query.filter_by(status=status_filtro)
+
+    metas = query.order_by(Meta.data_criacao.desc()).all()
+    return render_template(
+        "listar_metas.html", metas=metas, status_filtro=status_filtro
+    )
+
+
+@app.route("/criar_meta", methods=["GET", "POST"])
+@login_required
+def criar_meta():
+    """Cria uma nova meta"""
+    materias = Materia.query.filter_by(user_id=current_user.id).all()
+
+    if request.method == "POST":
+        titulo = Validadores.sanitizar_texto(request.form.get("titulo", "").strip())
+        descricao = Validadores.sanitizar_texto(
+            request.form.get("descricao", "").strip()
+        )
+        data_limite = request.form.get("data_limite", "").strip()
+        materia_id = request.form.get("materia_id", "").strip()
+
+        # Validações
+        if not titulo or len(titulo) < 3:
+            flash("Título deve ter no mínimo 3 caracteres.", "error")
+            return redirect(url_for("criar_meta"))
+
+        if len(titulo) > 200:
+            flash("Título deve ter no máximo 200 caracteres.", "error")
+            return redirect(url_for("criar_meta"))
+
+        try:
+            nova_meta = Meta(
+                user_id=current_user.id,
+                titulo=titulo,
+                descricao=descricao if descricao else None,
+                data_limite=data_limite if data_limite else None,
+                materia_id=int(materia_id) if materia_id else None,
+            )
+            db.session.add(nova_meta)
+            db.session.commit()
+
+            # Criar notificação
+            criar_notificacao(
+                user_id=current_user.id,
+                tipo="sistema",
+                titulo="Meta Criada! 🎯",
+                mensagem=f"Meta '{titulo}' foi criada com sucesso.",
+                link="/metas",
+                icone="fa-target",
+            )
+
+            flash("Meta criada com sucesso!", "success")
+            return redirect(url_for("listar_metas"))
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Erro ao criar meta: {str(e)}", "error")
+
+    return render_template("criar_meta.html", materias=materias)
+
+
+@app.route("/editar_meta/<int:meta_id>", methods=["GET", "POST"])
+@login_required
+def editar_meta(meta_id):
+    """Edita uma meta existente"""
+    meta = Meta.query.filter_by(id=meta_id, user_id=current_user.id).first()
+    if not meta:
+        flash("Meta não encontrada.", "error")
+        return redirect(url_for("listar_metas"))
+
+    materias = Materia.query.filter_by(user_id=current_user.id).all()
+
+    if request.method == "POST":
+        titulo = Validadores.sanitizar_texto(request.form.get("titulo", "").strip())
+        descricao = Validadores.sanitizar_texto(
+            request.form.get("descricao", "").strip()
+        )
+        data_limite = request.form.get("data_limite", "").strip()
+        materia_id = request.form.get("materia_id", "").strip()
+        status = request.form.get("status", "ativo")
+
+        # Validações
+        if not titulo or len(titulo) < 3:
+            flash("Título deve ter no mínimo 3 caracteres.", "error")
+            return redirect(url_for("editar_meta", meta_id=meta_id))
+
+        if len(titulo) > 200:
+            flash("Título deve ter no máximo 200 caracteres.", "error")
+            return redirect(url_for("editar_meta", meta_id=meta_id))
+
+        try:
+            meta.titulo = titulo
+            meta.descricao = descricao if descricao else None
+            meta.data_limite = data_limite if data_limite else None
+            meta.materia_id = int(materia_id) if materia_id else None
+            meta.status = status
+            db.session.commit()
+
+            flash("Meta atualizada com sucesso!", "success")
+            return redirect(url_for("listar_metas"))
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Erro ao atualizar meta: {str(e)}", "error")
+
+    return render_template("editar_meta.html", meta=meta, materias=materias)
+
+
+@app.route("/deletar_meta/<int:meta_id>", methods=["POST"])
+@login_required
+def deletar_meta(meta_id):
+    """Deleta uma meta"""
+    meta = Meta.query.filter_by(id=meta_id, user_id=current_user.id).first()
+    if not meta:
+        flash("Meta não encontrada.", "error")
+        return redirect(url_for("listar_metas"))
+
+    try:
+        db.session.delete(meta)
+        db.session.commit()
+        flash("Meta deletada com sucesso!", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash("Erro ao deletar meta.", "error")
+
+    return redirect(url_for("listar_metas"))
+
+
+@app.route("/concluir_meta/<int:meta_id>", methods=["POST"])
+@login_required
+def concluir_meta(meta_id):
+    """Marca uma meta como concluída"""
+    meta = Meta.query.filter_by(id=meta_id, user_id=current_user.id).first()
+    if not meta:
+        flash("Meta não encontrada.", "error")
+        return redirect(url_for("listar_metas"))
+
+    try:
+        meta.status = "concluido"
+        db.session.commit()
+
+        # Criar notificação de conquista
+        criar_notificacao(
+            user_id=current_user.id,
+            tipo="conquista",
+            titulo="Meta Concluída! 🏆",
+            mensagem=f"Parabéns! Você concluiu a meta '{meta.titulo}'.",
+            icone="fa-trophy",
+        )
+
+        # Verificar badge
+        verificar_e_conceder_badge(current_user.id, "primeira_meta_concluida")
+
+        flash("Meta marcada como concluída!", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash("Erro ao concluir meta.", "error")
+
+    return redirect(url_for("listar_metas"))
+
+
+# =============== CALENDÁRIO VISUAL ===============
+
+
+@app.route("/calendario")
+@login_required
+def calendario():
+    """Página do calendário interativo"""
+    return render_template("calendario.html")
+
+
+@app.route("/api/calendario_eventos")
+@login_required
+def api_calendario_eventos():
+    """API para obter eventos do calendário"""
+    eventos = []
+
+    # Adicionar atividades com data
+    atividades = (
+        Atividade.query.filter_by(user_id=current_user.id)
+        .filter(Atividade.data.isnot(None))
+        .all()
+    )
+    for atividade in atividades:
+        eventos.append(
+            {
+                "id": f"atividade_{atividade.id}",
+                "title": f"📚 {atividade.assunto_primario}",
+                "start": atividade.data.isoformat(),
+                "backgroundColor": "#1a73e8",
+                "borderColor": "#0d47a1",
+                "extendedProps": {
+                    "tipo": "atividade",
+                    "materia": atividade.materia,
+                    "descricao": atividade.descricao,
+                    "duracao": atividade.duracao,
+                },
+            }
+        )
+
+    # Adicionar metas com data limite
+    from sqlalchemy.orm import joinedload
+
+    metas = (
+        Meta.query.filter_by(user_id=current_user.id)
+        .filter(Meta.data_limite.isnot(None))
+        .options(joinedload(Meta.materia))
+        .all()
+    )
+    for meta in metas:
+        cor = "#2e7d32" if meta.status == "concluido" else "#ff9800"
+        eventos.append(
+            {
+                "id": f"meta_{meta.id}",
+                "title": f"🎯 {meta.titulo}",
+                "start": meta.data_limite.isoformat(),
+                "backgroundColor": cor,
+                "borderColor": cor,
+                "extendedProps": {
+                    "tipo": "meta",
+                    "status": meta.status,
+                    "descricao": meta.descricao,
+                    "materia": meta.materia.nome if meta.materia else None,
+                },
+            }
+        )
+
+    return {"eventos": eventos}
+
+
+@app.route("/alternar_tema", methods=["POST"])
+@login_required
+def alternar_tema():
+    """Alterna entre modo claro e escuro"""
+    data = request.get_json()
+    if data and "tema_escuro" in data:
+        current_user.tema_escuro = data["tema_escuro"]
+    else:
+        current_user.tema_escuro = not current_user.tema_escuro
+    db.session.commit()
+    return {"success": True, "tema_escuro": current_user.tema_escuro}
+
+
+@app.route("/atualizar_configuracoes", methods=["POST"])
+@login_required
+def atualizar_configuracoes():
+    """Atualiza configurações do usuário"""
+    data = request.get_json()
+    if not data:
+        return {"success": False, "message": "Dados inválidos"}, 400
+
+    try:
+        if "notificacoes_email" in data:
+            current_user.notificacoes_email = data["notificacoes_email"]
+        if "notificacoes_push" in data:
+            current_user.notificacoes_push = data["notificacoes_push"]
+        if "lembretes" in data:
+            current_user.lembretes = data["lembretes"]
+        if "idioma" in data:
+            current_user.idioma = data["idioma"]
+
+        db.session.commit()
+        return {"success": True, "message": "Configurações atualizadas com sucesso"}
+    except Exception as e:
+        db.session.rollback()
         return {"success": False, "message": str(e)}, 500
 
 

@@ -440,6 +440,68 @@
         }
     }
 
+    /* Modo Escuro */
+    body.dark-mode .config-card {
+        background: #2d2d2d;
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .card-header h3 {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .setting-item {
+        background: #333;
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .setting-item:hover {
+        background: #404040;
+    }
+
+    body.dark-mode .setting-info h4 {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .setting-info p {
+        color: #ccc;
+    }
+
+    body.dark-mode .theme-card {
+        background: #333;
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .theme-card.active {
+        background: #1a73e8;
+    }
+
+    body.dark-mode .language-option {
+        background: #333;
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .language-option.active {
+        background: #1a73e8;
+    }
+
+    body.dark-mode .language-name {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .language-region {
+        color: #ccc;
+    }
+
+    body.dark-mode .action-btn {
+        background: #333;
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .action-btn:hover {
+        background: #404040;
+    }
+
 </style>
 
 <main>
@@ -477,7 +539,7 @@
                         <p>Receba atualizações importantes no seu email</p>
                     </div>
                     <label class="switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="emailNotif" {{ 'checked' if current_user.notificacoes_email else '' }}>
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -488,7 +550,7 @@
                         <p>Receba alertas no navegador</p>
                     </div>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="pushNotif" {{ 'checked' if current_user.notificacoes_push else '' }}>
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -499,7 +561,7 @@
                         <p>Receba lembretes automáticos de atividades</p>
                     </div>
                     <label class="switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="lembretes" {{ 'checked' if current_user.lembretes else '' }}>
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -515,8 +577,8 @@
                 <div class="form-group">
                     <label></label>
                     <div class="theme-options">
-                        <label class="theme-card active">
-                            <input type="radio" name="tema" value="claro" checked>
+                        <label class="theme-card {{ 'active' if not current_user.tema_escuro else '' }}">
+                            <input type="radio" name="tema" value="claro" {{ 'checked' if not current_user.tema_escuro else '' }}>
                             <div class="theme-icon">
                                 <div>
                                 <i class="fa-solid fa-sun"></i>
@@ -524,9 +586,9 @@
                             </div>
                             <div class="theme-label">Claro</div>
                         </label>
-                        
-                        <label class="theme-card">
-                            <input type="radio" name="tema" value="escuro">
+
+                        <label class="theme-card {{ 'active' if current_user.tema_escuro else '' }}">
+                            <input type="radio" name="tema" value="escuro" {{ 'checked' if current_user.tema_escuro else '' }}>
                             <div class="theme-icon">
                                 <div>
                                 <i class="fa-solid fa-moon"></i>
@@ -534,7 +596,7 @@
                             </div>
                             <div class="theme-label">Escuro</div>
                         </label>
-                        
+
                         <label class="theme-card">
                             <input type="radio" name="tema" value="auto">
                             <div class="theme-icon">
@@ -554,8 +616,8 @@
                     </label>
                     <div class="language-selector">
                         <div class="language-options">
-                            <label class="language-option active" for="lang-pt">
-                                <input type="radio" id="lang-pt" name="idioma" value="pt-br" checked>
+                            <label class="language-option {{ 'active' if current_user.idioma == 'pt-br' else '' }}" for="lang-pt">
+                                <input type="radio" id="lang-pt" name="idioma" value="pt-br" {{ 'checked' if current_user.idioma == 'pt-br' else '' }}>
                                 <div class="language-content">
                                     <span class="flag">🇧🇷</span>
                                     <div class="language-info">
@@ -565,8 +627,8 @@
                                 </div>
                             </label>
 
-                            <label class="language-option" for="lang-en">
-                                <input type="radio" id="lang-en" name="idioma" value="en">
+                            <label class="language-option {{ 'active' if current_user.idioma == 'en' else '' }}" for="lang-en">
+                                <input type="radio" id="lang-en" name="idioma" value="en" {{ 'checked' if current_user.idioma == 'en' else '' }}>
                                 <div class="language-content">
                                     <span class="flag">🇺🇸</span>
                                     <div class="language-info">
@@ -576,8 +638,8 @@
                                 </div>
                             </label>
 
-                            <label class="language-option" for="lang-es">
-                                <input type="radio" id="lang-es" name="idioma" value="es">
+                            <label class="language-option {{ 'active' if current_user.idioma == 'es' else '' }}" for="lang-es">
+                                <input type="radio" id="lang-es" name="idioma" value="es" {{ 'checked' if current_user.idioma == 'es' else '' }}>
                                 <div class="language-content">
                                     <span class="flag">🇪🇸</span>
                                     <div class="language-info">
@@ -635,6 +697,38 @@
             document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
             this.classList.add('active');
             this.querySelector('input').checked = true;
+
+            // Aplicar tema
+            const tema = this.querySelector('input').value;
+            if (tema === 'escuro') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeIcon').classList.remove('fa-moon');
+                document.getElementById('themeIcon').classList.add('fa-sun');
+                document.getElementById('themeToggle').classList.add('dark');
+            } else if (tema === 'claro') {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('themeIcon').classList.remove('fa-sun');
+                document.getElementById('themeIcon').classList.add('fa-moon');
+                document.getElementById('themeToggle').classList.remove('dark');
+            }
+
+            // Salvar preferência
+            fetch('/alternar_tema', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ tema_escuro: tema === 'escuro' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    console.error('Erro ao salvar preferência de tema');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
         });
     });
 
@@ -709,16 +803,47 @@
 
     // Salvar configurações com feedback
     document.querySelector('.btn-save').addEventListener('click', function() {
-        // Animação de sucesso
-        const btn = this;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check"></i> Salvo!';
-        btn.style.background = 'linear-gradient(135deg, #4caf50, #66bb6a)';
-        
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.style.background = 'linear-gradient(135deg, #2e7d32, #43a047)';
-        }, 2000);
+        const emailNotif = document.getElementById('emailNotif').checked;
+        const pushNotif = document.getElementById('pushNotif').checked;
+        const lembretes = document.getElementById('lembretes').checked;
+        const idioma = document.querySelector('input[name="idioma"]:checked').value;
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch('/atualizar_configuracoes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                notificacoes_email: emailNotif,
+                notificacoes_push: pushNotif,
+                lembretes: lembretes,
+                idioma: idioma
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Animação de sucesso
+                const btn = document.querySelector('.btn-save');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Salvo!';
+                btn.style.background = 'linear-gradient(135deg, #4caf50, #66bb6a)';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #2e7d32, #43a047)';
+                }, 2000);
+            } else {
+                alert('Erro ao salvar configurações: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao salvar configurações.');
+        });
     });
 </script>
 

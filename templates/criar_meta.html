@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Criar Meta - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .form-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .form-header h1 {
+        color: #1a73e8;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .form-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .meta-form {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 16px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+        line-height: 1.4;
+        vertical-align: top;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .form-group select {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 16px;
+        padding-right: 45px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
+    }
+
+    .btn-cancel {
+        background: #f5f5f5;
+        color: #666;
+        border: 2px solid #e0e0e0;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background: #e0e0e0;
+        border-color: #ccc;
+        color: #333;
+    }
+
+    .form-help {
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    .form-help h4 {
+        color: #1a73e8;
+        margin: 0 0 8px 0;
+        font-size: 14px;
+    }
+
+    .form-help p {
+        color: #666;
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 10px;
+        }
+
+        .meta-form {
+            padding: 25px;
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-submit,
+        .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<main>
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fa-solid fa-target"></i> Criar Nova Meta</h1>
+            <p>Defina objetivos claros para alcançar seus sonhos de estudo</p>
+        </div>
+
+        <form action="{{ url_for('criar_meta') }}" method="post" class="meta-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <div class="form-group">
+                <label for="titulo">Título da Meta *</label>
+                <input type="text" id="titulo" name="titulo" placeholder="Ex: Concluir curso de Python" required maxlength="200">
+                <div class="form-help">
+                    <h4><i class="fa-solid fa-lightbulb"></i> Dica</h4>
+                    <p>Use um título claro e específico que descreva exatamente o que você quer alcançar.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição (Opcional)</label>
+                <input id="descricao" name="descricao" placeholder="Descreva os detalhes da sua meta, passos necessários, recursos etc."></input>
+                <div class="form-help">
+                    <h4><i class="fa-solid fa-info-circle"></i> Opcional</h4>
+                    <p>Adicione detalhes sobre como você planeja alcançar esta meta.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="materia_id">Matéria Relacionada (Opcional)</label>
+                <select id="materia_id" name="materia_id">
+                    <option value="">Selecione uma matéria (opcional)</option>
+                    {% for materia in materias %}
+                    <option value="{{ materia.id }}">{{ materia.nome }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-help">
+                    <h4><i class="fa-solid fa-link"></i> Vinculação</h4>
+                    <p>Vincule esta meta a uma matéria específica para melhor organização.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="data_limite">Data Limite (Opcional)</label>
+                <input type="date" id="data_limite" name="data_limite">
+                <div class="form-help">
+                    <h4><i class="fa-solid fa-calendar"></i> Prazo</h4>
+                    <p>Defina uma data limite para manter o foco e a motivação.</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-plus"></i>
+                    Criar Meta
+                </button>
+                <a href="{{ url_for('listar_metas') }}" class="btn-cancel">
+                    <i class="fa-solid fa-times"></i>
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

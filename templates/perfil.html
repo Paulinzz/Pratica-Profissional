@@ -330,9 +330,9 @@
         font-size: 17px;
         font-weight: 600;
         cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+        display: block;
+        width: 100%;
+        text-align: center;
         transition: all 0.3s ease;
         box-shadow: 0 6px 20px rgba(46,125,50,0.3);
     }
@@ -426,6 +426,7 @@
         background-color: #43a047;
         border: none;
     }
+
 </style>
 
 <main>
@@ -493,6 +494,26 @@
 
                 <div class="stats-card">
                     <h3>
+                        <i class="fa-solid fa-trophy"></i>
+                        Badges Conquistados
+                    </h3>
+                    {% if user_badges %}
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            {% for user_badge in user_badges %}
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 10px; min-width: 80px;">
+                                <i class="fa-solid {{ user_badge.badge.icone }}" style="font-size: 24px; color: #1a73e8; margin-bottom: 5px;"></i>
+                                <div style="font-size: 12px; font-weight: 600; text-align: center; color: #333;">{{ user_badge.badge.nome }}</div>
+                                <div style="font-size: 10px; color: #666; text-align: center;">{{ user_badge.data_conquista.strftime('%d/%m/%Y') }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p style="text-align: center; color: #666; padding: 20px;">Nenhum badge conquistado ainda. Continue estudando!</p>
+                    {% endif %}
+                </div>
+
+                <div class="stats-card">
+                    <h3>
                         <i class="fa-solid fa-info-circle"></i>
                         Informações da Conta
                     </h3>
@@ -523,6 +544,7 @@
                     </div>
 
                     <form action="{{ url_for('atualizar_perfil') }}" method="post">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <div class="form-group">
                             <label>Nome Completo</label>
                             <input type="text" name="nome" value="{{ current_user.name or current_user.email.split('@')[0].title() }}" placeholder="Digite seu nome completo">
@@ -548,6 +570,7 @@
                     </div>
 
                     <form action="{{ url_for('alterar_senha') }}" method="post">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <div class="form-group">
                             <label>Senha Atual</label>
                             <div class="password-wrapper">

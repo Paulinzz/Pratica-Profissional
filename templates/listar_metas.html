@@ -1,0 +1,476 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Minhas Metas - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .metas-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .metas-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .metas-header h1 {
+        color: #1a73e8;
+        font-size: 2.5rem;
+        margin: 0;
+    }
+
+    .btn-add-meta {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+    }
+
+    .btn-add-meta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
+    }
+
+    .filtros-container {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .filtro-btn {
+        padding: 8px 16px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #666;
+    }
+
+    .fa-check:hover {
+        background: #2e7d32;
+    }
+
+    .fa-trash:hover {
+        background: #f44336;
+    }
+
+    .fa-edit:hover {
+        color: white;
+    }
+
+    .filtro-btn.active {
+        border-color: #1a73e8;
+    }
+
+    .filtro-btn:hover {
+        border-color: #1a73e8;
+        color: #1a73e8;
+    }
+
+    .metas-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 20px;
+    }
+
+    .meta-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+
+    }
+
+    .meta-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .meta-card.ativo {
+        border-color: #1a73e8;
+    }
+
+    .meta-card.concluido {
+        border-color: #2e7d32;
+        width: 50%;
+        background: linear-gradient(135deg, #f8fff8, #ffffff);
+    }
+
+    .meta-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .meta-titulo {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin: 0;
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    .meta-status {
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-ativo {
+        background: #e3f2fd;
+        color: #1a73e8;
+    }
+
+    .status-concluido {
+        background: #e8f5e8;
+        color: #2e7d32;
+    }
+
+    .meta-descricao {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        line-clamp: 3;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .meta-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 15px;
+    }
+
+    .meta-materia {
+        background: #f5f5f5;
+        padding: 4px 8px;
+        border-radius: 10px;
+        font-size: 11px;
+        color: #666;
+    }
+
+    .meta-data-limite {
+        font-weight: 500;
+        color: #ff9800;
+    }
+
+    .meta-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .btn-meta {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+        background: #fff3e0;
+        color: #f57c00;
+    }
+
+    .btn-edit:hover {
+        background: #f57c00;
+        color: white;
+    }
+
+    .btn-delete {
+        background: #ffebee;
+        color: #f44336;
+    }
+
+    .btn-delete:hover {
+        background: #f44336;
+        color: white;
+    }
+
+    .btn-concluir {
+        background: #e8f5e8;
+        color: #2e7d32;
+    }
+
+    .btn-concluir:hover {
+        background: #2e7d32;
+        color: white;
+    }
+
+    .sem-metas {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .sem-metas i {
+        font-size: 48px;
+        color: #ccc;
+        margin-bottom: 20px;
+    }
+
+    .sem-metas h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #1a1a1a;
+    }
+
+    .sem-metas p {
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .metas-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .metas-header h1 {
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .filtros-container {
+            justify-content: center;
+        }
+
+        .metas-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .meta-card {
+            padding: 20px;
+        }
+    }
+
+    /* Modo Escuro */
+    body.dark-mode .meta-card {
+        background: #2d2d2d;
+        color: #e0e0e0;
+        border-color: #444;
+    }
+
+    body.dark-mode .meta-card:hover {
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    body.dark-mode .meta-titulo {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .meta-descricao {
+        color: #ccc;
+    }
+
+    body.dark-mode .meta-info {
+        color: #ccc;
+    }
+
+    body.dark-mode .meta-materia {
+        background: #333;
+        color: #ccc;
+    }
+
+    body.dark-mode .meta-data-limite {
+        color: #ff9800;
+    }
+
+    body.dark-mode .btn-meta {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .btn-edit {
+        background: #333;
+        color: #f57c00;
+    }
+
+    body.dark-mode .btn-edit:hover {
+        background: #f57c00;
+        color: #333;
+    }
+
+    body.dark-mode .btn-delete {
+        background: #333;
+        color: #f44336;
+    }
+
+    body.dark-mode .btn-delete:hover {
+        background: #f44336;
+        color: #333;
+    }
+
+    body.dark-mode .btn-concluir {
+        background: #333;
+        color: #2e7d32;
+    }
+
+    body.dark-mode .btn-concluir:hover {
+        background: #2e7d32;
+        color: #333;
+    }
+
+    body.dark-mode .sem-metas {
+        color: #ccc;
+    }
+
+    body.dark-mode .sem-metas i {
+        color: #666;
+    }
+
+    body.dark-mode .sem-metas h3 {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .sem-metas p {
+        color: #ccc;
+    }
+
+    .meta-card.concluido {
+        width: 100%;
+    }
+
+</style>
+
+<main>
+    <div class="metas-container">
+        <div class="metas-header">
+            <h1><i class="fa-solid fa-target"></i> Minhas Metas</h1>
+            <a href="{{ url_for('criar_meta') }}" class="btn-add-meta">
+                <i class="fa-solid fa-plus"></i>
+                Nova Meta
+            </a>
+        </div>
+
+        <div class="filtros-container">
+            <a href="{{ url_for('listar_metas', status='todos') }}" class="filtro-btn {{ 'active' if status_filtro == 'todos' else '' }}">
+                Todas ({{ metas|length }})
+            </a>
+            <a href="{{ url_for('listar_metas', status='ativo') }}" class="filtro-btn {{ 'active' if status_filtro == 'ativo' else '' }}">
+                Ativas
+            </a>
+            <a href="{{ url_for('listar_metas', status='concluido') }}" class="filtro-btn {{ 'active' if status_filtro == 'concluido' else '' }}">
+                Concluídas
+            </a>
+        </div>
+
+        {% if metas %}
+            <div class="metas-grid">
+                {% for meta in metas %}
+                <div class="meta-card {{ meta.status }}">
+                    <div class="meta-header">
+                        <h3 class="meta-titulo">{{ meta.titulo }}</h3>
+                        <span class="meta-status status-{{ meta.status }}">
+                            {{ 'Ativa' if meta.status == 'ativo' else 'Concluída' }}
+                        </span>
+                    </div>
+
+                    {% if meta.descricao %}
+                    <p class="meta-descricao">{{ meta.descricao }}</p>
+                    {% endif %}
+
+                    <div class="meta-info">
+                        {% if meta.materia %}
+                        <span class="meta-materia">{{ meta.materia.nome }}</span>
+                        {% else %}
+                        <span></span>
+                        {% endif %}
+
+                        {% if meta.data_limite %}
+                        <span class="meta-data-limite">
+                            <i class="fa-solid fa-calendar"></i>
+                            {{ meta.data_limite.strftime('%d/%m/%Y') }}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="meta-actions">
+                        {% if meta.status == 'ativo' %}
+                        <form method="post" action="{{ url_for('concluir_meta', meta_id=meta.id) }}" style="display: inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <button type="submit" class="btn-meta btn-concluir" onclick="return confirm('Marcar esta meta como concluída?')">
+                                <i class="fa-solid fa-check"></i>
+                                Concluir
+                            </button>
+                        </form>
+                        {% endif %}
+
+                        <a href="{{ url_for('editar_meta', meta_id=meta.id) }}" class="btn-meta btn-edit">
+                            <i class="fa-solid fa-edit"></i>
+                            Editar
+                        </a>
+
+                        <form method="post" action="{{ url_for('deletar_meta', meta_id=meta.id) }}" style="display: inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <button type="submit" class="btn-meta btn-delete" onclick="return confirm('Tem certeza que deseja excluir esta meta?')">
+                                <i class="fa-solid fa-trash"></i>
+                                Excluir
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="sem-metas">
+                <i class="fa-solid fa-target"></i>
+                <h3>Nenhuma meta encontrada</h3>
+                <p>Comece definindo suas primeiras metas de estudo!</p>
+                <a href="{{ url_for('criar_meta') }}" class="btn-add-meta">
+                    <i class="fa-solid fa-plus"></i>
+                    Criar Primeira Meta
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</main>
+
+{% endblock %}
