@@ -226,7 +226,12 @@
     body.dark-mode .artigo-card a {
         color: #1a73e8;
     }
-
+    .link_add-mat{
+        background-color: #2e7d32;
+        padding: 10px;
+        border-radius: 30px;
+        
+    }
 </style>
 
     <main>
@@ -239,7 +244,7 @@
                     <div style="width: 100%; padding: 20px;">
                      <h2>Minhas Matérias</h2>
                      <p style="margin-bottom: 20px; color: #666;">
-                         <a href="{{ url_for('adicionar_materia_page') }}" style="color: #1a73e8; text-decoration: none;">
+                         <a href="{{ url_for('adicionar_materia_page') }}" style="color: #ffff; text-decoration: none;" class="link_add-mat">
                              <i class="fa-solid fa-plus"></i> Adicionar nova ou editar matérias
                          </a>
                      </p>
