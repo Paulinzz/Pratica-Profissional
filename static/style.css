@@ -113,12 +113,7 @@ button{
     cursor: pointer;
     
 }
-button i:hover{
-    background-color: #1a73e8;
-    transition: 0.2s;
-    border-radius: 20px;
-    color: white;
-}
+
 
 button h:hover{
     background-color: green;

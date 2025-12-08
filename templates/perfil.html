@@ -240,13 +240,21 @@
     }
 
     .form-card {
+        display: flex;
         background: white;
         border-radius: 25px;
         padding: 40px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         transition: all 0.3s ease;
+        flex-direction: column;
+        gap: 30px;
+        justify-content: center;
     }
-
+    .form-card form{
+        display: flex;
+        gap: 30px;
+        align-items: center;
+    }
     .form-card:hover {
         box-shadow: 0 8px 25px rgba(0,0,0,0.12);
     }

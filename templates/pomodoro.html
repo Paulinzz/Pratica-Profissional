@@ -14,7 +14,7 @@
     }
 
     .pomodoro-header {
-        background: linear-gradient(135deg, #ff9800, #f57c00);
+        background: linear-gradient(135deg, #1a73e8, #1a73e8);
         border-radius: 25px;
         padding: 40px;
         color: white;
@@ -62,10 +62,10 @@
     }
 
     .timer-display {
-        font-size: 72px;
-        font-weight: 700;
-        color: #1a73e8;
-        font-family: 'Courier New', monospace;
+        font-size: px;
+        font-weight: 500;
+        color: black;
+        font-family: 'Poppins', monospace;
         margin: 40px 0;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
@@ -98,26 +98,25 @@
     }
 
     .mode-btn.active {
-        background: linear-gradient(135deg, #ff9800, #f57c00);
+        background: linear-gradient(135deg, #1a73e8, #1557b0);
         color: white;
-        border-color: #ff9800;
+        border-color: rgb(112, 109, 109);
         transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
     }
 
     .mode-btn:hover:not(.active) {
-        border-color: #ff9800;
         transform: translateY(-2px);
     }
 
     .controls {
         display: flex;
-        gap: 20px;
+        gap: 30px;
         justify-content: center;
         margin-bottom: 40px;
-        margin: 80px auto 20px; /* sobe a div para cima; ajuste o valor conforme necessário */
+        margin: 80px auto 20px;
         position: relative;
-        z-index: 5; /* garante que fique acima do timer */
+        z-index: 5; 
+
     }
 
     .control-btn {
@@ -145,7 +144,7 @@
     }
 
     .btn-pause {
-        background: linear-gradient(135deg, #ff9800, #fb8c00);
+        background: linear-gradient(135deg, #1557b0, #1a73e8);
         color: white;
     }
 
@@ -378,7 +377,9 @@
     input:checked + .slider:before {
         transform: translateX(22px);
     }
-
+    .fa-solid.fa-clock{
+        color: white;
+    }
 
 
 </style>
@@ -394,10 +395,10 @@
             <!-- Seletor de Modo -->
             <div class="mode-selector">
                 <button class="mode-btn active" data-mode="work" onclick="changeMode('work')">
-                    <i class="fa-solid fa-brain"></i> Foco (25min)
+                    <i class="fa-solid fa-brain" style="color: white;"></i> Foco (25min)
                 </button>
                 <button class="mode-btn" data-mode="short" onclick="changeMode('short')">
-                    <i class="fa-solid fa-coffee"></i> Pausa Curta (5min)
+                    <i class="fa-solid fa-coffee" ></i> Pausa Curta (5min)
                 </button>
                 <button class="mode-btn" data-mode="long" onclick="changeMode('long')">
                     <i class="fa-solid fa-couch"></i> Pausa Longa (15min)
@@ -427,7 +428,7 @@
                             stroke-dashoffset="879.645943"></circle>
                 </svg>
                 <!-- Timer Display -->
-                <div class="timer-display work-mode" id="timerDisplay">25:00</div>
+                <div class="timer-display work-mode" id="timerDisplay" style="color: #1557b0;">25:00</div>
             </div>
 
             <!-- Som -->
@@ -444,13 +445,13 @@
             <!-- Controles -->
             <div class="controls">
                 <button class="control-btn btn-start" id="startBtn" onclick="startTimer()">
-                    <i class="fa-solid fa-play"></i> Iniciar
+                    <i class="fa-solid fa-play" style="color: white;"></i> Iniciar
                 </button>
                 <button class="control-btn btn-pause" id="pauseBtn" onclick="pauseTimer()" style="display: none;">
-                    <i class="fa-solid fa-pause"></i> Pausar
+                    <i class="fa-solid fa-pause" style="color: white;"></i> Pausar
                 </button>
                 <button class="control-btn btn-reset" onclick="resetTimer()">
-                    <i class="fa-solid fa-rotate-right"></i> Reiniciar
+                    <i class="fa-solid fa-rotate-right" style="color: white;"></i> Reiniciar
                 </button>
             </div>
         </div>
