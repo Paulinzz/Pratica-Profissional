@@ -17,7 +17,7 @@ def debug_completo():
     DB_PORT = os.getenv("DB_PORT", "3306")
     DB_NAME = os.getenv("DB_NAME", "pratica_profissional")
     DB_USER = os.getenv("DB_USER", "root")
-    DB_PASSWORD = os.getenv("DB_PASSWORD", "usbw")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 
     print(f"Host: {DB_HOST}")
     print(f"Port: {DB_PORT}")

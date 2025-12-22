@@ -1917,3 +1917,203 @@ footer {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
+
+/* Typical Device Breakpoints 
+------------------------------
+Pequenas telas: até 600px
+Celular: de 600px até 768px
+Tablet: de 768px até 992px
+Desktop: de 992px até 1366px
+Grandes telas: acima de 1366
+*/
+
+/* ===== Pequenas telas — até 600px ===== */
+@media (max-width: 600px) {
+
+    body {
+        padding: 15px 10px 0 10px;
+        gap: 20px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+        border-radius: 20px;
+    }
+
+    .links {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .links a {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .focusup-text {
+        font-size: 28px;
+    }
+
+    main {
+        padding: 20px 10px;
+        gap: 30px;
+        flex-direction: column;
+    }
+
+    .left-content,
+    .right-content {
+        max-width: 100%;
+    }
+
+    .container-case {
+        flex-direction: column;
+    }
+
+    .card-materias_mais_estudadas,
+    .card-sobre,
+    .card-dash,
+    .card_artigo {
+        border-radius: 20px;
+    }
+
+    .container_form_add-atv,
+    .container_atividades_recentes {
+        max-width: 100%;
+        min-height: auto;
+    }
+
+    .container_form_add-atv h1 {
+        font-size: 26px;
+        text-align: center;
+    }
+
+    .form_adicionar-atividade {
+        padding: 25px;
+    }
+
+    .form_adicionar-atividade button[type="submit"] {
+        max-width: 100%;
+    }
+
+    footer {
+        border-radius: 0;
+    }
+}
+
+/* ===== Celular — 600px até 768px ===== */
+@media (min-width: 600px) and (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .links {
+        gap: 20px;
+    }
+
+    main {
+        flex-direction: column;
+        gap: 40px;
+        padding: 30px 20px;
+    }
+
+    .left-content,
+    .right-content {
+        max-width: 100%;
+    }
+
+    .container-case {
+        flex-direction: column;
+    }
+
+    .container_form_add-atv h1 {
+        font-size: 30px;
+    }
+
+    .form_adicionar-atividade {
+        padding: 30px;
+    }
+
+    .container_atividades_recentes h2 {
+        font-size: 24px;
+    }
+}
+
+/* ===== Tablet — 768px até 992px ===== */
+@media (min-width: 768px) and (max-width: 992px) {
+
+    header {
+        padding: 20px;
+    }
+
+    .focusup-text {
+        font-size: 34px;
+    }
+
+    main {
+        flex-direction: column;
+        gap: 50px;
+        padding: 40px;
+    }
+
+    .left-content,
+    .right-content {
+        max-width: 100%;
+    }
+
+    .container-case {
+        flex-wrap: wrap;
+    }
+
+    .card-materias_mais_estudadas,
+    .card-sobre {
+        min-width: 100%;
+    }
+
+    .container_form_add-atv,
+    .container_atividades_recentes {
+        max-width: 100%;
+    }
+}
+
+/* ===== Desktop — 992px até 1366px ===== */
+@media (min-width: 992px) and (max-width: 1366px) {
+
+    main {
+        gap: 6rem;
+        padding: 40px;
+    }
+
+    .left-content {
+        max-width: 60%;
+    }
+
+    .right-content {
+        max-width: 40%;
+    }
+
+    .container_form_add-atv h1 {
+        font-size: 36px;
+    }
+}
+
+/* ===== Grandes telas — acima de 1366px ===== */
+@media (min-width: 1366px) {
+
+    main {
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    .container_form_add-atv h1 {
+        font-size: 42px;
+    }
+
+    .card_artigo {
+        max-height: none;
+    }
+}
