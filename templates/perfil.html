@@ -48,7 +48,9 @@
         font-size: 18px;
         opacity: 0.95;
     }
-
+    .fa-solid.fa-floppy-disk{
+        color: white;
+    }
     .foto-perfil-header {
         width: 120px;
         height: 120px;
@@ -298,7 +300,6 @@
 
     .form-group input {
         width: 100%;
-        padding: 15px 20px;
         border: 2px solid #e0e0e0;
         border-radius: 12px;
         font-size: 16px;
@@ -329,23 +330,20 @@
         transition: color 0.3s ease;
     }
 
-    .btn-submit {
+    .salvar_alteracoes{
         background: linear-gradient(135deg, #2e7d32, #43a047);
         color: white;
-        border: none;
-        padding: 15px 30px;
+        padding: 20px;
         border-radius: 15px;
-        font-size: 17px;
+        display: flex;
+        align-items: center;
         font-weight: 600;
-        cursor: pointer;
-        display: block;
-        width: 100%;
-        text-align: center;
-        transition: all 0.3s ease;
         box-shadow: 0 6px 20px rgba(46,125,50,0.3);
+        max-width: 300px;
+        height: 75px;
     }
 
-    .btn-submit:hover {
+    .salvar_alteracoes:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 25px rgba(46,125,50,0.4);
         background: linear-gradient(135deg, #388e3c, #66bb6a);
@@ -423,16 +421,25 @@
         }
     }
 
-    .fa-key:hover {
+    .fa-solid.fa-key{
         color: white;
-        background-color: #43a047;
-        border: none;
     }
-
-    .fa-floppy-disk:hover {
-        color: white;
-        background-color: #43a047;
-        border: none;
+    .padd_senha{
+        display: flex;
+        height: 50px;
+        justify-content: space-between;
+        padding: 10px;
+    }
+    ::placeholder{
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .fa-solid.fa-eye{
+        font-size: 15px;
+    }
+    .ajuste_form{
+        display: flex;
+        justify-content: space-between;
     }
 
 </style>
@@ -551,21 +558,21 @@
                         <h3>Editar Informações</h3>
                     </div>
 
-                    <form action="{{ url_for('atualizar_perfil') }}" method="post">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <form action="{{ url_for('atualizar_perfil') }}" method="post" class="ajuste_form">
+                        <input type="hidden" class="padd_senha" name="csrf_token" value="{{ csrf_token() }}"/>
                         <div class="form-group">
                             <label>Nome Completo</label>
-                            <input type="text" name="nome" value="{{ current_user.name or current_user.email.split('@')[0].title() }}" placeholder="Digite seu nome completo">
+                            <input type="text" name="nome" value="{{ current_user.name or current_user.email.split('@')[0].title() }}" placeholder="Digite seu nome completo" class="padd_senha">
                         </div>
 
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" name="email" value="{{ current_user.email }}" placeholder="seu@email.com">
+                            <input type="email" name="email" value="{{ current_user.email }}" placeholder="seu@email.com" class="padd_senha">
                         </div>
 
-                        <button class="btn-submit" type="submit">
+                        <button class="salvar_alteracoes" type="submit">
                             <i class="fa-solid fa-floppy-disk"></i>
-                            Salvar Alterações
+                            <p>Salvar</p>
                         </button>
                     </form>
                 </div>
@@ -577,12 +584,12 @@
                         <h3>Alterar Senha</h3>
                     </div>
 
-                    <form action="{{ url_for('alterar_senha') }}" method="post">
+                    <form action="{{ url_for('alterar_senha') }}" method="post" class="ajuste_form">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <div class="form-group">
                             <label>Senha Atual</label>
                             <div class="password-wrapper">
-                                <input type="password" name="senha_atual" id="senhaAtual" placeholder="Digite sua senha atual" required>
+                                <input type="password" name="senha_atual" id="senhaAtual" placeholder="Digite sua senha atual" required class="padd_senha">
                                 <button type="button" class="toggle-password" onclick="togglePassword('senhaAtual')">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
@@ -592,7 +599,7 @@
                         <div class="form-group">
                             <label>Nova Senha</label>
                             <div class="password-wrapper">
-                                <input type="password" name="nova_senha" id="novaSenha" placeholder="Digite a nova senha" required>
+                                <input type="password" name="nova_senha" id="novaSenha" placeholder="Digite a nova senha" required class="padd_senha">
                                 <button type="button" class="toggle-password" onclick="togglePassword('novaSenha')">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
@@ -602,16 +609,17 @@
                         <div class="form-group">
                             <label>Confirmar Nova Senha</label>
                             <div class="password-wrapper">
-                                <input type="password" name="confirmar_senha" id="confirmarSenha" placeholder="Confirme a nova senha" required>
+                                <input type="password" name="confirmar_senha" id="confirmarSenha" placeholder="Confirme a nova senha" required class="padd_senha">
                                 <button type="button" class="toggle-password" onclick="togglePassword('confirmarSenha')">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <button class="btn-submit" type="submit">
+                        <button class="salvar_alteracoes" type="submit">
                             <i class="fa-solid fa-key"></i>
-                            Alterar Senha
+                            <p>Salvar</p>
+                            
                         </button>
                     </form>
                 </div>

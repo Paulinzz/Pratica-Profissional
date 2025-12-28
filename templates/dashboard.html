@@ -105,7 +105,6 @@
     }
 
     .btn-delete-materia {
-        background: #ffebee;
         color: #d32f2f;
         border: none;
         width: 30px;
@@ -116,10 +115,10 @@
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
+        background-color: #d32f2f;
     }
 
     .btn-delete-materia:hover {
-        background: #d32f2f;
         color: white;
         transform: scale(1.1);
     }
@@ -229,13 +228,27 @@
     body.dark-mode .artigo-card a {
         color: #1a73e8;
     }
-    .link_add-mat{
-        background-color: #2e7d32;
-        padding: 10px;
-        border-radius: 30px;
+    .minhas_materias{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
         
     }
 
+    .link_add-mat{
+        flex: 1;
+        background-color: #2e7d32;
+        padding: 10px;
+        border-radius: 30px;
+        max-height: 60px;
+        display: flex;
+        align-items: center;
+        max-width: 300px;
+    }
+    .fa-solid.fa-trash{
+        color: white;
+    }
 </style>
 
     <main>
@@ -245,13 +258,13 @@
             </div>
             <div class="container-case">
                 <div class="card-materias_mais_estudadas">
-                    <div style="width: 100%; padding: 20px;">
+                    <div class="minhas_materias">
                      <h2>Minhas Matérias</h2>
-                     <p style="margin-bottom: 20px; color: #666;">
+            
                          <a href="{{ url_for('adicionar_materia_page') }}" style="color: #ffff; text-decoration: none;" class="link_add-mat">
-                             <i class="fa-solid fa-plus"></i> Adicionar nova ou editar matérias
+                             <i class="fa-solid fa-plus"></i> Adicionar nova matéria
                          </a>
-                     </p>
+        
 
                         <!-- Lista de matérias -->
                         <div class="materias-lista">

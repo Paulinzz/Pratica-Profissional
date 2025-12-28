@@ -151,10 +151,10 @@ main{
 .card-materias_mais_estudadas{
     display: flex;
     flex: 1;
-
     box-shadow: 5px 5px 5px rgba(198, 154, 198, 0.5);
     border-radius: 30px;
     background-color: #eff1f3;
+    align-items: center;
 }
 .card-sobre{
     flex: 1;
