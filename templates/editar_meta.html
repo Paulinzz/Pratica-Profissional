@@ -29,10 +29,14 @@
     }
 
     .meta-form {
+        display: flex;
         background: white;
         border-radius: 20px;
         padding: 40px;
         box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
     }
 
     .form-group {
@@ -110,7 +114,6 @@
         display: flex;
         gap: 15px;
         justify-content: center;
-        margin-top: 40px;
         flex-wrap: wrap;
     }
 
@@ -123,12 +126,14 @@
         font-size: 18px;
         font-weight: 600;
         cursor: pointer;
-        display: inline-flex;
+        display:flex;
+        justify-content: center;
         align-items: center;
         gap: 8px;
         transition: all 0.3s ease;
         box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
         width: 60%;
+        
     }
 
     .btn-submit:hover {
@@ -152,7 +157,10 @@
         transition: all 0.3s ease;
         width: 60%;
     }
-
+    .fa-solid.fa-save{
+        color: white;
+    }
+    
     .btn-cancel:hover {
         background: #e0e0e0;
         border-color: #ccc;
@@ -249,7 +257,7 @@
                 </div>
             </div>
 
-            <div class="form-actions">
+            <div class="form-actions" >
                 <button type="submit" class="btn-submit">
                     <i class="fa-solid fa-save"></i>
                     Salvar Alterações

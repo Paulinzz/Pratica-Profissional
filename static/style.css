@@ -1866,6 +1866,9 @@ footer {
     gap: 12px;
     color: #0d47a1;
 }
+.fa-solid.fa-pen, .fa-solid.fa-trash{
+    color: white;
+}
 
 @media (max-width: 768px) {
     .ajuda-header h1 {

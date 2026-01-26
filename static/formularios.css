@@ -78,17 +78,15 @@ main{
 }
 form{
     background-color: #eff1f3;
-    max-height: 600px;
     display: flex;
+    flex: 1;
+    min-width: 600px;
     align-items: center;
     flex-direction: column;
-    max-width: 580px;
     gap: 30px;
     border-radius: 40px;
     padding: 60px 100px 60px 100px;
-    width: 100%;
-    height: 100%;
-    
+     
 }
 .email{
     display: flex;
