@@ -14,9 +14,7 @@ from datetime import datetime, timedelta
 import secrets
 
 import requests
-import re
 from functools import wraps
-import bleach
 
 from models.models import (
     db,
@@ -25,8 +23,17 @@ from models.models import (
     Atividade,
     Notificacao,
     Meta,
-    Badge,
     UserBadge,
+)
+from services.badge_service import criar_badges_padrao, verificar_e_conceder_badge
+from services.app_service import (
+    tentativas_login,
+    tentativas_cadastro,
+    verificar_rate_limit,
+    criar_notificacao,
+    parse_duration_to_minutes,
+    parse_date_field,
+    allowed_file,
 )
 
 
@@ -80,203 +87,12 @@ login_manager.login_view = "login"
 
 
 # =============== VALIDADORES ===============
-
-
-class Validadores:
-    """Classe com validadores de dados"""
-
-    @staticmethod
-    def validar_email(email):
-        """Valida formato de email"""
-        if not email or len(email) > 150:
-            return False, "Email inválido ou muito longo"
-
-        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        if not re.match(pattern, email):
-            return False, "Formato de email inválido"
-
-        return True, "Email válido"
-
-    @staticmethod
-    def validar_senha(senha):
-        """Valida complexidade da senha com regex"""
-        if not senha or len(senha) < 6:
-            return False, "A senha deve ter no mínimo 6 caracteres"
-
-        if len(senha) > 100:
-            return False, "A senha deve ter no máximo 100 caracteres"
-
-        # Regex para validar: pelo menos uma maiúscula, uma minúscula, um dígito e um caractere especial
-        pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]"
-        if not re.match(pattern, senha):
-            return (
-                False,
-                "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um dígito e um caractere especial (@$!%*?&)",
-            )
-
-        return True, "Senha válida"
-
-    @staticmethod
-    def validar_nome(nome):
-        """Valida nome do usuário"""
-        if not nome or len(nome) < 3:
-            return False, "O nome deve ter no mínimo 3 caracteres"
-
-        if len(nome) > 150:
-            return False, "O nome deve ter no máximo 150 caracteres"
-
-        # Permitir apenas letras, espaços e acentos
-        if not re.match(r"^[a-zA-ZÀ-ÿ\s]+$", nome):
-            return False, "O nome deve conter apenas letras"
-
-        return True, "Nome válido"
-
-    @staticmethod
-    def validar_materia(nome_materia):
-        """Valida nome da matéria"""
-        if not nome_materia or len(nome_materia) < 2:
-            return False, "O nome da matéria deve ter no mínimo 2 caracteres"
-
-        if len(nome_materia) > 100:
-            return False, "O nome da matéria deve ter no máximo 100 caracteres"
-
-        return True, "Matéria válida"
-
-    @staticmethod
-    def validar_duracao(duracao):
-        """Valida formato de duração (HH:MM)"""
-        if not duracao:
-            return True, "Duração opcional"
-
-        pattern = r"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
-        if not re.match(pattern, duracao):
-            return False, "Formato de duração inválido. Use HH:MM (ex: 02:30)"
-
-        return True, "Duração válida"
-
-    @staticmethod
-    def sanitizar_texto(texto):
-        """Sanitiza texto removendo tags HTML perigosas"""
-        if not texto:
-            return texto
-
-        # Lista de tags permitidas (básicas e seguras)
-        allowed_tags = [
-            "p",
-            "br",
-            "strong",
-            "em",
-            "u",
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-            "ul",
-            "ol",
-            "li",
-            "blockquote",
-        ]
-        allowed_attributes = {}
-
-        # Sanitizar o texto
-        texto_sanitizado = bleach.clean(
-            texto, tags=allowed_tags, attributes=allowed_attributes, strip=True
-        )
-
-        return texto_sanitizado
+from services.validation_service import Validadores
 
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-
-def criar_badges_padrao():
-    """Cria badges padrão se não existirem"""
-    badges = [
-        {
-            "nome": "Primeira Atividade",
-            "descricao": "Adicionou sua primeira atividade",
-            "icone": "fa-plus",
-            "categoria": "atividade",
-            "criterio": "primeira_atividade",
-            "pontos": 10,
-        },
-        {
-            "nome": "Meta Concluída",
-            "descricao": "Concluiu sua primeira meta",
-            "icone": "fa-check",
-            "categoria": "meta",
-            "criterio": "primeira_meta_concluida",
-            "pontos": 20,
-        },
-        {
-            "nome": "Estudioso",
-            "descricao": "Estudou por 10 horas",
-            "icone": "fa-clock",
-            "categoria": "tempo",
-            "criterio": "10_horas",
-            "pontos": 30,
-        },
-        {
-            "nome": "Dedicado",
-            "descricao": "Adicionou 5 matérias",
-            "icone": "fa-book",
-            "categoria": "materia",
-            "criterio": "5_materias",
-            "pontos": 25,
-        },
-    ]
-
-    for badge_data in badges:
-        if not Badge.query.filter_by(nome=badge_data["nome"]).first():
-            badge = Badge(**badge_data)
-            db.session.add(badge)
-    db.session.commit()
-
-
-def verificar_e_conceder_badge(user_id, criterio):
-    """Verifica se o usuário atende ao critério e concede o badge se não tiver"""
-    user = User.query.get(user_id)
-    badge = Badge.query.filter_by(criterio=criterio).first()
-    if not badge:
-        return
-
-    # Verificar se já tem
-    if UserBadge.query.filter_by(user_id=user_id, badge_id=badge.id).first():
-        return
-
-    # Verificar condição
-    conceder = False
-    if criterio == "primeira_atividade":
-        conceder = len(user.atividades) >= 1
-    elif criterio == "primeira_meta_concluida":
-        conceder = (
-            Meta.query.filter_by(user_id=user_id, status="concluido").count() >= 1
-        )
-    elif criterio == "10_horas":
-        tempo_total = 0
-        for atividade in user.atividades:
-            tempo_total += parse_duration_to_minutes(atividade.duracao or "0")
-        conceder = tempo_total >= 600  # 10 horas
-    elif criterio == "5_materias":
-        conceder = len(user.materias) >= 5
-
-    if conceder:
-        user_badge = UserBadge(user_id=user_id, badge_id=badge.id)
-        db.session.add(user_badge)
-        db.session.commit()
-
-        # Notificação
-        criar_notificacao(
-            user_id=user_id,
-            tipo="conquista",
-            titulo=f"🏆 Badge Conquistado: {badge.nome}!",
-            mensagem=f"Parabéns! Você ganhou o badge '{badge.nome}' - {badge.descricao}",
-            icone="fa-trophy",
-        )
 
 
 with app.app_context():
@@ -287,92 +103,6 @@ with app.app_context():
     except Exception as e:
         print(f"❌ Erro ao conectar com o banco de dados: {e}")
         print("Verifique suas credenciais no arquivo .env")
-
-
-# Dicionário para rastrear tentativas
-tentativas_login = {}
-tentativas_cadastro = {}
-
-
-def limpar_tentativas_antigas():
-    """Remove tentativas antigas (mais de 15 minutos)"""
-    tempo_limite = datetime.utcnow() - timedelta(minutes=15)
-
-    for dicionario in [tentativas_login, tentativas_cadastro]:
-        ips_remover = [
-            ip
-            for ip, (count, timestamp) in dicionario.items()
-            if timestamp < tempo_limite
-        ]
-        for ip in ips_remover:
-            del dicionario[ip]
-
-
-def verificar_rate_limit(ip, dicionario, max_tentativas=5):
-    """
-    Verifica se o IP excedeu o limite de tentativas
-
-    Args:
-        ip: IP do cliente
-        dicionario: tentativas_login ou tentativas_cadastro
-        max_tentativas: número máximo de tentativas permitidas
-
-    Returns:
-        (permitido, mensagem)
-    """
-    limpar_tentativas_antigas()
-
-    if ip in dicionario:
-        count, timestamp = dicionario[ip]
-
-        # Se passou 15 minutos, resetar
-        if datetime.utcnow() - timestamp > timedelta(minutes=15):
-            dicionario[ip] = (1, datetime.utcnow())
-            return True, "Permitido"
-
-        # Se excedeu tentativas
-        if count >= max_tentativas:
-            tempo_restante = 15 - (datetime.utcnow() - timestamp).seconds // 60
-            return (
-                False,
-                f"Muitas tentativas. Tente novamente em {tempo_restante} minutos.",
-            )
-
-        # Incrementar contador
-        dicionario[ip] = (count + 1, timestamp)
-        return True, "Permitido"
-    else:
-        dicionario[ip] = (1, datetime.utcnow())
-        return True, "Permitido"
-
-
-def criar_notificacao(user_id, tipo, titulo, mensagem, link=None, icone="fa-bell"):
-    """Cria uma nova notificação para o usuário"""
-    try:
-        notificacao = Notificacao(
-            user_id=user_id,
-            tipo=tipo,
-            titulo=titulo,
-            mensagem=mensagem,
-            link=link,
-            icone=icone,
-        )
-        db.session.add(notificacao)
-        db.session.commit()
-    except Exception as e:
-        print(f"Erro ao criar notificação: {e}")
-        db.session.rollback()
-
-
-def parse_duration_to_minutes(duracao):
-    """Converte duração HH:MM para minutos"""
-    if not duracao:
-        return 0
-    try:
-        hours, minutes = map(int, duracao.split(":"))
-        return hours * 60 + minutes
-    except:
-        return 0
 
 
 # =============== PROTEÇÃO CSRF ===============
@@ -568,7 +298,7 @@ Equipe FocusUp
 def resetar_senha(token):
     user = User.query.filter_by(reset_token=token).first()
 
-    if not user or user.reset_expires < datetime.utcnow():
+    if not user or not user.reset_expires or user.reset_expires < datetime.utcnow():
         flash("Link de redefinição inválido ou expirado.", "error")
         return redirect(url_for("login"))
 
@@ -818,6 +548,7 @@ def adicionar_atividade():
         )
         duracao = request.form.get("duracao", "").strip()
         data = request.form.get("data", "").strip()
+        data_parseada = parse_date_field(data)
 
         # Validações
         if not materia or len(materia) < 2:
@@ -841,7 +572,7 @@ def adicionar_atividade():
                 assunto_primario=assunto,
                 descricao=descricao if descricao else None,
                 duracao=duracao if duracao else None,
-                data=data if data else None,
+                data=data_parseada,
                 user_id=current_user.id,
             )
             db.session.add(nova_atividade)
@@ -1217,7 +948,9 @@ def upload_foto():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(f"user_{current_user.id}_{file.filename}")
-        filepath = os.path.join(app.root_path, "static", "imagens", filename)
+        upload_dir = os.path.join(app.root_path, "static", "imagens")
+        os.makedirs(upload_dir, exist_ok=True)
+        filepath = os.path.join(upload_dir, filename)
         file.save(filepath)
         current_user.photo = filename
         db.session.commit()
@@ -1542,15 +1275,6 @@ def excluir_conta():
         return {"success": False, "message": "Erro interno do servidor"}, 500
 
 
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in {
-        "png",
-        "jpg",
-        "jpeg",
-        "gif",
-    }
-
-
 @app.route("/salvar_configuracoes", methods=["POST"])
 @login_required
 def salvar_configuracoes():
@@ -1623,6 +1347,7 @@ def criar_meta():
             request.form.get("descricao", "").strip()
         )
         data_limite = request.form.get("data_limite", "").strip()
+        data_limite_parseada = parse_date_field(data_limite)
         materia_id = request.form.get("materia_id", "").strip()
 
         # Validações
@@ -1639,7 +1364,7 @@ def criar_meta():
                 user_id=current_user.id,
                 titulo=titulo,
                 descricao=descricao if descricao else None,
-                data_limite=data_limite if data_limite else None,
+                data_limite=data_limite_parseada,
                 materia_id=int(materia_id) if materia_id else None,
             )
             db.session.add(nova_meta)
@@ -1681,6 +1406,7 @@ def editar_meta(meta_id):
             request.form.get("descricao", "").strip()
         )
         data_limite = request.form.get("data_limite", "").strip()
+        data_limite_parseada = parse_date_field(data_limite)
         materia_id = request.form.get("materia_id", "").strip()
         status = request.form.get("status", "ativo")
 
@@ -1696,7 +1422,7 @@ def editar_meta(meta_id):
         try:
             meta.titulo = titulo
             meta.descricao = descricao if descricao else None
-            meta.data_limite = data_limite if data_limite else None
+            meta.data_limite = data_limite_parseada
             meta.materia_id = int(materia_id) if materia_id else None
             meta.status = status
             db.session.commit()
