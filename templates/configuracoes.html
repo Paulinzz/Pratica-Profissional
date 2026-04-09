@@ -696,6 +696,8 @@
 </main>
 
 <script>
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     // Toggle tema cards
     document.querySelectorAll('.theme-card').forEach(card => {
         card.addEventListener('click', function() {
@@ -722,6 +724,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
                 },
                 body: JSON.stringify({ tema_escuro: tema === 'escuro' })
             })
@@ -785,6 +788,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
                     }
                 })
                 .then(response => response.json())
@@ -812,8 +816,6 @@
         const pushNotif = document.getElementById('pushNotif').checked;
         const lembretes = document.getElementById('lembretes').checked;
         const idioma = document.querySelector('input[name="idioma"]:checked').value;
-
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         fetch('/atualizar_configuracoes', {
             method: 'POST',

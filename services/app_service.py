@@ -64,7 +64,7 @@ def parse_duration_to_minutes(duracao):
     try:
         hours, minutes = map(int, duracao.split(":"))
         return hours * 60 + minutes
-    except Exception:
+    except (ValueError, TypeError):
         return 0
 
 

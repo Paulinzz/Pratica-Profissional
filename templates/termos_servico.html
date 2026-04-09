@@ -128,6 +128,7 @@
     }
 </style>
 
+<main>
 <div class="content-container">
     <h1 class="page-title">Termos de Serviço</h1>
     
@@ -265,7 +266,7 @@
         <p class="content-text">Versão {{ "1.0" if not version else version }}</p>
     </div>
 
-        <a href="{{ url_for('dashboard') }}" class="back-button">← Voltar ao Dashboard</a>
-    </div>
+    <a href="{{ url_for('dashboard') }}" class="back-button">← Voltar ao Dashboard</a>
+</div>
 </main>
 {% endblock %}

@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const labelsDash = Array.isArray(window.labelsDash) ? window.labelsDash : [];
+    const dataDash = Array.isArray(window.dataDash) ? window.dataDash : [];
+    const labelsMaterias = Array.isArray(window.labelsMaterias) ? window.labelsMaterias : [];
+    const dataMaterias = Array.isArray(window.dataMaterias) ? window.dataMaterias : [];
+
     // Gradiente para o gráfico de linha
     const ctxDash = document.getElementById('chartDash');
-    if (ctxDash) {
+    if (ctxDash && labelsDash.length > 0 && dataDash.length > 0) {
         const contextDash = ctxDash.getContext('2d');
         const gradientDash = contextDash.createLinearGradient(0, 0, 0, 400);
         gradientDash.addColorStop(0, 'rgba(75, 192, 192, 0.4)');
@@ -10,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const chartDash = new Chart(contextDash, {
             type: 'line',
             data: {
-                labels: window.labelsDash,
+                labels: labelsDash,
                 datasets: [{
                     label: 'Atividades Registras por Dia',
-                    data: window.dataDash,
+                    data: dataDash,
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: gradientDash,
                     borderWidth: 3,
@@ -91,21 +96,21 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     const ctxMaterias = document.getElementById('chartMaterias');
-    if (ctxMaterias) {
+    if (ctxMaterias && labelsMaterias.length > 0 && dataMaterias.length > 0) {
         const contextMaterias = ctxMaterias.getContext('2d');
         const chartMaterias = new Chart(contextMaterias, {
             type: 'bar',
             data: {
-                labels: window.labelsMaterias,
+                labels: labelsMaterias,
                 datasets: [{
                     label: 'Tempo Gasto (minutos)',
-                    data: window.dataMaterias,
-                    backgroundColor: colors.slice(0, window.labelsMaterias.length),
-                    borderColor: colors.slice(0, window.labelsMaterias.length).map(color => color.replace('0.8', '1')),
+                    data: dataMaterias,
+                    backgroundColor: colors.slice(0, labelsMaterias.length),
+                    borderColor: colors.slice(0, labelsMaterias.length).map(color => color.replace('0.8', '1')),
                     borderWidth: 2,
                     borderRadius: 8,
                     borderSkipped: false,
-                    hoverBackgroundColor: colors.slice(0, window.labelsMaterias.length).map(color => color.replace('0.8', '1')),
+                    hoverBackgroundColor: colors.slice(0, labelsMaterias.length).map(color => color.replace('0.8', '1')),
                     hoverBorderWidth: 3
                 }]
             },

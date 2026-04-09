@@ -46,8 +46,24 @@ def init_user_routes(app, bcrypt):
     @app.route("/atualizar_perfil", methods=["POST"])
     @login_required
     def atualizar_perfil():
-        nome = Validadores.sanitizar_texto(request.form.get("nome"))
-        email = request.form.get("email")
+        nome = Validadores.sanitizar_texto(request.form.get("nome", "").strip())
+        email = request.form.get("email", "").strip()
+
+        valido, msg = Validadores.validar_nome(nome)
+        if not valido:
+            flash(msg, "error")
+            return redirect(url_for("perfil"))
+
+        valido, msg = Validadores.validar_email(email)
+        if not valido:
+            flash(msg, "error")
+            return redirect(url_for("perfil"))
+
+        user_exists = User.query.filter(User.email == email, User.id != current_user.id).first()
+        if user_exists:
+            flash("Este email já está sendo usado por outra conta.", "error")
+            return redirect(url_for("perfil"))
+
         try:
             current_user.name = nome
             current_user.email = email
@@ -69,6 +85,11 @@ def init_user_routes(app, bcrypt):
             return redirect(url_for("perfil"))
         if nova_senha != confirmar_senha:
             flash("As senhas não coincidem!", "error")
+            return redirect(url_for("perfil"))
+
+        valido, msg = Validadores.validar_senha(nova_senha)
+        if not valido:
+            flash(msg, "error")
             return redirect(url_for("perfil"))
         try:
             current_user.password = bcrypt.generate_password_hash(nova_senha).decode(
