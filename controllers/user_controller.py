@@ -59,7 +59,9 @@ def init_user_routes(app, bcrypt):
             flash(msg, "error")
             return redirect(url_for("perfil"))
 
-        user_exists = User.query.filter(User.email == email, User.id != current_user.id).first()
+        user_exists = User.query.filter(
+            User.email == email, User.id != current_user.id
+        ).first()
         if user_exists:
             flash("Este email já está sendo usado por outra conta.", "error")
             return redirect(url_for("perfil"))
