@@ -5,7 +5,11 @@ from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 
 from models.models import Atividade, Materia, Meta, Notificacao, db
-from services.app_service import criar_notificacao, parse_date_field, parse_duration_to_minutes
+from services.app_service import (
+    criar_notificacao,
+    parse_date_field,
+    parse_duration_to_minutes,
+)
 from services.badge_service import verificar_e_conceder_badge
 from services.validation_service import Validadores
 
@@ -49,7 +53,9 @@ def init_study_routes(app):
                 for word, positions in resumo.items():
                     for pos in positions:
                         if len(abstract_words) <= pos:
-                            abstract_words.extend([""] * (pos - len(abstract_words) + 1))
+                            abstract_words.extend(
+                                [""] * (pos - len(abstract_words) + 1)
+                            )
                         abstract_words[pos] = word
                 artigo["abstract_pt"] = (" ".join(abstract_words))[:150] + "..."
             else:
@@ -63,18 +69,22 @@ def init_study_routes(app):
         )
         tempo_por_materia = {}
         for materia, duracao in atividades_com_duracao:
-            tempo_por_materia[materia] = tempo_por_materia.get(materia, 0) + parse_duration_to_minutes(
-                duracao
-            )
+            tempo_por_materia[materia] = tempo_por_materia.get(
+                materia, 0
+            ) + parse_duration_to_minutes(duracao)
 
         labels_materias = list(tempo_por_materia.keys())
         data_materias = list(tempo_por_materia.values())
-        materia_tempo = [(m, tempo_por_materia.get(m.nome, 0)) for m in current_user.materias]
+        materia_tempo = [
+            (m, tempo_por_materia.get(m.nome, 0)) for m in current_user.materias
+        ]
         materia_tempo.sort(key=lambda item: item[1], reverse=True)
         sorted_materias = [m[0] for m in materia_tempo]
 
         activities_per_day = (
-            db.session.query(func.date(Atividade.data_criacao), func.count(Atividade.id))
+            db.session.query(
+                func.date(Atividade.data_criacao), func.count(Atividade.id)
+            )
             .filter_by(user_id=current_user.id)
             .group_by(func.date(Atividade.data_criacao))
             .all()
@@ -82,7 +92,9 @@ def init_study_routes(app):
         labels_dash = [str(row[0]) for row in activities_per_day]
         data_dash = [row[1] for row in activities_per_day]
 
-        metas_ativas = Meta.query.filter_by(user_id=current_user.id, status="ativo").count()
+        metas_ativas = Meta.query.filter_by(
+            user_id=current_user.id, status="ativo"
+        ).count()
         metas_concluidas = Meta.query.filter_by(
             user_id=current_user.id, status="concluido"
         ).count()
@@ -146,9 +158,9 @@ def init_study_routes(app):
         )
         tempo_por_materia = {}
         for materia, duracao in atividades_com_duracao:
-            tempo_por_materia[materia] = tempo_por_materia.get(materia, 0) + parse_duration_to_minutes(
-                duracao
-            )
+            tempo_por_materia[materia] = tempo_por_materia.get(
+                materia, 0
+            ) + parse_duration_to_minutes(duracao)
         all_materias = Materia.query.filter_by(user_id=current_user.id).all()
         sorted_materias = sorted(
             all_materias, key=lambda m: tempo_por_materia.get(m.nome, 0), reverse=True
@@ -165,7 +177,9 @@ def init_study_routes(app):
             assunto = Validadores.sanitizar_texto(
                 request.form.get("assunto_primario", "").strip()
             )
-            descricao = Validadores.sanitizar_texto(request.form.get("descricao", "").strip())
+            descricao = Validadores.sanitizar_texto(
+                request.form.get("descricao", "").strip()
+            )
             duracao = request.form.get("duracao", "").strip()
             data = parse_date_field(request.form.get("data", "").strip())
 
@@ -263,7 +277,9 @@ def init_study_routes(app):
     @app.route("/editar_materia/<int:materia_id>", methods=["GET", "POST"])
     @login_required
     def editar_materia(materia_id):
-        materia = Materia.query.filter_by(id=materia_id, user_id=current_user.id).first()
+        materia = Materia.query.filter_by(
+            id=materia_id, user_id=current_user.id
+        ).first()
         if not materia:
             flash("Matéria não encontrada ou sem permissão para editar.", "error")
             return redirect(url_for("dashboard"))
@@ -297,7 +313,9 @@ def init_study_routes(app):
     @app.route("/excluir_materia/<int:materia_id>", methods=["POST"])
     @login_required
     def excluir_materia(materia_id):
-        materia = Materia.query.filter_by(id=materia_id, user_id=current_user.id).first()
+        materia = Materia.query.filter_by(
+            id=materia_id, user_id=current_user.id
+        ).first()
         if not materia:
             flash("Matéria não encontrada ou sem permissão para excluir.", "error")
             return redirect(url_for("dashboard"))
@@ -384,7 +402,9 @@ def init_study_routes(app):
     @app.route("/marcar_todas_lidas", methods=["POST"])
     @login_required
     def marcar_todas_lidas():
-        Notificacao.query.filter_by(user_id=current_user.id, lida=False).update({"lida": True})
+        Notificacao.query.filter_by(user_id=current_user.id, lida=False).update(
+            {"lida": True}
+        )
         db.session.commit()
         return {"success": True}, 200
 
@@ -444,7 +464,9 @@ def init_study_routes(app):
         if status_filtro != "todos":
             query = query.filter_by(status=status_filtro)
         metas = query.order_by(Meta.data_criacao.desc()).all()
-        return render_template("listar_metas.html", metas=metas, status_filtro=status_filtro)
+        return render_template(
+            "listar_metas.html", metas=metas, status_filtro=status_filtro
+        )
 
     @app.route("/criar_meta", methods=["GET", "POST"])
     @login_required
@@ -452,7 +474,9 @@ def init_study_routes(app):
         materias = Materia.query.filter_by(user_id=current_user.id).all()
         if request.method == "POST":
             titulo = Validadores.sanitizar_texto(request.form.get("titulo", "").strip())
-            descricao = Validadores.sanitizar_texto(request.form.get("descricao", "").strip())
+            descricao = Validadores.sanitizar_texto(
+                request.form.get("descricao", "").strip()
+            )
             data_limite = parse_date_field(request.form.get("data_limite", "").strip())
             materia_id = request.form.get("materia_id", "").strip()
             if not titulo or len(titulo) < 3:
@@ -497,7 +521,9 @@ def init_study_routes(app):
         materias = Materia.query.filter_by(user_id=current_user.id).all()
         if request.method == "POST":
             titulo = Validadores.sanitizar_texto(request.form.get("titulo", "").strip())
-            descricao = Validadores.sanitizar_texto(request.form.get("descricao", "").strip())
+            descricao = Validadores.sanitizar_texto(
+                request.form.get("descricao", "").strip()
+            )
             data_limite = parse_date_field(request.form.get("data_limite", "").strip())
             materia_id = request.form.get("materia_id", "").strip()
             status = request.form.get("status", "ativo")

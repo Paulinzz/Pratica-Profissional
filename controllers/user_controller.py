@@ -71,7 +71,9 @@ def init_user_routes(app, bcrypt):
             flash("As senhas não coincidem!", "error")
             return redirect(url_for("perfil"))
         try:
-            current_user.password = bcrypt.generate_password_hash(nova_senha).decode("utf-8")
+            current_user.password = bcrypt.generate_password_hash(nova_senha).decode(
+                "utf-8"
+            )
             db.session.commit()
             flash("Senha alterada com sucesso!", "success")
         except Exception as e:
@@ -107,7 +109,9 @@ def init_user_routes(app, bcrypt):
     def remover_foto():
         try:
             if current_user.photo:
-                filepath = os.path.join(app.root_path, "static", "imagens", current_user.photo)
+                filepath = os.path.join(
+                    app.root_path, "static", "imagens", current_user.photo
+                )
                 if os.path.exists(filepath):
                     os.remove(filepath)
             current_user.photo = None
@@ -142,7 +146,11 @@ def init_user_routes(app, bcrypt):
         styles = getSampleStyleSheet()
         story = []
         title_style = ParagraphStyle(
-            "CustomTitle", parent=styles["Heading1"], fontSize=24, spaceAfter=30, alignment=1
+            "CustomTitle",
+            parent=styles["Heading1"],
+            fontSize=24,
+            spaceAfter=30,
+            alignment=1,
         )
         story.append(Paragraph("Relatório de Dados - FocusUp", title_style))
         story.append(Spacer(1, 12))
@@ -172,7 +180,9 @@ def init_user_routes(app, bcrypt):
             for materia in current_user.materias:
                 materias_data.append([materia.nome])
             materias_table = Table(materias_data, colWidths=[6 * inch])
-            materias_table.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 1, colors.black)]))
+            materias_table.setStyle(
+                TableStyle([("GRID", (0, 0), (-1, -1), 1, colors.black)])
+            )
             story.append(materias_table)
         else:
             story.append(Paragraph("Nenhuma matéria cadastrada.", styles["Normal"]))
@@ -215,7 +225,9 @@ def init_user_routes(app, bcrypt):
     def excluir_conta():
         try:
             if current_user.photo:
-                filepath = os.path.join(app.root_path, "static", "imagens", current_user.photo)
+                filepath = os.path.join(
+                    app.root_path, "static", "imagens", current_user.photo
+                )
                 if os.path.exists(filepath):
                     os.remove(filepath)
             user_id = current_user.id

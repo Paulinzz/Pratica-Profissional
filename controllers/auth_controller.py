@@ -1,7 +1,14 @@
 from datetime import datetime, timedelta
 import secrets
 
-from flask import flash, get_flashed_messages, redirect, render_template, request, url_for
+from flask import (
+    flash,
+    get_flashed_messages,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import login_required, login_user, logout_user
 from flask_mail import Message
 
@@ -57,7 +64,9 @@ def init_auth_routes(app, bcrypt, mail):
                 return redirect(url_for("register"))
 
             try:
-                hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
+                hashed_password = bcrypt.generate_password_hash(password).decode(
+                    "utf-8"
+                )
                 new_user = User(name=name, email=email, password=hashed_password)
                 db.session.add(new_user)
                 db.session.commit()
@@ -194,7 +203,10 @@ Se você não solicitou esta redefinição, ignore este email.
             user.reset_expires = None
             db.session.commit()
 
-            flash("Senha redefinida com sucesso! Faça login com sua nova senha.", "success")
+            flash(
+                "Senha redefinida com sucesso! Faça login com sua nova senha.",
+                "success",
+            )
             return redirect(url_for("login"))
 
         return render_template("resetar_senha.html", token=token)
