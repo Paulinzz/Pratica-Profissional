@@ -10,7 +10,7 @@ class TesteMySQLConfig:
         self.port = int(os.getenv("DB_PORT", "3306"))
         self.database = os.getenv("DB_NAME", "pratica_profissional")
         self.user = os.getenv("DB_USER", "root")
-        self.password = os.getenv("DB_PASSWORD", "")
+        self.password = os.getenv("DB_PASSWORD", "admin")
 
     def verificar_mysql_rodando(self):
         """Verifica se o MySQL está rodando"""
