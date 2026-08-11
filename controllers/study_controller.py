@@ -1,4 +1,5 @@
 import requests
+import logging
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import func
@@ -12,6 +13,9 @@ from services.app_service import (
 )
 from services.badge_service import verificar_e_conceder_badge
 from services.validation_service import Validadores
+from utils.pagination import Paginator, get_pagination_params
+
+study_logger = logging.getLogger('study')
 
 
 traducoes_comuns = {
@@ -243,8 +247,27 @@ def init_study_routes(app):
     @app.route("/listar_atividades")
     @login_required
     def listar_atividades():
-        atividades = Atividade.query.filter_by(user_id=current_user.id).all()
-        return render_template("listar_atividades.html", atividades=atividades)
+        page, per_page = get_pagination_params(default_page=1, default_per_page=10)
+
+        query = Atividade.query.filter_by(user_id=current_user.id).order_by(
+            Atividade.data_criacao.desc()
+        )
+
+        paginator = Paginator(query, page=page, per_page=per_page)
+        result = paginator.paginate()
+
+        study_logger.info(
+            f"Listando atividades do usuário {current_user.id}, "
+            f"página {page}, total {result['total']}"
+        )
+
+        return render_template(
+            "listar_atividades.html",
+            atividades=result['items'],
+            pagination=result,
+            current_page=page,
+            per_page=per_page,
+        )
 
     @app.route("/editar_atividade/<int:atividade_id>", methods=["GET", "POST"])
     @login_required
@@ -354,8 +377,11 @@ def init_study_routes(app):
     @app.route("/listar_noticacoes")
     @login_required
     def listar_notificacoes():
+        page, per_page = get_pagination_params(default_page=1, default_per_page=15)
+
         tipo_filtro = request.args.get("tipo", "todos")
         lida_filtro = request.args.get("lida", "todos")
+
         query = Notificacao.query.filter_by(user_id=current_user.id)
         if tipo_filtro != "todos":
             query = query.filter_by(tipo=tipo_filtro)
@@ -363,16 +389,30 @@ def init_study_routes(app):
             query = query.filter_by(lida=True)
         elif lida_filtro == "nao_lidas":
             query = query.filter_by(lida=False)
-        notificacoes = query.order_by(Notificacao.data_criacao.desc()).all()
-        total_notificacoes = len(notificacoes)
-        nao_lidas = sum(1 for n in notificacoes if not n.lida)
+
+        query = query.order_by(Notificacao.data_criacao.desc())
+
+        paginator = Paginator(query, page=page, per_page=per_page)
+        result = paginator.paginate()
+
+        total_notificacoes = result['total']
+        nao_lidas = Notificacao.query.filter_by(user_id=current_user.id, lida=False).count()
+
+        study_logger.info(
+            f"Listando notificações do usuário {current_user.id}, "
+            f"página {page}, filtro tipo={tipo_filtro}, lida={lida_filtro}"
+        )
+
         return render_template(
             "listar_notificacoes.html",
-            notificacoes=notificacoes,
+            notificacoes=result['items'],
+            pagination=result,
             tipo_filtro=tipo_filtro,
             lida_filtro=lida_filtro,
             total_notificacoes=total_notificacoes,
             nao_lidas=nao_lidas,
+            current_page=page,
+            per_page=per_page,
         )
 
     @app.route("/marcar_notificacao_lida/<int:notificacao_id>", methods=["POST"])
@@ -459,13 +499,31 @@ def init_study_routes(app):
     @app.route("/metas")
     @login_required
     def listar_metas():
+        page, per_page = get_pagination_params(default_page=1, default_per_page=10)
+
         status_filtro = request.args.get("status", "todos")
         query = Meta.query.filter_by(user_id=current_user.id)
+
         if status_filtro != "todos":
             query = query.filter_by(status=status_filtro)
-        metas = query.order_by(Meta.data_criacao.desc()).all()
+
+        query = query.order_by(Meta.data_criacao.desc())
+
+        paginator = Paginator(query, page=page, per_page=per_page)
+        result = paginator.paginate()
+
+        study_logger.info(
+            f"Listando metas do usuário {current_user.id}, "
+            f"página {page}, filtro status={status_filtro}"
+        )
+
         return render_template(
-            "listar_metas.html", metas=metas, status_filtro=status_filtro
+            "listar_metas.html",
+            metas=result['items'],
+            pagination=result,
+            status_filtro=status_filtro,
+            current_page=page,
+            per_page=per_page,
         )
 
     @app.route("/criar_meta", methods=["GET", "POST"])

@@ -6,6 +6,7 @@ from flask_mail import Mail
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
+import logging
 
 from models.models import (
     db,
@@ -16,11 +17,16 @@ from controllers.auth_controller import init_auth_routes
 from controllers.study_controller import init_study_routes
 from controllers.user_controller import init_user_routes
 from controllers.error_controller import init_error_handlers
+from config.logging_config import setup_logging
 
 
 load_dotenv()
 
 app = Flask(__name__)
+
+# Configurar logging
+setup_logging(app)
+app_logger = logging.getLogger(__name__)
 app.config["SESSION_COOKIE_SECURE"] = os.getenv("FLASK_ENV") == "production"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
@@ -68,7 +74,9 @@ init_error_handlers(app)
 with app.app_context():
     db.create_all()
     criar_badges_padrao()
+    app_logger.info("Banco de dados inicializado e badges padrão criadas")
 
 
 if __name__ == "__main__":
+    app_logger.info(f"Iniciando FocusUp em modo {'DEBUG' if app.debug else 'PRODUCTION'}")
     app.run(debug=True)

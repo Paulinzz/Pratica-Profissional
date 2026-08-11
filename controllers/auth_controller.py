@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import secrets
+import logging
 
 from flask import (
     flash,
@@ -21,6 +22,8 @@ from services.app_service import (
 )
 from services.validation_service import Validadores
 
+auth_logger = logging.getLogger('auth')
+
 
 def init_auth_routes(app, bcrypt, mail):
     @app.route("/")
@@ -37,6 +40,7 @@ def init_auth_routes(app, bcrypt, mail):
                 ip, tentativas_cadastro, max_tentativas=3
             )
             if not permitido:
+                auth_logger.warning(f"Rate limit excedido para registro de IP: {ip}")
                 flash(mensagem, "error")
                 return redirect(url_for("register"))
 
@@ -46,20 +50,24 @@ def init_auth_routes(app, bcrypt, mail):
 
             valido, msg = Validadores.validar_nome(name)
             if not valido:
+                auth_logger.debug(f"Nome inválido na tentativa de registro: {msg}")
                 flash(msg, "error")
                 return redirect(url_for("register"))
 
             valido, msg = Validadores.validar_email(email)
             if not valido:
+                auth_logger.debug(f"Email inválido na tentativa de registro: {email}")
                 flash(msg, "error")
                 return redirect(url_for("register"))
 
             valido, msg = Validadores.validar_senha(password)
             if not valido:
+                auth_logger.debug("Senha inválida na tentativa de registro")
                 flash(msg, "error")
                 return redirect(url_for("register"))
 
             if User.query.filter_by(email=email).first():
+                auth_logger.warning(f"Tentativa de registro com email já existente: {email}")
                 flash("Este email já está cadastrado.", "error")
                 return redirect(url_for("register"))
 
@@ -70,6 +78,8 @@ def init_auth_routes(app, bcrypt, mail):
                 new_user = User(name=name, email=email, password=hashed_password)
                 db.session.add(new_user)
                 db.session.commit()
+
+                auth_logger.info(f"Novo usuário registrado: {email} (ID: {new_user.id})")
 
                 criar_notificacao(
                     user_id=new_user.id,
@@ -87,6 +97,7 @@ def init_auth_routes(app, bcrypt, mail):
                 return redirect(url_for("login"))
             except Exception as e:
                 db.session.rollback()
+                auth_logger.error(f"Erro ao criar conta para {email}: {str(e)}", exc_info=True)
                 flash(f"Erro ao criar conta: {str(e)}", "error")
                 return redirect(url_for("register"))
 
@@ -102,6 +113,7 @@ def init_auth_routes(app, bcrypt, mail):
                 ip, tentativas_login, max_tentativas=5
             )
             if not permitido:
+                auth_logger.warning(f"Rate limit de login excedido para IP: {ip}")
                 flash(mensagem, "error")
                 return redirect(url_for("login"))
 
@@ -110,12 +122,15 @@ def init_auth_routes(app, bcrypt, mail):
 
             valido, _ = Validadores.validar_email(email)
             if not valido:
+                auth_logger.debug(f"Email inválido na tentativa de login: {email}")
                 flash("Email ou senha inválidos.", "error")
                 return redirect(url_for("login"))
 
             user = User.query.filter_by(email=email).first()
             if user and bcrypt.check_password_hash(user.password, password):
                 login_user(user)
+                auth_logger.info(f"Login bem-sucedido para usuário: {email} (ID: {user.id})")
+
                 criar_notificacao(
                     user_id=user.id,
                     tipo="sistema",
@@ -126,6 +141,7 @@ def init_auth_routes(app, bcrypt, mail):
                 flash("Login realizado com sucesso!", "success")
                 return redirect(url_for("dashboard"))
 
+            auth_logger.warning(f"Tentativa de login falhada para email: {email}")
             flash("Email ou senha inválidos.", "error")
             return redirect(url_for("login"))
 

@@ -15,3 +15,5 @@ Thumbs.db
 
 # Arquivos de configuração local para o MySQL
 .env
+
+.claude
