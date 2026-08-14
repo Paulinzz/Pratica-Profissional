@@ -26,6 +26,9 @@
 /* Import Page-Specific Styles */
 @import url('./pages/dashboard.css');
 @import url('./pages/auth.css');
+@import url('./pages/atividades.css');
+@import url('./pages/metas.css');
+@import url('./pages/calendario.css');
 @import url('./pages/_placeholders.css');
 
 /* ====================================
