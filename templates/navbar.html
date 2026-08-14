@@ -1,0 +1,141 @@
+{# ====================================
+   FOCUSUP - NAVBAR COMPONENT
+   Main navigation and branding
+   ==================================== #}
+
+<div class="header-main">
+    <header>
+        {# Logo Container #}
+        <div class="logo-container">
+            <div class="focusup-logo">
+                <div class="checkmark-container">
+                    <div class="checkmark"></div>
+                </div>
+                <span class="focusup-text">FocusUp</span>
+            </div>
+        </div>
+
+        {# Menu Hamburguer para Mobile #}
+        <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        {# Desktop Navigation Links #}
+        <div class="links">
+            <a href="{{url_for('dashboard')}}">Início</a>
+            <a href="{{url_for('listar_atividades')}}">Atividades</a>
+            <a href="{{url_for('listar_metas')}}">Metas</a>
+            <a href="{{url_for('calendario')}}">Calendário</a>
+            <a href="{{url_for('ajuda')}}">Ajuda</a>
+        </div>
+
+        {# Theme Toggle Button #}
+        <div class="theme-toggle">
+            <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()">
+                <i class="fa-solid fa-moon" id="themeIcon"></i>
+            </button>
+        </div>
+
+        {# Notifications Badge #}
+        <div class="notifications">
+            <a href="{{url_for('listar_notificacoes')}}" id="notificationLink" class="notification-link">
+                <i class="fa-solid fa-bell"></i>
+                <span class="notification-badge" id="notificationBadge">0</span>
+            </a>
+        </div>
+
+        {# User Dropdown Menu #}
+        {% if current_user.is_authenticated %}
+        <div class="user-dropdown" id="userDropdown">
+            <div class="user-info" onclick="toggleDropdown()">
+                <div class="user-avatar">
+                    {% if current_user.photo %}
+                        <img src="{{ url_for('static', filename='imagens/' + current_user.photo) }}" alt="Foto de perfil">
+                    {% else %}
+                        {{ (current_user.name or current_user.email)[0].upper() }}
+                    {% endif %}
+                </div>
+                <span class="user-name">{{ current_user.name or current_user.email.split('@')[0].title() }}</span>
+                <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+            </div>
+
+            <div class="dropdown-menu">
+                <div class="dropdown-header">
+                    <div class="dropdown-header-name">{{ current_user.name or current_user.email.split('@')[0].title() }}</div>
+                    <div class="dropdown-header-email">{{ current_user.email }}</div>
+                </div>
+
+                <a href="{{url_for('perfil')}}" class="dropdown-item">
+                    <i class="fa-solid fa-user"></i>
+                    Meu Perfil
+                </a>
+
+                <a href="{{url_for('configuracoes')}}" class="dropdown-item">
+                    <i class="fa-solid fa-gear"></i>
+                    Configurações
+                </a>
+
+                <a href="{{url_for('dashboard')}}" class="dropdown-item">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <a href="{{url_for('sobre_nos')}}" class="dropdown-item">
+                    <i class="fa-solid fa-info-circle"></i>
+                    Sobre Nós
+                </a>
+
+                <a href="{{url_for('ajuda')}}" class="dropdown-item">
+                    <i class="fa-solid fa-circle-question"></i>
+                    Ajuda
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <a href="{{url_for('logout')}}" class="dropdown-item logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Sair
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </header>
+</div>
+
+{# Mobile Menu Overlay and Sidebar #}
+<div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+        <button class="mobile-menu-close" onclick="closeMobileMenu()">&times;</button>
+        <h3><i class="fa-solid fa-bars"></i> Menu</h3>
+    </div>
+    <div class="mobile-menu-content">
+        <a href="{{url_for('dashboard')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-home"></i> Início
+        </a>
+        <a href="{{url_for('listar_atividades')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-tasks"></i> Atividades
+        </a>
+        <a href="{{url_for('listar_metas')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-target"></i> Metas
+        </a>
+        <a href="{{url_for('calendario')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-calendar"></i> Calendário
+        </a>
+        <a href="{{url_for('ajuda')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-circle-question"></i> Ajuda
+        </a>
+        <div class="mobile-menu-separator"></div>
+        <a href="{{url_for('perfil')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-user"></i> Meu Perfil
+        </a>
+        <a href="{{url_for('configuracoes')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-gear"></i> Configurações
+        </a>
+        <a href="{{url_for('logout')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </a>
+    </div>
+</div>

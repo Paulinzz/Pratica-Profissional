@@ -1,0 +1,36 @@
+{#
+   components/input.html
+
+   Componente de input reutilizável com validação
+
+   Uso:
+   {% include 'components/input.html' with context %}
+
+   Parâmetros:
+   - name: nome do input (obrigatório)
+   - type: text|email|password|number|date|time|tel|url|search (default: text)
+   - value: valor inicial
+   - placeholder: placeholder
+   - required: true|false
+   - disabled: true|false
+   - readonly: true|false
+   - pattern: regex pattern para validação
+   - minlength: comprimento mínimo
+   - maxlength: comprimento máximo
+   - class: classes CSS adicionais
+   - aria_label: aria-label para acessibilidade
+#}
+
+<input type="{{ type|default('text') }}"
+       name="{{ name }}"
+       id="{{ name }}"
+       value="{{ value|default('') }}"
+       placeholder="{{ placeholder|default('') }}"
+       class="form-control {{ class|default('') }}"
+       {% if required %}required aria-required="true"{% endif %}
+       {% if disabled %}disabled{% endif %}
+       {% if readonly %}readonly{% endif %}
+       {% if pattern %}pattern="{{ pattern }}"{% endif %}
+       {% if minlength %}minlength="{{ minlength }}"{% endif %}
+       {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
+       {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>

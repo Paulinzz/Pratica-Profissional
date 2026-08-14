@@ -1,64 +1,83 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='formularios.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="icon" href="{{url_for('static', filename='imagens/correto.png')}}" type="image/x-icon">
+{% extends 'base.html' %}
 
-</head>
-<body>
+{% block title %}Cadastro{% endblock %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-container">
-            {% for category, message in messages %}
-            <div class="flash {{ category }}">{{ message }}</div>
-        {% endfor %}
-        </div>
-        {% endif %}
-    {% endwith %}
-
-    
-    <header>
-        <h1>Registre-se</h1>
-    </header>
-
-    <main>
-        <!-- Adicionada a action e o method para o formulário -->
-        <form action="{{ url_for('register') }}" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <div class="logo-container">
-                <div class="focusup-logo">
-                    <div class="checkmark-container">
-                        <div class="checkmark"></div>
-                    </div>
-                    <span class="focusup-text">FocusUp</span>
+{% block conteudo %}
+<main class="auth-main auth-signup">
+    <div class="auth-container">
+        <!-- Logo -->
+        <div class="auth-logo">
+            <div class="focusup-logo">
+                <div class="checkmark-container">
+                    <div class="checkmark"></div>
                 </div>
+                <span class="focusup-text">FocusUp</span>
             </div>
-            
-            <div class="email">
-                <i class="fa-solid fa-user"></i>
-                <!-- Adicionado o atributo name="name" -->
-                <input type="text" name="name" placeholder="Nome Completo" required>
-            </div>
+        </div>
 
-            <div class="email">
-                <i class="fa-regular fa-envelope"></i>
-                <!-- Adicionado o atributo name="email" -->
-                <input type="email" name="email" placeholder="E-mail" required>
-            </div>
+        <!-- Header -->
+        <div class="auth-header">
+            <h1>Criar conta</h1>
+            <p>Junte-se à comunidade FocusUp</p>
+        </div>
 
-            <div class="senha">
-                <i class="fa-solid fa-key"></i>
-                <!-- Adicionado o atributo name="password" -->
-                <input type="password" name="password" placeholder="Senha" required>
-            </div>
-            <button type="submit">Cadastrar</button>
-            <a href="{{url_for('login')}}">Já tem uma conta? entre aqui</a>             
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% set alert_type = 'danger' if category == 'error' else category %}
+                    {% set alert_type = 'success' if alert_type == 'message' else alert_type %}
+                    {% set title = 'Erro' if alert_type == 'danger' else 'Sucesso' %}
+                    {% include 'components/alert.html' with context %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Signup Form -->
+        <form action="{{ url_for('register') }}" method="POST" class="auth-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <!-- Full Name Field -->
+            {% set name = "name" %}
+            {% set label = "Nome Completo" %}
+            {% set type = "text" %}
+            {% set placeholder = "Digite seu nome" %}
+            {% set required = true %}
+            {% set icon = "user" %}
+            {% include 'components/form_group.html' with context %}
+
+            <!-- Email Field -->
+            {% set name = "email" %}
+            {% set label = "E-mail" %}
+            {% set type = "email" %}
+            {% set placeholder = "seu@email.com" %}
+            {% set required = true %}
+            {% set icon = "envelope" %}
+            {% include 'components/form_group.html' with context %}
+
+            <!-- Password Field -->
+            {% set name = "password" %}
+            {% set label = "Senha" %}
+            {% set type = "password" %}
+            {% set placeholder = "Digite uma senha forte" %}
+            {% set required = true %}
+            {% set icon = "key" %}
+            {% set helper_text = "Mínimo 6 caracteres" %}
+            {% include 'components/form_group.html' with context %}
+
+            <!-- Submit Button -->
+            {% set text = "Cadastrar" %}
+            {% set type = "primary" %}
+            {% set class = "auth-submit-btn" %}
+            {% include 'components/button.html' with context %}
         </form>
-    </main>
-</body>
-</html>
+
+        <!-- Footer Links -->
+        <div class="auth-footer">
+            <p>Já tem uma conta?
+                <a href="{{url_for('login')}}" class="auth-link">Faça login</a>
+            </p>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,708 @@
+/* ====================================
+   FOCUSUP - DASHBOARD PAGE
+   Dashboard-specific styles
+   ==================================== */
+
+/* Dashboard Stats Section (Full Width) */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-6);
+  padding: var(--spacing-8);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-stats .card-metric {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.dashboard-stats .card-metric:nth-child(1) { animation-delay: 0.1s; }
+.dashboard-stats .card-metric:nth-child(2) { animation-delay: 0.15s; }
+.dashboard-stats .card-metric:nth-child(3) { animation-delay: 0.2s; }
+
+/* Main Dashboard Layout */
+main.dashboard-main {
+  flex: 1;
+  display: flex;
+  gap: var(--spacing-8);
+  padding: var(--spacing-8);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Left Content (Charts & Materials) */
+.left-content {
+  flex: 1;
+  display: flex;
+  max-width: 65%;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* Container Case */
+.container-case {
+  flex: 1;
+  display: flex;
+  gap: var(--spacing-6);
+  flex-wrap: wrap;
+}
+
+/* Card Dashboard Base */
+.card-dashboard {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.card-dashboard:nth-child(1) { animation-delay: 0.05s; }
+.card-dashboard:nth-child(2) { animation-delay: 0.1s; }
+.card-dashboard:nth-child(3) { animation-delay: 0.15s; }
+.card-dashboard:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chart Card */
+.card-dash {
+  flex: 1;
+  display: flex;
+  min-height: 300px;
+  padding: var(--spacing-6);
+  background: var(--color-bg-secondary);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--card-border-radius);
+}
+
+.card-dash canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Materials Card */
+.card-materias_mais_estudadas {
+  display: flex;
+  flex: 1;
+  min-width: 300px;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--card-border-radius);
+  background-color: var(--color-bg-secondary);
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.minhas_materias {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: var(--spacing-6);
+  width: 100%;
+}
+
+.minhas_materias h2 {
+  color: var(--color-primary);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-4);
+}
+
+/* Materials List (Scrollable) */
+.materias-lista {
+  margin-top: var(--spacing-4);
+  display: flex;
+  gap: var(--spacing-5);
+  overflow-x: auto;
+  padding-bottom: var(--spacing-3);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-bg-tertiary);
+}
+
+.materias-lista::-webkit-scrollbar {
+  height: 6px;
+}
+
+.materias-lista::-webkit-scrollbar-track {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+}
+
+.materias-lista::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.materias-lista::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Add Material Button */
+.link_add-mat {
+  flex: 1;
+  background-color: var(--color-success);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-full);
+  max-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  max-width: 300px;
+  color: white;
+  text-decoration: none;
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-base);
+  transition: var(--transition-base);
+  margin-bottom: var(--spacing-4);
+}
+
+.link_add-mat:hover {
+  background-color: var(--color-success-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+}
+
+.link_add-mat i {
+  margin-right: var(--spacing-1);
+}
+
+/* About Card */
+.card-sobre {
+  flex: 1;
+  min-width: 300px;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--card-border-radius);
+  background-color: var(--color-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-6);
+}
+
+.title_card-sobre h1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+  font-weight: var(--font-weight-semi-bold);
+}
+
+.content-card-sobre {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.content-card-sobre img {
+  max-width: 120px;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+}
+
+.content-card-sobre p {
+  flex: 1;
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  font-size: var(--font-size-sm);
+}
+
+.content-card-sobre a {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semi-bold);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.content-card-sobre a:hover {
+  text-decoration: underline;
+  color: var(--color-primary-dark);
+}
+
+/* Right Content */
+.right-content {
+  display: flex;
+  flex: 1;
+  max-width: 35%;
+  gap: var(--spacing-6);
+  flex-direction: column;
+}
+
+/* Articles Card */
+.card_artigo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--card-border-radius);
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-6);
+}
+
+.title-card_artigo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--color-border-light);
+  padding-bottom: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.title-card_artigo h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
+}
+
+.title-card_artigo i {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+}
+
+/* Articles Container */
+.artigos-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: var(--spacing-2);
+}
+
+.artigos-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.artigos-container::-webkit-scrollbar-track {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+}
+
+.artigos-container::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+/* Materia Item */
+.materia-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-4);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-lg);
+  width: 200px;
+  height: 150px;
+  flex-shrink: 0;
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.materia-item:hover {
+  background: var(--color-bg-secondary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.materia-nome {
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-primary);
+  word-break: break-word;
+  display: block;
+}
+
+.materia-tempo {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-2);
+  text-align: center;
+}
+
+.materia-delete-form {
+  position: absolute;
+  top: var(--spacing-2);
+  right: var(--spacing-2);
+}
+
+.btn-delete-materia {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--color-danger);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+  font-size: var(--font-size-sm);
+}
+
+.btn-delete-materia:hover {
+  background-color: var(--color-danger-dark);
+  transform: scale(1.1);
+}
+
+.btn-delete-materia:active {
+  transform: scale(0.95);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-8) var(--spacing-4);
+  width: 100%;
+}
+
+.empty-state i {
+  font-size: 48px;
+  display: block;
+  margin-bottom: var(--spacing-4);
+  opacity: 0.5;
+}
+
+.empty-state p {
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.empty-state small {
+  font-size: var(--font-size-sm);
+}
+
+/* About Text */
+.about-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.about-text p {
+  margin: 0;
+}
+
+/* Artigo Card Styles */
+.artigo-card {
+  padding: var(--spacing-4);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--color-primary);
+  transition: var(--transition-fast);
+}
+
+.artigo-card:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateX(2px);
+}
+
+.artigo-info h3 {
+  margin: 0 0 var(--spacing-2) 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+}
+
+.artigo-abstract {
+  margin: 0 0 var(--spacing-3) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.artigo-meta {
+  margin: var(--spacing-3) 0;
+}
+
+.artigo-meta p {
+  margin: 0 0 var(--spacing-1) 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.artigo-meta a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.artigo-meta a:hover {
+  text-decoration: underline;
+  color: var(--color-primary-dark);
+}
+
+/* Activity Actions Container */
+.activity-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  align-items: flex-end;
+}
+
+/* Add Activity Container */
+.container_add-atividade {
+  flex: 1;
+  display: flex;
+  border-radius: var(--card-border-radius);
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.add-atividade {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  font-size: var(--font-size-lg);
+}
+
+.add-atividade p {
+  margin: 0;
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-primary);
+}
+
+/* Add Activity Button */
+.botao_add_atv {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--color-success);
+  color: white;
+  font-size: var(--font-size-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  transition: var(--transition-base);
+  border: none;
+}
+
+.botao_add_atv:hover {
+  transform: scale(1.1);
+  background-color: var(--color-success-dark);
+  box-shadow: var(--shadow-xl);
+}
+
+.botao_add_atv:active {
+  transform: scale(0.95);
+}
+
+/* Pomodoro Link */
+.link-pomodoro {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: white;
+  padding: var(--spacing-3) var(--spacing-8);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  font-weight: var(--font-weight-semi-bold);
+  transition: var(--transition-base);
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2);
+  font-size: var(--font-size-base);
+  border: none;
+  cursor: pointer;
+}
+
+.link-pomodoro:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 152, 0, 0.3);
+  color: white;
+}
+
+.link-pomodoro:active {
+  transform: translateY(0);
+}
+
+.link-pomodoro i {
+  margin-right: var(--spacing-1);
+}
+
+/* Dark Mode */
+body.dark-mode .card-materias_mais_estudadas,
+body.dark-mode .card-sobre,
+body.dark-mode .card_artigo {
+  background: var(--color-bg-tertiary);
+}
+
+body.dark-mode .minhas_materias h2,
+body.dark-mode .title_card-sobre h1,
+body.dark-mode .title-card_artigo h2 {
+  color: var(--color-text-dark-primary);
+}
+
+body.dark-mode .content-card-sobre a {
+  color: var(--color-primary-light);
+}
+
+body.dark-mode .artigo-info a {
+  color: var(--color-primary-light);
+}
+
+/* Dashboard Stats Dark Mode */
+body.dark-mode .dashboard-stats .card-metric {
+  background: var(--color-bg-tertiary);
+}
+
+/* ====================================
+   DASHBOARD RESPONSIVE
+   ==================================== */
+
+/* Tablet (2 columns for stats) */
+@media (max-width: 1200px) {
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-5);
+    padding: var(--spacing-6);
+  }
+
+  main.dashboard-main {
+    gap: var(--spacing-6);
+    flex-direction: column;
+  }
+
+  .left-content {
+    max-width: 100%;
+  }
+
+  .right-content {
+    max-width: 100%;
+  }
+}
+
+/* Small Tablet (1 column for stats) */
+@media (max-width: 768px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
+  }
+
+  main.dashboard-main {
+    padding: var(--spacing-4);
+    gap: var(--spacing-4);
+  }
+
+  .container-case {
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+
+  .card-materias_mais_estudadas {
+    min-width: 100%;
+  }
+
+  .card-sobre {
+    min-width: 100%;
+  }
+
+  .card-dash {
+    min-height: 250px;
+  }
+
+  .materias-item {
+    width: 150px;
+    height: 120px;
+  }
+
+  .content-card-sobre {
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .content-card-sobre img {
+    max-width: 100%;
+  }
+
+  .card_artigo {
+    min-height: auto;
+  }
+
+  .add-atividade {
+    flex-direction: column-reverse;
+  }
+
+  .link-pomodoro {
+    padding: var(--spacing-2) var(--spacing-6);
+    font-size: var(--font-size-sm);
+  }
+
+  .botao_add_atv {
+    width: 50px;
+    height: 50px;
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Mobile (1 column, minimal spacing) */
+@media (max-width: 480px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3);
+    padding: var(--spacing-3);
+  }
+
+  main.dashboard-main {
+    padding: var(--spacing-3);
+    gap: var(--spacing-3);
+  }
+
+  .left-content {
+    gap: var(--spacing-3);
+  }
+
+  .right-content {
+    gap: var(--spacing-3);
+  }
+
+  .card-dash,
+  .card-materias_mais_estudadas,
+  .card-sobre,
+  .card_artigo {
+    padding: var(--spacing-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .card-dash {
+    min-height: 200px;
+  }
+
+  .materias-lista {
+    gap: var(--spacing-3);
+  }
+
+  .link_add-mat {
+    max-width: 100%;
+    font-size: var(--font-size-sm);
+  }
+
+  .title_card-sobre h1,
+  .title-card_artigo h2 {
+    font-size: var(--font-size-base);
+  }
+
+  .botao_add_atv {
+    width: 45px;
+    height: 45px;
+    font-size: var(--font-size-base);
+  }
+
+  .artigos-container {
+    max-height: 300px;
+  }
+}

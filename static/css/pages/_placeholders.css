@@ -1,0 +1,528 @@
+/* ====================================
+   FOCUSUP - PAGE PLACEHOLDERS
+   Placeholder styles for future pages
+   ==================================== */
+
+/* These styles provide basic structure for pages that will be
+   refactored in FASE 5. They inherit from the design system. */
+
+/* ====================================
+   ATIVIDADES PAGE
+   ==================================== */
+
+.atividades-page {
+  padding: var(--spacing-8);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.atividades-header {
+  margin-bottom: var(--spacing-8);
+}
+
+.atividades-filters {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  flex-wrap: wrap;
+}
+
+.atividades-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--spacing-6);
+}
+
+/* ====================================
+   METAS PAGE
+   ==================================== */
+
+.metas-page {
+  padding: var(--spacing-8);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.metas-header {
+  margin-bottom: var(--spacing-8);
+}
+
+.metas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-6);
+}
+
+.meta-card {
+  background: var(--color-bg-secondary);
+  border-radius: var(--card-border-radius);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-base);
+}
+
+.meta-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.meta-progress {
+  margin: var(--spacing-4) 0;
+}
+
+.meta-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.meta-progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.3s ease;
+  border-radius: var(--radius-full);
+}
+
+/* ====================================
+   CALENDÁRIO PAGE
+   ==================================== */
+
+.calendario-page {
+  padding: var(--spacing-8);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.calendario-header {
+  margin-bottom: var(--spacing-8);
+}
+
+.calendario-container {
+  background: var(--color-bg-secondary);
+  border-radius: var(--card-border-radius);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-md);
+}
+
+.calendario-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-6);
+}
+
+.calendario-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.calendario-day:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.calendario-day.today {
+  background: var(--color-primary);
+  color: white;
+  font-weight: var(--font-weight-bold);
+}
+
+.calendario-day.event {
+  border: 2px solid var(--color-success);
+}
+
+/* ====================================
+   PERFIL PAGE
+   ==================================== */
+
+.perfil-page {
+  padding: var(--spacing-8);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.perfil-header {
+  display: flex;
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-8);
+  align-items: center;
+}
+
+.perfil-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: var(--font-size-4xl);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.perfil-info h1 {
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.perfil-info p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.perfil-section {
+  background: var(--color-bg-secondary);
+  border-radius: var(--card-border-radius);
+  padding: var(--spacing-6);
+  margin-bottom: var(--spacing-6);
+  box-shadow: var(--shadow-md);
+}
+
+.perfil-section h2 {
+  margin-top: 0;
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-border-light);
+  padding-bottom: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+/* ====================================
+   CONFIGURAÇÕES PAGE
+   ==================================== */
+
+.configuracoes-page {
+  padding: var(--spacing-8);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.configuracoes-container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: var(--spacing-8);
+}
+
+.configuracoes-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.configuracao-tab {
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--transition-base);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.configuracao-tab:hover,
+.configuracao-tab.active {
+  background: var(--color-bg-secondary);
+  color: var(--color-primary);
+}
+
+.configuracoes-content {
+  background: var(--color-bg-secondary);
+  border-radius: var(--card-border-radius);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-md);
+}
+
+/* ====================================
+   LISTAR ATIVIDADES PAGE
+   ==================================== */
+
+.container_listar_atividades {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-8);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.listar_atividades_header {
+  margin-bottom: var(--spacing-8);
+}
+
+.listar_atividades_header h1 {
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+.atividade-filters {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  flex-wrap: wrap;
+}
+
+.container_atividades {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-6));
+}
+
+/* ====================================
+   LISTAR METAS PAGE
+   ==================================== */
+
+.container_listar_metas {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-8);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.listar_metas_header {
+  margin-bottom: var(--spacing-8);
+}
+
+.container_metas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-6);
+}
+
+/* ====================================
+   NOTIFICAÇÕES PAGE
+   ==================================== */
+
+.notificacoes-page {
+  padding: var(--spacing-8);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.notificacoes-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.notificacao-item {
+  background: var(--color-bg-secondary);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition-base);
+}
+
+.notificacao-item:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.notificacao-item.unread {
+  background: rgba(26, 115, 232, 0.05);
+}
+
+.notificacao-content {
+  flex: 1;
+}
+
+.notificacao-title {
+  font-weight: var(--font-weight-semi-bold);
+  margin-bottom: var(--spacing-1);
+}
+
+.notificacao-message {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.notificacao-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--spacing-2);
+}
+
+/* ====================================
+   POMODORO PAGE
+   ==================================== */
+
+.pomodoro-page {
+  padding: var(--spacing-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.pomodoro-container {
+  max-width: 500px;
+  text-align: center;
+}
+
+.pomodoro-timer {
+  font-size: 6rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: var(--spacing-8) 0;
+  font-family: var(--font-mono);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.pomodoro-controls {
+  display: flex;
+  gap: var(--spacing-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: var(--spacing-6) 0;
+}
+
+/* ====================================
+   PÁGINAS AUXILIARES
+   ==================================== */
+
+.pagina-auxiliar {
+  padding: var(--spacing-8);
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pagina-auxiliar h1 {
+  margin-bottom: var(--spacing-6);
+  color: var(--color-primary);
+}
+
+.pagina-auxiliar h2 {
+  margin-top: var(--spacing-8);
+  margin-bottom: var(--spacing-4);
+  color: var(--color-text-primary);
+}
+
+.pagina-auxiliar p {
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-4);
+}
+
+.pagina-auxiliar ul,
+.pagina-auxiliar ol {
+  margin-bottom: var(--spacing-4);
+  padding-left: var(--spacing-8);
+}
+
+.pagina-auxiliar li {
+  margin-bottom: var(--spacing-2);
+  color: var(--color-text-secondary);
+}
+
+/* ====================================
+   RESPONSIVE PLACEHOLDERS
+   ==================================== */
+
+@media (max-width: 768px) {
+  .atividades-page,
+  .metas-page,
+  .calendario-page,
+  .perfil-page,
+  .configuracoes-page,
+  .container_listar_atividades,
+  .container_listar_metas,
+  .notificacoes-page,
+  .pomodoro-page,
+  .pagina-auxiliar {
+    padding: var(--spacing-4);
+  }
+
+  .configuracoes-container {
+    grid-template-columns: 1fr;
+  }
+
+  .configuracoes-sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    margin-bottom: var(--spacing-4);
+  }
+
+  .perfil-header {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-4);
+  }
+
+  .atividades-list,
+  .metas-grid,
+  .container_atividades,
+  .container_metas {
+    grid-template-columns: 1fr;
+  }
+
+  .calendario-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--spacing-1);
+  }
+
+  .pomodoro-timer {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .atividades-page,
+  .metas-page,
+  .calendario-page,
+  .perfil-page,
+  .configuracoes-page,
+  .container_listar_atividades,
+  .container_listar_metas,
+  .notificacoes-page,
+  .pomodoro-page,
+  .pagina-auxiliar {
+    padding: var(--spacing-3);
+  }
+
+  .atividades-filters,
+  .atividade-filters,
+  .pomodoro-controls {
+    gap: var(--spacing-2);
+    flex-direction: column;
+  }
+
+  .pomodoro-timer {
+    font-size: 3rem;
+  }
+
+  .pagina-auxiliar h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .pagina-auxiliar h2 {
+    font-size: var(--font-size-xl);
+    margin-top: var(--spacing-4);
+  }
+}

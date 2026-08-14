@@ -1,0 +1,388 @@
+/* ====================================
+   FOCUSUP - FORMS
+   Form inputs, labels, validation
+   ==================================== */
+
+/* Form Container */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-6);
+}
+
+/* Label Styles */
+label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  display: block;
+}
+
+label.required::after {
+  content: ' *';
+  color: var(--color-danger);
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+  width: 100%;
+  height: var(--input-height);
+  padding: var(--input-padding-y) var(--input-padding-x);
+  border: var(--input-border-width) solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+  transition: var(--transition-base);
+  box-sizing: border-box;
+}
+
+textarea {
+  height: auto;
+  min-height: 120px;
+  resize: vertical;
+  font-family: var(--font-primary);
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231a73e8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-3) center;
+  padding-right: var(--spacing-8);
+}
+
+/* Input Focus State */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+  background: var(--color-bg-primary);
+}
+
+/* Input Placeholder */
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+/* Dark Mode Input Styles */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="number"],
+body.dark-mode input[type="date"],
+body.dark-mode input[type="time"],
+body.dark-mode input[type="search"],
+body.dark-mode input[type="tel"],
+body.dark-mode input[type="url"],
+body.dark-mode textarea,
+body.dark-mode select {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-dark-primary);
+  border-color: var(--color-border-dark);
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: var(--color-text-dark-tertiary);
+}
+
+/* Input States */
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+body.dark-mode input:disabled,
+body.dark-mode textarea:disabled,
+body.dark-mode select:disabled {
+  background: var(--color-bg-surface);
+  color: var(--color-text-dark-tertiary);
+}
+
+/* Error State */
+input.is-invalid,
+textarea.is-invalid,
+select.is-invalid {
+  border-color: var(--color-danger);
+  background: rgba(244, 67, 54, 0.02);
+}
+
+input.is-invalid:focus,
+textarea.is-invalid:focus,
+select.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+/* Success State */
+input.is-valid,
+textarea.is-valid,
+select.is-valid {
+  border-color: var(--color-success);
+  background: rgba(46, 125, 50, 0.02);
+}
+
+input.is-valid:focus,
+textarea.is-valid:focus,
+select.is-valid:focus {
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+/* Helper Text / Error Messages */
+.form-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--spacing-1);
+  display: block;
+}
+
+.form-error {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
+
+.form-success {
+  color: var(--color-success);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Checkbox & Radio Styles */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: var(--spacing-2);
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+.checkbox-wrapper,
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.checkbox-label,
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label input[type="checkbox"],
+.radio-label input[type="radio"] {
+  margin: 0;
+}
+
+/* Input Group (with icon or addon) */
+.input-group {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-primary);
+  border: var(--input-border-width) solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition-base);
+}
+
+.input-group:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.input-group input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: var(--input-padding-y) var(--input-padding-x);
+}
+
+.input-group input:focus {
+  box-shadow: none;
+  border: none;
+}
+
+.input-group-addon {
+  padding: 0 var(--input-padding-x);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-lg);
+  background: var(--color-bg-secondary);
+  border-left: 1px solid var(--color-border-light);
+}
+
+.input-group-addon:first-child {
+  border-left: none;
+  border-right: 1px solid var(--color-border-light);
+  background: transparent;
+}
+
+body.dark-mode .input-group {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-border-dark);
+}
+
+body.dark-mode .input-group input {
+  color: var(--color-text-dark-primary);
+}
+
+body.dark-mode .input-group-addon {
+  background: var(--color-bg-surface);
+  border-color: var(--color-border-dark);
+}
+
+/* Form Controls Container */
+.form-controls {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-6);
+}
+
+.form-controls-right {
+  margin-left: auto;
+}
+
+/* Select Multiple */
+select[multiple] {
+  height: auto;
+  padding: var(--spacing-2);
+}
+
+select[multiple] option {
+  padding: var(--spacing-2);
+}
+
+/* Floating Label */
+.floating-label-group {
+  position: relative;
+  margin-bottom: var(--spacing-6);
+}
+
+.floating-label-group input,
+.floating-label-group textarea {
+  padding-top: var(--spacing-5);
+  padding-bottom: var(--spacing-2);
+}
+
+.floating-label-group label {
+  position: absolute;
+  top: var(--spacing-3);
+  left: var(--input-padding-x);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  transition: var(--transition-fast);
+  transform-origin: left top;
+}
+
+.floating-label-group input:focus ~ label,
+.floating-label-group input:not(:placeholder-shown) ~ label,
+.floating-label-group textarea:focus ~ label,
+.floating-label-group textarea:not(:placeholder-shown) ~ label {
+  top: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+  transform: scale(0.85);
+}
+
+/* Search Input */
+.input-search {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-full);
+  padding: 0 var(--spacing-4);
+  border: 1px solid var(--color-border-light);
+}
+
+.input-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  height: var(--input-height);
+}
+
+.input-search i {
+  color: var(--color-text-tertiary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-controls {
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .form-controls button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  input[type="time"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  textarea,
+  select {
+    font-size: 1rem; /* Prevent zoom on iOS */
+  }
+}

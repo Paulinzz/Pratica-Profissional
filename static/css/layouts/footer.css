@@ -1,0 +1,412 @@
+/* ====================================
+   FOCUSUP - FOOTER
+   Bottom navigation and information
+   ==================================== */
+
+footer {
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border-light);
+  padding: var(--spacing-12) var(--spacing-6);
+  margin-top: var(--spacing-20);
+  transition: var(--transition-base);
+}
+
+body.dark-mode footer {
+  background: var(--color-bg-secondary);
+  border-top-color: var(--color-border-dark);
+}
+
+/* Footer Container */
+.footer-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+/* Footer Header */
+.footer-header {
+  text-align: center;
+  margin-bottom: var(--spacing-12);
+  padding-bottom: var(--spacing-8);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+body.dark-mode .footer-header {
+  border-bottom-color: var(--color-border-dark);
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  text-decoration: none;
+}
+
+.footer-logo .checkmark-container {
+  width: 35px;
+  height: 35px;
+}
+
+.footer-logo .checkmark {
+  width: 20px;
+  height: 8px;
+  border-width: 4px;
+}
+
+.logo-text {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+body.dark-mode .logo-text {
+  color: var(--color-text-dark-primary);
+}
+
+/* Footer Content Grid */
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-12);
+}
+
+/* Footer Section */
+.footer-section {
+  transition: var(--transition-base);
+}
+
+.footer-section h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: var(--spacing-3) 0;
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-primary);
+  transition: var(--transition-base);
+  user-select: none;
+}
+
+.footer-section h3:hover {
+  color: var(--color-primary);
+}
+
+body.dark-mode .footer-section h3 {
+  color: var(--color-text-dark-primary);
+}
+
+body.dark-mode .footer-section h3:hover {
+  color: var(--color-primary-light);
+}
+
+/* Section Icon */
+.section-icon {
+  margin-right: var(--spacing-2);
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+}
+
+body.dark-mode .section-icon {
+  color: var(--color-primary-light);
+}
+
+/* Arrow Icon for Mobile */
+.arrow-icon {
+  font-size: var(--font-size-sm);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.footer-section.active .arrow-icon {
+  transform: rotate(180deg);
+}
+
+/* Footer Section Content */
+.footer-section-content {
+  padding: var(--spacing-4) 0;
+  max-height: 400px;
+  overflow: hidden;
+  transition: max-height var(--duration-base) var(--ease-out);
+}
+
+.footer-section.active .footer-section-content {
+  max-height: 1000px;
+}
+
+.footer-section-content p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-4);
+  line-height: var(--line-height-relaxed);
+}
+
+body.dark-mode .footer-section-content p {
+  color: var(--color-text-dark-secondary);
+}
+
+.footer-section-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section-content li {
+  margin-bottom: var(--spacing-3);
+}
+
+.footer-section-content a {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition: var(--transition-fast);
+}
+
+.footer-section-content a:hover {
+  color: var(--color-primary);
+  padding-left: var(--spacing-2);
+}
+
+.footer-section-content a i {
+  width: var(--spacing-4);
+  color: var(--color-primary);
+}
+
+body.dark-mode .footer-section-content a {
+  color: var(--color-text-dark-secondary);
+}
+
+body.dark-mode .footer-section-content a:hover {
+  color: var(--color-primary-light);
+}
+
+body.dark-mode .footer-section-content a i {
+  color: var(--color-primary-light);
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-4);
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-bg-tertiary);
+  color: var(--color-primary);
+  transition: var(--transition-base);
+  font-size: var(--font-size-lg);
+}
+
+.social-link:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: translateY(-4px);
+}
+
+body.dark-mode .social-link {
+  background: var(--color-bg-surface);
+  color: var(--color-primary-light);
+}
+
+body.dark-mode .social-link:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* Footer Divider */
+.footer-divider {
+  height: 1px;
+  background: var(--color-border-light);
+  margin: var(--spacing-8) 0;
+}
+
+body.dark-mode .footer-divider {
+  background: var(--color-border-dark);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  padding-top: var(--spacing-8);
+  border-top: 1px solid var(--color-border-light);
+}
+
+body.dark-mode .footer-bottom {
+  border-top-color: var(--color-border-dark);
+}
+
+.footer-bottom p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: var(--spacing-2) 0;
+}
+
+body.dark-mode .footer-bottom p {
+  color: var(--color-text-dark-secondary);
+}
+
+.footer-bottom a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+  color: var(--color-primary-dark);
+}
+
+body.dark-mode .footer-bottom a {
+  color: var(--color-primary-light);
+}
+
+body.dark-mode .footer-bottom a:hover {
+  color: var(--color-primary);
+}
+
+/* ====================================
+   FOOTER RESPONSIVE
+   ==================================== */
+
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  footer {
+    padding: var(--spacing-8) var(--spacing-6);
+    margin-top: var(--spacing-12);
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+  }
+
+  .footer-section h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .arrow-icon {
+    display: inline-block;
+  }
+
+  .footer-section-content {
+    max-height: 0;
+    padding: 0;
+  }
+
+  .footer-section.active .footer-section-content {
+    max-height: 500px;
+    padding: var(--spacing-4) 0;
+  }
+
+  .footer-header {
+    margin-bottom: var(--spacing-8);
+    padding-bottom: var(--spacing-6);
+  }
+
+  footer {
+    padding: var(--spacing-6);
+    margin-top: var(--spacing-8);
+  }
+
+  .footer-logo .checkmark-container {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logo-text {
+    font-size: var(--font-size-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-content {
+    gap: var(--spacing-4);
+  }
+
+  .footer-section h3 {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-2) 0;
+  }
+
+  .section-icon {
+    font-size: var(--font-size-base);
+    margin-right: var(--spacing-1);
+  }
+
+  .footer-section-content {
+    padding: var(--spacing-2) 0;
+  }
+
+  .footer-section-content a {
+    font-size: var(--font-size-xs);
+    gap: var(--spacing-1);
+  }
+
+  .social-link {
+    width: 35px;
+    height: 35px;
+    font-size: var(--font-size-base);
+  }
+
+  .social-links {
+    gap: var(--spacing-2);
+  }
+
+  footer {
+    padding: var(--spacing-4);
+    margin-top: var(--spacing-6);
+  }
+
+  .footer-bottom p {
+    font-size: var(--font-size-xs);
+  }
+
+  .footer-divider {
+    margin: var(--spacing-4) 0;
+  }
+
+  .footer-header {
+    margin-bottom: var(--spacing-6);
+    padding-bottom: var(--spacing-4);
+  }
+
+  .logo-text {
+    font-size: var(--font-size-md);
+  }
+}
+
+/* ====================================
+   FOOTER ACCORDION - Desktop
+   ==================================== */
+
+@media (min-width: 769px) {
+  .footer-section h3 {
+    cursor: default;
+  }
+
+  .arrow-icon {
+    display: none;
+  }
+
+  .footer-section-content {
+    max-height: none;
+    overflow: visible;
+  }
+}

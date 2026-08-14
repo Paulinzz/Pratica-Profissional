@@ -1,0 +1,324 @@
+/* ====================================
+   FOCUSUP - DESIGN SYSTEM VARIABLES
+   Central point for all design tokens
+   ==================================== */
+
+:root {
+  /* =====================================
+     COLOR PALETTE - PRIMARY
+     ===================================== */
+
+  /* Primary Brand Color - Blue (Google-like) */
+  --color-primary: #1a73e8;
+  --color-primary-light: #4285f4;
+  --color-primary-lighter: #6ba4ff;
+  --color-primary-dark: #1557b0;
+  --color-primary-darkest: #0d47a1;
+
+  /* Success / Positive Actions - Green */
+  --color-success: #2e7d32;
+  --color-success-light: #43a047;
+  --color-success-lighter: #4caf50;
+  --color-success-dark: #1b5e20;
+
+  /* Danger / Destructive Actions - Red */
+  --color-danger: #d32f2f;
+  --color-danger-light: #f44336;
+  --color-danger-lighter: #ef5350;
+  --color-danger-dark: #c62828;
+
+  /* Warning - Orange/Amber */
+  --color-warning: #f57c00;
+  --color-warning-light: #ff9800;
+  --color-warning-lighter: #ffb74d;
+  --color-warning-dark: #e65100;
+
+  /* Info - Cyan */
+  --color-info: #0097a7;
+  --color-info-light: #00bcd4;
+  --color-info-lighter: #4dd0e1;
+  --color-info-dark: #00838f;
+
+  /* =====================================
+     COLOR PALETTE - NEUTRAL
+     ===================================== */
+
+  /* Backgrounds - Light Mode */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8f9fa;
+  --color-bg-tertiary: #eff1f3;
+  --color-bg-surface: #f7f9fc;
+
+  /* Backgrounds - Dark Mode */
+  --color-bg-dark-primary: #121212;
+  --color-bg-dark-secondary: #1e1e1e;
+  --color-bg-dark-tertiary: #2d2d2d;
+  --color-bg-dark-surface: #333333;
+
+  /* Text Colors - Light Mode */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #555555;
+  --color-text-tertiary: #999999;
+  --color-text-muted: #cccccc;
+
+  /* Text Colors - Dark Mode */
+  --color-text-dark-primary: #e0e0e0;
+  --color-text-dark-secondary: #b0b0b0;
+  --color-text-dark-tertiary: #808080;
+  --color-text-dark-muted: #505050;
+
+  /* Borders - Light Mode */
+  --color-border-light: #e0e0e0;
+  --color-border-lighter: #f0f0f0;
+  --color-border-lightest: #f8f8f8;
+
+  /* Borders - Dark Mode */
+  --color-border-dark: #444444;
+  --color-border-dark-light: #333333;
+  --color-border-dark-lighter: #252525;
+
+  /* =====================================
+     TYPOGRAPHY
+     ===================================== */
+
+  /* Font Families */
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Kodchasan', sans-serif;
+  --font-mono: 'Courier New', monospace;
+
+  /* Font Sizes - Modular Scale (1.125 ratio) */
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-md: 1.125rem;     /* 18px */
+  --font-size-lg: 1.25rem;      /* 20px */
+  --font-size-xl: 1.5rem;       /* 24px */
+  --font-size-2xl: 1.75rem;     /* 28px */
+  --font-size-3xl: 2rem;        /* 32px */
+  --font-size-4xl: 2.25rem;     /* 36px */
+  --font-size-5xl: 2.5rem;      /* 40px */
+
+  /* Font Weights */
+  --font-weight-thin: 100;
+  --font-weight-extra-light: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semi-bold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extra-bold: 800;
+  --font-weight-black: 900;
+
+  /* Line Heights */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  --line-height-loose: 2;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.05em;
+  --letter-spacing-wider: 0.1em;
+
+  /* =====================================
+     SPACING SYSTEM
+     Modular scale (0.5rem ratio)
+     ===================================== */
+
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;   /* 4px */
+  --spacing-2: 0.5rem;    /* 8px */
+  --spacing-3: 0.75rem;   /* 12px */
+  --spacing-4: 1rem;      /* 16px */
+  --spacing-5: 1.25rem;   /* 20px */
+  --spacing-6: 1.5rem;    /* 24px */
+  --spacing-8: 2rem;      /* 32px */
+  --spacing-10: 2.5rem;   /* 40px */
+  --spacing-12: 3rem;     /* 48px */
+  --spacing-16: 4rem;     /* 64px */
+  --spacing-20: 5rem;     /* 80px */
+  --spacing-24: 6rem;     /* 96px */
+  --spacing-32: 8rem;     /* 128px */
+
+  /* =====================================
+     BORDER RADIUS
+     ===================================== */
+
+  --radius-none: 0;
+  --radius-sm: 0.25rem;    /* 4px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;   /* Fully rounded */
+
+  /* =====================================
+     SHADOWS
+     ===================================== */
+
+  /* Soft shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Card shadows (with purple tint to match current design) */
+  --shadow-card: 5px 5px 5px rgba(198, 154, 198, 0.5);
+  --shadow-card-hover: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+  /* =====================================
+     TRANSITIONS & ANIMATIONS
+     ===================================== */
+
+  /* Durations */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-slowest: 800ms;
+
+  /* Timing Functions */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* =====================================
+     Z-INDEX SCALE
+     ===================================== */
+
+  --z-hide: -1;
+  --z-auto: auto;
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-notification: 80;
+
+  /* =====================================
+     BREAKPOINTS
+     Mobile-first approach
+     ===================================== */
+
+  --breakpoint-sm: 480px;    /* Small phones */
+  --breakpoint-md: 768px;    /* Tablets */
+  --breakpoint-lg: 1024px;   /* Desktops */
+  --breakpoint-xl: 1280px;   /* Large desktops */
+  --breakpoint-2xl: 1536px;  /* Extra large */
+
+  /* =====================================
+     CONTAINERS
+     ===================================== */
+
+  --container-max-width: 1200px;
+  --container-padding-x: var(--spacing-6);
+  --container-padding-y: var(--spacing-8);
+
+  /* =====================================
+     TRANSITIONS (GROUPED)
+     ===================================== */
+
+  --transition-fast: all var(--duration-fast) var(--ease-out);
+  --transition-base: all var(--duration-base) var(--ease-out);
+  --transition-slow: all var(--duration-slow) var(--ease-out);
+
+  /* =====================================
+     CUSTOM PROPERTIES FOR COMPONENTS
+     ===================================== */
+
+  /* Button Sizing */
+  --button-height-sm: 2.25rem;    /* 36px */
+  --button-height-md: 2.75rem;    /* 44px */
+  --button-height-lg: 3.25rem;    /* 52px */
+  --button-padding-x-sm: var(--spacing-4);
+  --button-padding-x-md: var(--spacing-6);
+  --button-padding-x-lg: var(--spacing-8);
+
+  /* Input Sizing */
+  --input-height: 2.75rem;        /* 44px */
+  --input-padding-x: var(--spacing-4);
+  --input-padding-y: var(--spacing-2);
+  --input-border-width: 2px;
+
+  /* Card Sizing */
+  --card-padding: var(--spacing-6);
+  --card-border-radius: var(--radius-2xl);
+
+  /* Badge Sizing */
+  --badge-height: 1.5rem;         /* 24px */
+  --badge-padding-x: var(--spacing-2);
+  --badge-padding-y: var(--spacing-1);
+  --badge-font-size: var(--font-size-xs);
+
+  /* Notification Sizing */
+  --notification-width: 350px;
+  --notification-border-radius: var(--radius-lg);
+
+  /* Header/Footer Heights */
+  --header-height: 70px;
+  --footer-height: auto;
+  --mobile-menu-width: 280px;
+}
+
+/* ====================================
+   DARK MODE OVERRIDES
+   ==================================== */
+
+body.dark-mode {
+  /* Text Colors */
+  --color-text-primary: var(--color-text-dark-primary);
+  --color-text-secondary: var(--color-text-dark-secondary);
+  --color-text-tertiary: var(--color-text-dark-tertiary);
+  --color-text-muted: var(--color-text-dark-muted);
+
+  /* Background Colors */
+  --color-bg-primary: var(--color-bg-dark-primary);
+  --color-bg-secondary: var(--color-bg-dark-secondary);
+  --color-bg-tertiary: var(--color-bg-dark-tertiary);
+  --color-bg-surface: var(--color-bg-dark-surface);
+
+  /* Border Colors */
+  --color-border-light: var(--color-border-dark);
+  --color-border-lighter: var(--color-border-dark-light);
+  --color-border-lightest: var(--color-border-dark-lighter);
+}
+
+/* ====================================
+   ACCESSIBILITY - REDUCED MOTION
+   ==================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-slowest: 0ms;
+  }
+}
+
+/* ====================================
+   UTILITY CLASSES
+   Quick access to common values
+   ==================================== */
+
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+
+.bg-primary { background-color: var(--color-bg-primary); }
+.bg-secondary { background-color: var(--color-bg-secondary); }
+.bg-surface { background-color: var(--color-bg-surface); }
+
+.border { border: 1px solid var(--color-border-light); }
+.border-light { border: 1px solid var(--color-border-lighter); }
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }

@@ -1,0 +1,105 @@
+{# ====================================
+   FOCUSUP - FOOTER COMPONENT
+   Bottom navigation and information
+   ==================================== #}
+
+<footer>
+    <div class="footer-container">
+        {# Footer Header with Logo #}
+        <div class="footer-header">
+            <div class="footer-logo">
+                <div class="checkmark-container">
+                    <div class="checkmark"></div>
+                </div>
+                <span class="logo-text">FocusUp</span>
+            </div>
+        </div>
+
+        {# Footer Content Grid #}
+        <div class="footer-content">
+            {# Section 1: About #}
+            <div class="footer-section">
+                <h3 onclick="toggleFooterSection(this)">
+                    <span><i class="fas fa-info-circle section-icon"></i> Sobre o FocusUp</span>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </h3>
+                <div class="footer-section-content">
+                    <p>OpenSource, colaborativa e feita pra você. Gerencie suas atividades, alcance seus objetivos, viva o foco de verdade.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Paulinzz/Pratica-Profissional" class="social-link" aria-label="Github">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {# Section 2: Navigation #}
+            <div class="footer-section">
+                <h3 onclick="toggleFooterSection(this)">
+                    <span><i class="fas fa-compass section-icon"></i> Navegação</span>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </h3>
+                <div class="footer-section-content">
+                    <ul>
+                        <li><a href="{{url_for('dashboard')}}"><i class="fas fa-home"></i> Início</a></li>
+                        <li><a href="{{url_for('listar_atividades')}}"><i class="fas fa-tasks"></i> Atividades</a></li>
+                        <li><a href="{{url_for('dashboard')}}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                        <li><a href="{{url_for('listar_notificacoes')}}"><i class="fas fa-bell"></i> Notificações</a></li>
+                        <li><a href="{{url_for('ajuda')}}"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            {# Section 3: Resources #}
+            <div class="footer-section">
+                <h3 onclick="toggleFooterSection(this)">
+                    <span><i class="fas fa-tools section-icon"></i> Recursos</span>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </h3>
+                <div class="footer-section-content">
+                    <ul>
+                        <li><a href="{{url_for('adicionar_atividade')}}"><i class="fas fa-plus-circle"></i> Adicionar Atividade</a></li>
+                        <li><a href="{{url_for('listar_atividades')}}"><i class="fas fa-calendar"></i> Minhas Atividades</a></li>
+                        <li><a href="{{url_for('perfil')}}"><i class="fas fa-user-circle"></i> Perfil</a></li>
+                        <li><a href="{{url_for('configuracoes')}}"><i class="fas fa-cog"></i> Configurações</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            {# Section 4: Support #}
+            <div class="footer-section">
+                <h3 onclick="toggleFooterSection(this)">
+                    <span><i class="fas fa-headset section-icon"></i> Suporte</span>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </h3>
+                <div class="footer-section-content">
+                    <ul>
+                        <li><a href="#"><i class="fas fa-envelope"></i> Contato</a></li>
+                        <li><a href="{{url_for('sobre_nos')}}"><i class="fas fa-info-circle"></i> Sobre Nós</a></li>
+                        <li><a href="{{url_for('politica_privacidade')}}"><i class="fas fa-shield-alt"></i> Privacidade</a></li>
+                        <li><a href="{{url_for('termos_servico')}}"><i class="fas fa-file-contract"></i> Termos de Uso</a></li>
+                        <li><a href="#"><i class="fas fa-bug"></i> Reportar Bug</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {# Footer Divider #}
+        <div class="footer-divider"></div>
+
+        {# Footer Bottom #}
+        <div class="footer-bottom">
+            <p>&copy; 2025 FocusUp. Todos os direitos reservados.</p>
+            <p><a href="{{url_for('politica_privacidade')}}">Política de Privacidade</a> | <a href="{{url_for('termos_servico')}}">Termos de Serviço</a></p>
+        </div>
+    </div>
+</footer>

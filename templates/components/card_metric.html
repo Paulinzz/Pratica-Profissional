@@ -1,0 +1,54 @@
+{#
+   components/card_metric.html
+
+   Componente especializado para cards de métrica no dashboard
+
+   Uso:
+   {% include 'components/card_metric.html' with context %}
+
+   Parâmetros:
+   - label: texto do label (obrigatório)
+   - value: valor principal a exibir (obrigatório)
+   - unit: unidade (ex: "h", "min", "%")
+   - icon: ícone FontAwesome
+   - icon_color: cor do ícone (usar classe CSS)
+   - subtext: texto adicional pequeno
+   - trend: "up"|"down"|"stable" (mostra tendência)
+   - trend_percent: porcentagem de mudança
+   - class: classes adicionais
+#}
+
+<div class="card card-metric {{ class|default('') }}">
+  <div class="metric-content">
+    <div class="metric-label">
+      {% if icon %}
+        <i class="fa-solid fa-{{ icon }} {{ icon_color|default('') }}"></i>
+      {% endif %}
+      {{ label }}
+    </div>
+
+    <div class="metric-value">
+      {{ value }}
+      {% if unit %}
+        <span class="metric-unit">{{ unit }}</span>
+      {% endif %}
+    </div>
+
+    {% if subtext %}
+      <div class="metric-subtext">{{ subtext }}</div>
+    {% endif %}
+
+    {% if trend %}
+      <div class="metric-trend trend-{{ trend }}">
+        {% if trend == 'up' %}
+          <i class="fa-solid fa-arrow-up"></i>
+        {% elif trend == 'down' %}
+          <i class="fa-solid fa-arrow-down"></i>
+        {% else %}
+          <i class="fa-solid fa-minus"></i>
+        {% endif %}
+        {% if trend_percent %}{{ trend_percent }}%{% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>

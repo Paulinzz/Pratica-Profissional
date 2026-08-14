@@ -1,0 +1,43 @@
+{#
+   components/card.html
+
+   Componente de card reutilizável com header, body, footer
+
+   Uso:
+   {% include 'components/card.html' %}
+
+   Parâmetros:
+   - title: título do card (opcional)
+   - class: classes CSS adicionais
+   - no_padding: true|false (remove padding)
+   - animated: true|false (adiciona animação, default: true)
+
+   Slots (usar dentro do include):
+   - card_header: conteúdo do header
+   - card_body: conteúdo principal
+   - card_footer: conteúdo do footer
+#}
+
+<div class="card {% if animated %}animated{% endif %} {{ class|default('') }}"
+     {% if no_padding %}style="padding: 0;"{% endif %}>
+
+  {% if title or card_header %}
+    <div class="card-header">
+      {% if title %}<h2>{{ title }}</h2>{% endif %}
+      {% if card_header %}{{ card_header }}{% endif %}
+    </div>
+  {% endif %}
+
+  {% if card_body %}
+    <div class="card-content">
+      {{ card_body }}
+    </div>
+  {% endif %}
+
+  {% if card_footer %}
+    <div class="card-footer">
+      {{ card_footer }}
+    </div>
+  {% endif %}
+
+</div>
