@@ -8,11 +8,10 @@
     <!-- Stats Section (Full Width) -->
     <div class="dashboard-stats">
         <!-- Horas Estudadas -->
-        {% set total_minutos = tempo_por_materia.values()|sum(0) %}
-        {% set horas = (total_minutos // 60)|int %}
-        {% set minutos = (total_minutos % 60)|int %}
+        {% set total_minutos = tempo_por_materia.values()|list|sum %}
+        {% set horas = (total_minutos // 60) if total_minutos > 0 else 0 %}
         {% set label = "Horas Estudadas" %}
-        {% set value = horas if horas > 0 else 0 %}
+        {% set value = (horas|int)|string %}
         {% set unit = "h" %}
         {% set icon = "hourglass-end" %}
         {% set icon_color = "text-primary" %}
@@ -20,15 +19,15 @@
 
         <!-- Metas Ativas -->
         {% set label = "Metas Ativas" %}
-        {% set value = metas_ativas %}
+        {% set value = (metas_ativas|default(0)|int)|string %}
         {% set unit = "" %}
         {% set icon = "target" %}
         {% set icon_color = "text-success" %}
         {% include 'components/card_metric.html' with context %}
 
         <!-- Atividades Registradas -->
-        {% set label = "Atividades" %}
-        {% set value = sorted_materias|length %}
+        {% set label = "Atividades Registradas" %}
+        {% set value = (sorted_materias|default([])|length)|string %}
         {% set unit = "" %}
         {% set icon = "list-check" %}
         {% set icon_color = "text-info" %}
