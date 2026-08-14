@@ -1,0 +1,91 @@
+{#
+   components/form_select.html
+
+   Componente de select customizado (dropdown)
+
+   Uso:
+   {% set name = "materia_id" %}
+   {% set label = "Matéria" %}
+   {% set options = materias %}
+   {% set option_value = "id" %}
+   {% set option_label = "nome" %}
+   {% include 'components/form_select.html' with context %}
+
+   Parâmetros:
+   - name: name do select (obrigatório)
+   - label: texto do label (obrigatório)
+   - options: lista de opções ou dicionário (obrigatório)
+   - option_value: chave para o value de cada opção (default: "id")
+   - option_label: chave para o label de cada opção (default: "nome")
+   - value: valor selecionado
+   - placeholder: texto do placeholder (opção vazia inicial)
+   - required: true|false (default: false)
+   - disabled: true|false (default: false)
+   - multiple: true|false (default: false)
+   - helper_text: texto de ajuda
+   - error_text: mensagem de erro
+   - success_text: mensagem de sucesso
+   - class: classes CSS adicionais
+#}
+
+<div class="form-group">
+  <label for="{{ name }}">
+    {{ label }}
+    {% if required %}<span class="required">*</span>{% endif %}
+  </label>
+
+  <select id="{{ name }}"
+          name="{{ name }}"
+          class="{% if error_text %}is-invalid{% endif %}
+                 {% if success_text %}is-valid{% endif %}
+                 {{ class|default('') }}"
+          {% if required %}required aria-required="true"{% endif %}
+          {% if disabled %}disabled{% endif %}
+          {% if multiple %}multiple{% endif %}
+          aria-label="{{ label }}"
+          {% if helper_text %}aria-describedby="{{ name }}-help"{% endif %}>
+
+    {% if placeholder %}
+      <option value="">{{ placeholder }}</option>
+    {% endif %}
+
+    {% if options %}
+      {% for option in options %}
+        {% if option is mapping %}
+          {# Option é um dicionário/objeto #}
+          <option value="{{ option[option_value|default('id')] }}"
+                  {% if option[option_value|default('id')] == value %}selected{% endif %}>
+            {{ option[option_label|default('nome')] }}
+          </option>
+        {% else %}
+          {# Option é uma string #}
+          <option value="{{ option }}"
+                  {% if option == value %}selected{% endif %}>
+            {{ option }}
+          </option>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </select>
+
+  {% if error_text %}
+    <div class="form-error" role="alert">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span>{{ error_text }}</span>
+    </div>
+  {% elif success_text %}
+    <div class="form-success" role="status">
+      <i class="fa-solid fa-circle-check"></i>
+      <span>{{ success_text }}</span>
+    </div>
+  {% elif helper_text %}
+    <small class="form-help" id="{{ name }}-help">
+      <div class="form-help-icon">
+        <i class="fa-solid fa-link"></i>
+      </div>
+      <div class="form-help-content">
+        <p>{{ helper_text }}</p>
+      </div>
+    </small>
+  {% endif %}
+</div>

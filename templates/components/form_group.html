@@ -1,59 +1,98 @@
 {#
    components/form_group.html
 
-   Componente de form group (label + input + helper text)
+   Componente de form group (label + input + helper text + validação)
 
    Uso:
+   {% set name = "titulo" %}
+   {% set label = "Título" %}
+   {% set type = "text" %}
    {% include 'components/form_group.html' with context %}
 
    Parâmetros:
    - name: name do input (obrigatório)
    - label: texto do label (obrigatório)
-   - type: text|email|password|number|date|time|tel|url|search (default: text)
+   - type: text|email|password|number|date|time|tel|url|search|textarea (default: text)
    - value: valor inicial
    - placeholder: placeholder
-   - required: true|false
-   - disabled: true|false
-   - readonly: true|false
-   - helper_text: texto de ajuda
+   - required: true|false (default: false)
+   - disabled: true|false (default: false)
+   - readonly: true|false (default: false)
+   - maxlength: número máximo de caracteres
+   - minlength: número mínimo de caracteres
+   - pattern: regex pattern para validação
+   - min: valor mínimo (para number/date)
+   - max: valor máximo (para number/date)
+   - step: step para number input
+   - helper_text: texto de ajuda (abaixo do input)
    - error_text: mensagem de erro (mostra em vermelho)
    - success_text: mensagem de sucesso (mostra em verde)
    - icon: ícone FontAwesome antes do input
    - class: classes CSS adicionais para o input
+   - rows: número de linhas para textarea (default: 5)
 #}
 
 <div class="form-group">
-  <label for="{{ name }}"{% if required %} class="required"{% endif %}>
+  <label for="{{ name }}">
     {{ label }}
+    {% if required %}<span class="required">*</span>{% endif %}
   </label>
 
-  <div class="input-wrapper"{% if icon %} style="position: relative;"{% endif %}>
-    {% if icon %}
-      <span class="input-icon"><i class="fa-solid fa-{{ icon }}"></i></span>
-    {% endif %}
-
+  {% if type == 'textarea' %}
+    <textarea id="{{ name }}"
+              name="{{ name }}"
+              placeholder="{{ placeholder|default('') }}"
+              class="{% if error_text %}is-invalid{% endif %}
+                     {% if success_text %}is-valid{% endif %}
+                     {{ class|default('') }}"
+              {% if required %}required{% endif %}
+              {% if disabled %}disabled{% endif %}
+              {% if readonly %}readonly{% endif %}
+              {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
+              {% if minlength %}minlength="{{ minlength }}"{% endif %}
+              rows="{{ rows|default(5) }}"
+              aria-label="{{ label }}"
+              {% if helper_text %}aria-describedby="{{ name }}-help"{% endif %}>{{ value|default('') }}</textarea>
+  {% else %}
     <input type="{{ type|default('text') }}"
            id="{{ name }}"
            name="{{ name }}"
            value="{{ value|default('') }}"
            placeholder="{{ placeholder|default('') }}"
-           class="form-control {{ class|default('') }}
-                  {% if error_text %}is-invalid{% endif %}
-                  {% if success_text %}is-valid{% endif %}"
-           {% if required %}required{% endif %}
+           class="{% if error_text %}is-invalid{% endif %}
+                  {% if success_text %}is-valid{% endif %}
+                  {{ class|default('') }}"
+           {% if required %}required aria-required="true"{% endif %}
            {% if disabled %}disabled{% endif %}
-           {% if readonly %}readonly{% endif %}>
-  </div>
+           {% if readonly %}readonly{% endif %}
+           {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
+           {% if minlength %}minlength="{{ minlength }}"{% endif %}
+           {% if pattern %}pattern="{{ pattern }}"{% endif %}
+           {% if min %}min="{{ min }}"{% endif %}
+           {% if max %}max="{{ max }}"{% endif %}
+           {% if step %}step="{{ step }}"{% endif %}
+           aria-label="{{ label }}"
+           {% if helper_text %}aria-describedby="{{ name }}-help"{% endif %}>
+  {% endif %}
 
   {% if error_text %}
-    <small class="form-text form-error">
-      <i class="fa-solid fa-circle-exclamation"></i> {{ error_text }}
-    </small>
+    <div class="form-error" role="alert">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span>{{ error_text }}</span>
+    </div>
   {% elif success_text %}
-    <small class="form-text form-success">
-      <i class="fa-solid fa-circle-check"></i> {{ success_text }}
-    </small>
+    <div class="form-success" role="status">
+      <i class="fa-solid fa-circle-check"></i>
+      <span>{{ success_text }}</span>
+    </div>
   {% elif helper_text %}
-    <small class="form-text">{{ helper_text }}</small>
+    <small class="form-help" id="{{ name }}-help">
+      <div class="form-help-icon">
+        <i class="fa-solid fa-lightbulb"></i>
+      </div>
+      <div class="form-help-content">
+        <p>{{ helper_text }}</p>
+      </div>
+    </small>
   {% endif %}
 </div>
