@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block conteudo %}
-<main>
+<main id="conteudo-principal">
     <div class="notificacoes-container">
         <!-- Header -->
         <div class="notif-header">
@@ -25,7 +25,7 @@
         <!-- Filtros -->
         <div class="filters-bar">
             <div class="filter-group">
-                <span style="font-weight: 600; color: #666;">Filtrar por:</span>
+                <span class="filter-label">Filtrar por:</span>
                 <a href="{{ url_for('listar_notificacoes', tipo='todos', lida=lida_filtro) }}" 
                    class="filter-btn {{ 'active' if tipo_filtro == 'todos' else '' }}">
                     <i class="fa-solid fa-list"></i> Todas
@@ -87,7 +87,8 @@
                                 <i class="fa-solid {{ notif.icone }}" style="color: 
                                     {% if notif.tipo == 'sistema' %}#1a73e8
                                     {% elif notif.tipo == 'lembrete' %}#f57c00
-                                    {% else %}#2e7d32{% endif %};"></i>
+                                    {% else %}#2e7d32{% endif %}
+                                ;"></i>
                                 {{ notif.titulo }}
                             </h3>
                             

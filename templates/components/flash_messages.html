@@ -1,0 +1,36 @@
+{# components/flash_messages.html
+   Componente de flash messages padronizado
+
+   Uso:
+   {% include 'components/flash_messages.html' %}
+
+   O componente já acessa get_flashed_messages automaticamente
+#}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-wrapper">
+            {% for category, message in messages %}
+                {% set alert_type = 'danger' if category == 'error' else category %}
+                {% set alert_type = 'success' if alert_type == 'message' else alert_type %}
+                {% set title = 'Erro' if alert_type == 'danger' else 'Sucesso' %}
+                {% set icon_map = {
+                    'success': 'circle-check',
+                    'danger': 'circle-exclamation',
+                    'warning': 'triangle-exclamation',
+                    'info': 'circle-info'
+                } %}
+                {% set icon = icon_map[alert_type] if alert_type in icon_map else 'circle-info' %}
+                <div class="flash flash-{{ alert_type }}" role="alert">
+                    <div class="flash-icon">
+                        <i class="fa-solid fa-{{ icon }}"></i>
+                    </div>
+                    <div class="flash-content">
+                        {% if title %}<strong class="flash-title">{{ title }}</strong>{% endif %}
+                        <div class="flash-message">{{ message }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}

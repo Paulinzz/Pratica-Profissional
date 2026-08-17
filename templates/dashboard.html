@@ -5,118 +5,180 @@
 {% endblock %}
 
 {% block conteudo %}
-    <!-- Stats Section (Full Width) -->
-    <div class="dashboard-stats">
-        <!-- Horas Estudadas -->
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="dashboard-header-content">
+            <div class="dashboard-welcome">
+                <h1 class="dashboard-title">Dashboard</h1>
+                <p class="dashboard-subtitle">Acompanhe seu progresso e mantenha o foco nos seus estudos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Metrics Section -->
+    <section class="dashboard-stats" aria-label="Métricas principais">
         {% set total_minutos = tempo_por_materia.values()|list|sum %}
         {% set horas = (total_minutos // 60) if total_minutos > 0 else 0 %}
+        {% set minutos_restantes = (total_minutos % 60) if total_minutos > 0 else 0 %}
         {% set label = "Horas Estudadas" %}
         {% set value = (horas|int)|string %}
         {% set unit = "h" %}
         {% set icon = "hourglass-end" %}
         {% set icon_color = "text-primary" %}
+        {% set subtext = minutos_restantes ~ "min extras" if minutos_restantes > 0 else "Continue assim!" %}
         {% include 'components/card_metric.html' with context %}
 
-        <!-- Metas Ativas -->
         {% set label = "Metas Ativas" %}
         {% set value = (metas_ativas|default(0)|int)|string %}
         {% set unit = "" %}
         {% set icon = "target" %}
-        {% set icon_color = "text-success" %}
+        {% set icon_color = "text-warning" %}
+        {% set subtext = "Em andamento" %}
         {% include 'components/card_metric.html' with context %}
 
-        <!-- Atividades Registradas -->
-        {% set label = "Atividades Registradas" %}
+        {% set label = "Metas Concluídas" %}
+        {% set value = (metas_concluidas|default(0)|int)|string %}
+        {% set unit = "" %}
+        {% set icon = "trophy" %}
+        {% set icon_color = "text-success" %}
+        {% set subtext = "Concluídas" %}
+        {% include 'components/card_metric.html' with context %}
+
+        {% set total_metas_val = total_metas|default(0) %}
+        {% set taxa = (metas_concluidas / total_metas_val * 100)|round(0)|int if total_metas_val > 0 else 0 %}
+        {% set label = "Taxa de Conclusão" %}
+        {% set value = (taxa)|string %}
+        {% set unit = "%" %}
+        {% set icon = "chart-pie" %}
+        {% set icon_color = "text-info" %}
+        {% set trend = "up" if taxa >= 50 else "stable" %}
+        {% set trend_percent = "" %}
+        {% set subtext = "Das suas metas" %}
+        {% include 'components/card_metric.html' with context %}
+
+        {% set label = "Atividades" %}
         {% set value = (sorted_materias|default([])|length)|string %}
         {% set unit = "" %}
         {% set icon = "list-check" %}
-        {% set icon_color = "text-info" %}
+        {% set icon_color = "text-primary" %}
+        {% set subtext = "Registradas" %}
         {% include 'components/card_metric.html' with context %}
-    </div>
+    </section>
 
     <!-- Main Content Section -->
-    <main class="dashboard-main">
+    <main class="dashboard-main" id="conteudo-principal">
         <div class="left-content">
             <!-- Chart Card -->
-            <div class="card-dash">
-                <canvas id="chartDash"></canvas>
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h2>Atividades por Dia</h2>
+                    <span class="card-subtitle">Últimos registros de estudo</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartDash"></canvas>
+                    {% if not labels_dash or labels_dash|length == 0 %}
+                        <div class="chart-empty">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <p>Nenhuma atividade registrada ainda.</p>
+                            <small>Comece adicionando uma atividade para ver seu progresso.</small>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
 
-            <div class="container-case">
-                <!-- Materials Card -->
-                <div class="card-materias_mais_estudadas">
-                    <div class="minhas_materias">
-                        <h2>Minhas Matérias</h2>
+            <!-- Materials Card -->
+            <div class="card card-materias">
+                <div class="card-header">
+                    <h2>Minhas Matérias</h2>
+                    <span class="card-subtitle">Tempo de estudo por matéria</span>
+                </div>
 
-                        <!-- Add Material Button -->
-                        {% set text = "Adicionar nova matéria" %}
-                        {% set type = "success" %}
-                        {% set href = url_for('adicionar_materia_page') %}
-                        {% set icon = "plus" %}
-                        {% include 'components/button.html' with context %}
+                {% set text = "Adicionar nova matéria" %}
+                {% set type = "success" %}
+                {% set href = url_for('adicionar_materia_page') %}
+                {% set icon = "plus" %}
+                {% set size = "sm" %}
+                {% include 'components/button.html' with context %}
 
-                        <!-- Materials List -->
-                        <div class="materias-lista">
-                            {% if sorted_materias %}
-                                {% for materia in sorted_materias %}
-                                <div class="materia-item">
+                {% if sorted_materias %}
+                    <div class="materias-progress">
+                        {% for materia in sorted_materias %}
+                            {% set tempo = tempo_por_materia.get(materia.nome, 0) %}
+                            {% set max_tempo = tempo_por_materia.values()|list|max if tempo_por_materia else 1 %}
+                            {% set percent = (tempo / max_tempo * 100)|round if max_tempo > 0 else 0 %}
+                            <div class="materia-progress-item">
+                                <div class="materia-progress-header">
                                     <span class="materia-nome">
                                         <i class="fa-solid fa-book"></i> {{ materia.nome }}
                                     </span>
-                                    <div class="materia-tempo">
-                                        {% set tempo = tempo_por_materia.get(materia.nome, 0) %}
+                                    <span class="materia-tempo">
                                         {% if tempo > 0 %}
-                                            Tempo: {{ tempo // 60 }}h {{ tempo % 60 }}min
+                                            {{ tempo // 60 }}h {{ tempo % 60 }}min
                                         {% else %}
-                                            Sem tempo registrado
+                                            Sem tempo
                                         {% endif %}
-                                    </div>
-                                    <form method="post"
-                                          action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
-                                          class="materia-delete-form"
-                                          onsubmit="return confirm('Excluir matéria {{ materia.nome }}?');">
-                                        <button type="submit" class="btn-delete-materia" aria-label="Excluir matéria">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    </span>
                                 </div>
-                                {% endfor %}
-                            {% else %}
-                                <div class="empty-state">
-                                    <i class="fa-solid fa-folder-open"></i>
-                                    <p>Nenhuma matéria cadastrada.</p>
-                                    <small>Adicione sua primeira matéria acima!</small>
+                                <div class="materia-progress-bar">
+                                    <div class="materia-progress-fill" style="width: {{ percent }}%"></div>
                                 </div>
-                            {% endif %}
-                        </div>
+                                <form method="post"
+                                      action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
+                                      class="materia-delete-form"
+                                      onsubmit="return confirm('Excluir matéria {{ materia.nome }}?');">
+                                    <button type="submit" class="btn-delete-materia" aria-label="Excluir matéria {{ materia.nome }}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        {% endfor %}
                     </div>
-                </div>
-
-                <!-- About Card -->
-                <div class="card-sobre">
-                    <div class="title_card-sobre">
-                        <h1>Que tal conhecer um pouco mais sobre nós?</h1>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <p>Nenhuma matéria cadastrada.</p>
+                        <small>Adicione sua primeira matéria acima para começar!</small>
                     </div>
-                    <div class="content-card-sobre">
-                        <img src="{{ url_for('static', filename='imagens/sobre.png') }}" alt="Equipe FocusUp">
-                        <div class="about-text">
-                            <p>Esse projeto foi desenvolvido por alunos do 3° ano do curso de informática para internet.</p>
-                            {% set text = "Ler mais" %}
-                            {% set type = "link" %}
-                            {% set href = url_for('sobre_nos') %}
-                            {% include 'components/button.html' with context %}
-                        </div>
-                    </div>
-                </div>
+                {% endif %}
             </div>
         </div>
 
         <div class="right-content">
+            <!-- Quick Actions Card -->
+            <div class="card card-actions">
+                <div class="card-header">
+                    <h2>Ações Rápidas</h2>
+                    <span class="card-subtitle">O que você quer fazer agora?</span>
+                </div>
+                <div class="quick-actions">
+                    {% set text = "Modo Pomodoro" %}
+                    {% set type = "primary" %}
+                    {% set href = url_for('pomodoro') %}
+                    {% set icon = "clock" %}
+                    {% set size = "md" %}
+                    {% include 'components/button.html' with context %}
+
+                    {% set text = "Adicionar Atividade" %}
+                    {% set type = "success" %}
+                    {% set href = url_for('adicionar_atividade') %}
+                    {% set icon = "plus" %}
+                    {% set size = "md" %}
+                    {% include 'components/button.html' with context %}
+
+                    {% set text = "Nova Meta" %}
+                    {% set type = "warning" %}
+                    {% set href = url_for('criar_meta') %}
+                    {% set icon = "bullseye" %}
+                    {% set size = "md" %}
+                    {% include 'components/button.html' with context %}
+                </div>
+            </div>
+
             <!-- Articles Card -->
-            <div class="card_artigo">
-                <div class="title-card_artigo">
+            <div class="card card-artigos">
+                <div class="card-header">
                     <h2>Artigos Recomendados</h2>
-                    <i class="fa-solid fa-book"></i>
+                    <span class="card-subtitle">Conteúdo para seus estudos</span>
                 </div>
                 <div class="artigos-container">
                     {% if artigos %}
@@ -137,58 +199,34 @@
 
                                         <p><strong>Ano:</strong> {{ artigo.publication_year if artigo.publication_year else "N/A" }}</p>
 
-                                        <p><strong>Artigo:</strong>
-                                            {% if artigo.doi %}
-                                                <a href="https://doi.org/{{ artigo.doi }}" target="_blank">{{ artigo.doi }}</a>
-                                            {% else %}
-                                                Não disponível
-                                            {% endif %}
-                                        </p>
+                                        {% if artigo.doi %}
+                                            <p><strong>Artigo:</strong>
+                                                <a href="https://doi.org/{{ artigo.doi }}" target="_blank" rel="noopener">{{ artigo.doi }}</a>
+                                            </p>
+                                        {% endif %}
                                     </div>
 
                                     {% set text = "Ler mais" %}
                                     {% set type = "link" %}
                                     {% set href = artigo.id if artigo.id else artigo.url %}
+                                    {% set size = "sm" %}
                                     {% include 'components/button.html' with context %}
                                 </div>
                             </div>
                         {% endfor %}
                     {% else %}
-                        <!-- Empty State for Articles -->
-                        {% set type = "info" %}
-                        {% set title = "Nenhum artigo disponível" %}
-                        {% set message = "Volte mais tarde para conferir novas recomendações de leitura." %}
-                        {% include 'components/alert.html' with context %}
+                        <div class="empty-state">
+                            <i class="fa-solid fa-newspaper"></i>
+                            <p>Nenhum artigo disponível no momento.</p>
+                            <small>Volte mais tarde para conferir novas recomendações.</small>
+                        </div>
                     {% endif %}
-                </div>
-            </div>
-
-            <!-- Activity Actions Container -->
-            <div class="container_add-atividade">
-                <div class="activity-actions">
-                    <!-- Pomodoro Button -->
-                    {% set text = "Modo Pomodoro" %}
-                    {% set type = "primary" %}
-                    {% set href = url_for('pomodoro') %}
-                    {% set icon = "clock" %}
-                    {% include 'components/button.html' with context %}
-
-                    <!-- Add Activity Button -->
-                    <div class="add-atividade">
-                        <label for="btn-add-activity">Adicionar atividade</label>
-                        <form action="{{url_for('adicionar_atividade')}}" method="get">
-                            <button type="submit" id="btn-add-activity" class="botao_add_atv" aria-label="Adicionar nova atividade">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // Passar dados do Jinja2 para JavaScript
         window.labelsDash = {{ labels_dash | tojson }};
         window.dataDash = {{ data_dash | tojson }};
         window.labelsMaterias = {{ labels_materias | tojson }};

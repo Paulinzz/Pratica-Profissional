@@ -13,7 +13,7 @@
                 <h1>Meu Perfil</h1>
                 <p>Gerencie suas informações e acompanhe seu progresso</p>
             </div>
-            <div class="foto-perfil-header" onclick="document.getElementById('fileInput').click()">
+            <div class="foto-perfil-header" onclick="document.getElementById('fileInput').click()" role="button" tabindex="0" aria-label="Alterar foto de perfil">
                 {% if current_user.photo %}
                     <img src="{{ url_for('static', filename='imagens/' + current_user.photo) }}" alt="Foto de perfil">
                 {% else %}
@@ -23,7 +23,7 @@
                     <i class="fa-solid fa-camera"></i>
                 </div>
                 {% if current_user.photo %}
-                <div class="btn-remove-foto" onclick="removerFoto()" title="Remover foto">
+                <div class="btn-remove-foto" onclick="removerFoto()" role="button" tabindex="0" aria-label="Remover foto de perfil">
                     <i class="fa-solid fa-trash"></i>
                 </div>
                 {% endif %}
@@ -68,17 +68,17 @@
                 <div class="stats-card">
                     <h3><i class="fa-solid fa-trophy"></i> Badges Conquistados</h3>
                     {% if user_badges %}
-                        <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-2);">
+                        <div class="badges-list">
                             {% for user_badge in user_badges %}
-                            <div style="display: flex; flex-direction: column; align-items: center; padding: var(--spacing-2); background: var(--color-bg-tertiary); border-radius: var(--radius-lg); min-width: 80px; text-align: center;">
-                                <i class="fa-solid {{ user_badge.badge.icone }}" style="font-size: var(--font-size-xl); color: var(--color-primary); margin-bottom: var(--spacing-1);"></i>
-                                <div style="font-size: var(--font-size-xs); font-weight: var(--font-weight-semi-bold); color: var(--color-text-primary);">{{ user_badge.badge.nome }}</div>
-                                <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">{{ user_badge.data_conquista.strftime('%d/%m/%Y') }}</div>
+                            <div class="badge-item">
+                                <i class="fa-solid {{ user_badge.badge.icone }}"></i>
+                                <div class="badge-name">{{ user_badge.badge.nome }}</div>
+                                <div class="badge-date">{{ user_badge.data_conquista.strftime('%d/%m/%Y') }}</div>
                             </div>
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p style="text-align: center; color: var(--color-text-secondary); padding: var(--spacing-4);">Nenhum badge conquistado ainda. Continue estudando!</p>
+                        <p class="badges-empty">Nenhum badge conquistado ainda. Continue estudando!</p>
                     {% endif %}
                 </div>
 
@@ -139,7 +139,7 @@
                             <label>Senha Atual</label>
                             <div class="password-wrapper">
                                 <input type="password" name="senha_atual" id="senhaAtual" placeholder="Digite sua senha atual" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('senhaAtual')">
+                                <button type="button" class="toggle-password" onclick="togglePassword('senhaAtual')" aria-label="Mostrar senha atual">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </div>
@@ -149,7 +149,7 @@
                             <label>Nova Senha</label>
                             <div class="password-wrapper">
                                 <input type="password" name="nova_senha" id="novaSenha" placeholder="Digite a nova senha" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('novaSenha')">
+                                <button type="button" class="toggle-password" onclick="togglePassword('novaSenha')" aria-label="Mostrar nova senha">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </div>
@@ -159,7 +159,7 @@
                             <label>Confirmar Nova Senha</label>
                             <div class="password-wrapper">
                                 <input type="password" name="confirmar_senha" id="confirmarSenha" placeholder="Confirme a nova senha" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('confirmarSenha')">
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirmarSenha')" aria-label="Mostrar confirmação de senha">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </div>

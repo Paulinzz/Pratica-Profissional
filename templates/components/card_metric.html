@@ -20,11 +20,11 @@
 
 <div class="card card-metric {{ class|default('') }}">
   <div class="metric-content">
-    <div class="metric-label">
-      {% if icon %}
-        <i class="fa-solid fa-{{ icon }} {{ icon_color|default('') }}"></i>
-      {% endif %}
-      {{ label }}
+    <div class="metric-header">
+      <div class="metric-icon {{ icon_color|default('') }}">
+        {% if icon %}<i class="fa-solid fa-{{ icon }}"></i>{% endif %}
+      </div>
+      <span class="metric-label">{{ label }}</span>
     </div>
 
     <div class="metric-value">

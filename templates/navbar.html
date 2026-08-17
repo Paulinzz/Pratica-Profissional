@@ -16,7 +16,7 @@
         </div>
 
         {# Menu Hamburguer para Mobile #}
-        <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <div class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
             <i class="fa-solid fa-bars"></i>
         </div>
 
@@ -31,7 +31,7 @@
 
         {# Theme Toggle Button #}
         <div class="theme-toggle">
-            <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()">
+            <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Alternar tema">
                 <i class="fa-solid fa-moon" id="themeIcon"></i>
             </button>
         </div>
@@ -47,7 +47,7 @@
         {# User Dropdown Menu #}
         {% if current_user.is_authenticated %}
         <div class="user-dropdown" id="userDropdown">
-            <div class="user-info" onclick="toggleDropdown()">
+            <div class="user-info" onclick="toggleDropdown()" aria-expanded="false" aria-haspopup="true" aria-label="Menu do usuário">
                 <div class="user-avatar">
                     {% if current_user.photo %}
                         <img src="{{ url_for('static', filename='imagens/' + current_user.photo) }}" alt="Foto de perfil">
@@ -105,10 +105,10 @@
 </div>
 
 {# Mobile Menu Overlay and Sidebar #}
-<div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()" aria-hidden="true"></div>
 <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-header">
-        <button class="mobile-menu-close" onclick="closeMobileMenu()">&times;</button>
+        <button class="mobile-menu-close" onclick="closeMobileMenu()" aria-label="Fechar menu">&times;</button>
         <h3><i class="fa-solid fa-bars"></i> Menu</h3>
     </div>
     <div class="mobile-menu-content">

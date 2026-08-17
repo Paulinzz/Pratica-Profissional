@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block conteudo %}
-<main>
+<main id="conteudo-principal">
     <div class="form-container">
         <div class="form-header">
             <h1><i class="fa-solid fa-edit"></i> Editar Meta</h1>
@@ -59,22 +59,20 @@
             <!-- Status da Meta -->
             <div class="form-group">
                 <label>Status da Meta</label>
-                <div style="display: flex; gap: var(--spacing-4); flex-wrap: wrap; padding: var(--spacing-3) 0;">
-                    <div style="display: flex; align-items: center; gap: var(--spacing-2);">
+                <div class="status-options">
+                    <div class="status-option">
                         <input type="radio" id="status_ativo" name="status" value="ativo"
-                               {% if meta.status == 'ativo' %}checked{% endif %}
-                               style="width: auto; margin: 0;">
-                        <label for="status_ativo" style="margin: 0; font-weight: var(--font-weight-medium); cursor: pointer;">
-                            <i class="fa-solid fa-play-circle" style="color: var(--color-primary);"></i>
+                               {% if meta.status == 'ativo' %}checked{% endif %}>
+                        <label for="status_ativo">
+                            <i class="fa-solid fa-play-circle text-primary"></i>
                             Ativa
                         </label>
                     </div>
-                    <div style="display: flex; align-items: center; gap: var(--spacing-2);">
+                    <div class="status-option">
                         <input type="radio" id="status_concluido" name="status" value="concluido"
-                               {% if meta.status == 'concluido' %}checked{% endif %}
-                               style="width: auto; margin: 0;">
-                        <label for="status_concluido" style="margin: 0; font-weight: var(--font-weight-medium); cursor: pointer;">
-                            <i class="fa-solid fa-check-circle" style="color: var(--color-success);"></i>
+                               {% if meta.status == 'concluido' %}checked{% endif %}>
+                        <label for="status_concluido">
+                            <i class="fa-solid fa-check-circle text-success"></i>
                             Concluída
                         </label>
                     </div>

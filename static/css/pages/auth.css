@@ -3,29 +3,6 @@
    Login, signup, password reset styles
    ==================================== */
 
-/* Auth Page Container */
-.auth-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-6);
-  background: linear-gradient(-45deg, var(--color-primary), var(--color-primary-light), var(--color-primary-lighter), #ffffff);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
-}
-
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-body.dark-mode .auth-page {
-  background: linear-gradient(-45deg, var(--color-bg-dark-primary), var(--color-bg-dark-secondary), var(--color-primary), #1a73e8);
-  background-size: 400% 400%;
-}
-
 /* Auth Container */
 .auth-container {
   width: 100%;
@@ -398,6 +375,106 @@ body.dark-mode .auth-footer a {
 }
 
 /* ====================================
+   FLASH MESSAGES COMPONENT
+   ==================================== */
+
+.flash-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-6);
+}
+
+.flash {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.flash-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: var(--font-size-lg);
+}
+
+.flash-content {
+  flex: 1;
+}
+
+.flash-title {
+  display: block;
+  font-weight: var(--font-weight-semi-bold);
+  margin-bottom: var(--spacing-1);
+}
+
+.flash-message {
+  display: block;
+  font-weight: var(--font-weight-normal);
+}
+
+/* Flash Variants */
+.flash-success {
+  background: rgba(46, 125, 50, 0.1);
+  border: 1px solid rgba(46, 125, 50, 0.2);
+  color: var(--color-success);
+}
+
+.flash-danger {
+  background: rgba(211, 47, 47, 0.1);
+  border: 1px solid rgba(211, 47, 47, 0.2);
+  color: var(--color-danger);
+}
+
+.flash-warning {
+  background: rgba(245, 124, 0, 0.1);
+  border: 1px solid rgba(245, 124, 0, 0.2);
+  color: var(--color-warning);
+}
+
+.flash-info {
+  background: rgba(0, 152, 167, 0.1);
+  border: 1px solid rgba(0, 152, 167, 0.2);
+  color: var(--color-info);
+}
+
+/* Dark Mode */
+body.dark-mode .flash-success {
+  background: rgba(76, 175, 80, 0.15);
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+body.dark-mode .flash-danger {
+  background: rgba(239, 83, 80, 0.15);
+  border-color: rgba(239, 83, 80, 0.3);
+}
+
+body.dark-mode .flash-warning {
+  background: rgba(255, 183, 77, 0.15);
+  border-color: rgba(255, 183, 77, 0.3);
+}
+
+body.dark-mode .flash-info {
+  background: rgba(77, 208, 225, 0.15);
+  border-color: rgba(77, 208, 225, 0.3);
+}
+
+/* ====================================
    PASSWORD RESET PAGES
    ==================================== */
 
@@ -410,6 +487,12 @@ body.dark-mode .auth-footer a {
   margin-bottom: var(--spacing-6);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-relaxed);
+}
+
+body.dark-mode .password-reset-instructions {
+  background: rgba(77, 208, 225, 0.15);
+  border-color: rgba(77, 208, 225, 0.3);
+  color: var(--color-info-light);
 }
 
 /* ====================================

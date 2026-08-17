@@ -1,58 +1,71 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redefinir senha</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='formularios.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="icon" href="{{url_for('static', filename='imagens/correto.png')}}" type="image/x-icon">
-</head>
-<body>
+{% extends 'base.html' %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-container">
-            {% for category, message in messages %}
-            <div class="flash {{ category }}">{{ message }}</div>
-        {% endfor %}
-        </div>
-        {% endif %}
-    {% endwith %}
+{% block title %}Redefinir Senha{% endblock %}
 
-    <header>
-        <h1>Redefinir senha</h1>
-    </header>
-
-    <main>
-        <form action="{{ url_for('resetar_senha', token=token) }}" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <div class="logo-container">
-                <div class="focusup-logo">
-                    <div class="checkmark-container">
-                        <div class="checkmark"></div>
-                    </div>
-                    <span class="focusup-text">FocusUp</span>
+{% block conteudo %}
+<main class="auth-main auth-reset" id="conteudo-principal">
+    <div class="auth-container">
+        <!-- Logo -->
+        <div class="auth-logo">
+            <div class="focusup-logo">
+                <div class="checkmark-container">
+                    <div class="checkmark"></div>
                 </div>
+                <span class="focusup-text">FocusUp</span>
             </div>
+        </div>
 
-            <p style="text-align: center; margin-bottom: 20px; color: #666;">
-                Digite sua nova senha.
+        <!-- Header -->
+        <div class="auth-header">
+            <h1>Redefinir Senha</h1>
+            <p>Digite sua nova senha abaixo</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% include 'components/flash_messages.html' %}
+
+        <!-- Reset Password Form -->
+        <form action="{{ url_for('resetar_senha', token=token) }}" method="POST" class="auth-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <!-- Info Text -->
+            <p class="auth-info">
+                Crie uma senha forte e segura para sua conta.
             </p>
 
-            <div class="senha">
-                <i class="fa-solid fa-key"></i>
-                <input type="password" name="senha" placeholder="Nova senha" required>
-            </div>
+            <!-- Password Field -->
+            {% set name = "senha" %}
+            {% set label = "Nova Senha" %}
+            {% set type = "password" %}
+            {% set placeholder = "Digite sua nova senha" %}
+            {% set required = true %}
+            {% set icon = "key" %}
+            {% set helper_text = "Mínimo 6 caracteres" %}
+            {% include 'components/form_group.html' with context %}
 
-            <div class="senha">
-                <i class="fa-solid fa-key"></i>
-                <input type="password" name="confirmar_senha" placeholder="Confirmar nova senha" required>
-            </div>
+            <!-- Confirm Password Field -->
+            {% set name = "confirmar_senha" %}
+            {% set label = "Confirmar Nova Senha" %}
+            {% set type = "password" %}
+            {% set placeholder = "Confirme sua nova senha" %}
+            {% set required = true %}
+            {% set icon = "key" %}
+            {% include 'components/form_group.html' with context %}
 
-            <button type="submit">Redefinir senha</button>
-            <a href="{{url_for('login')}}">Voltar ao login</a>
+            <!-- Submit Button -->
+            {% set text = "Redefinir Senha" %}
+            {% set type = "primary" %}
+            {% set class = "auth-submit-btn" %}
+            {% include 'components/button.html' with context %}
         </form>
-    </main>
-</body>
-</html>
+
+        <!-- Footer Links -->
+        <div class="auth-footer">
+            <a href="{{url_for('login')}}" class="auth-link-secondary">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar ao login
+            </a>
+        </div>
+    </div>
+</main>
+{% endblock %}

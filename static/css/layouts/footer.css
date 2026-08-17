@@ -410,3 +410,13 @@ body.dark-mode .footer-bottom a:hover {
     overflow: visible;
   }
 }
+
+/* ====================================
+   FOOTER ACCESSIBILITY
+   ==================================== */
+
+.footer-section h3[role="button"]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}

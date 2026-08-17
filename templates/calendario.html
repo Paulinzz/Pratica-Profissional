@@ -5,21 +5,21 @@
 {% endblock %}
 
 {% block conteudo %}
-<main>
+    <main id="conteudo-principal">
     <div class="calendario-container">
         <div class="calendario-header">
             <h1><i class="fa-solid fa-calendar"></i> Calendário</h1>
             <div class="calendario-info">
                 <div class="legenda-item">
-                    <div class="legenda-cor" style="background: #1a73e8;"></div>
+                    <div class="legenda-cor legenda-atividades"></div>
                     <span>Atividades</span>
                 </div>
                 <div class="legenda-item">
-                    <div class="legenda-cor" style="background: #ff9800;"></div>
+                    <div class="legenda-cor legenda-metas-ativas"></div>
                     <span>Metas Ativas</span>
                 </div>
                 <div class="legenda-item">
-                    <div class="legenda-cor" style="background: #2e7d32;"></div>
+                    <div class="legenda-cor legenda-metas-concluidas"></div>
                     <span>Metas Concluídas</span>
                 </div>
             </div>
@@ -35,7 +35,7 @@
         <div class="evento-modal-content">
             <div class="evento-modal-header">
                 <h2 id="eventoTitle" class="evento-modal-title">Detalhes do Evento</h2>
-                <button class="evento-modal-close" onclick="fecharModal()">&times;</button>
+                <button class="evento-modal-close" onclick="fecharModal()" aria-label="Fechar modal">&times;</button>
             </div>
             <div id="eventoDetalhes" class="evento-detalhes">
                 <!-- Conteúdo será preenchido dinamicamente -->

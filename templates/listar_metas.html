@@ -5,97 +5,107 @@
 {% endblock %}
 
 {% block conteudo %}
-<main>
-    <div class="metas-container">
-        <div class="metas-header">
-            <h1><i class="fa-solid fa-target"></i> Minhas Metas</h1>
-            <a href="{{ url_for('criar_meta') }}" class="btn-add-meta">
-                <i class="fa-solid fa-plus"></i>
-                Nova Meta
-            </a>
-        </div>
+    {% set subtitle = "Acompanhe e gerencie seus objetivos de estudo" %}
 
-        <div class="filtros-container">
-            <a href="{{ url_for('listar_metas', status='todos') }}" class="filtro-btn {{ 'active' if status_filtro == 'todos' else '' }}">
-                Todas ({{ metas|length }})
-            </a>
-            <a href="{{ url_for('listar_metas', status='ativo') }}" class="filtro-btn {{ 'active' if status_filtro == 'ativo' else '' }}">
-                Ativas
-            </a>
-            <a href="{{ url_for('listar_metas', status='concluido') }}" class="filtro-btn {{ 'active' if status_filtro == 'concluido' else '' }}">
-                Concluídas
-            </a>
-        </div>
+    {% set actions %}
+        {% set text = "Nova Meta" %}
+        {% set type = "success" %}
+        {% set href = url_for('criar_meta') %}
+        {% set icon = "plus" %}
+        {% set size = "md" %}
+        {% include 'components/button.html' with context %}
+    {% endset %}
 
-        {% if metas %}
-            <div class="metas-grid">
-                {% for meta in metas %}
-                <div class="meta-card {{ meta.status }}">
-                    <div class="meta-header">
-                        <h3 class="meta-titulo">{{ meta.titulo }}</h3>
-                        <span class="meta-status status-{{ meta.status }}">
-                            {{ 'Ativa' if meta.status == 'ativo' else 'Concluída' }}
-                        </span>
-                    </div>
+    {% include 'components/page_header.html' with context %}
 
-                    {% if meta.descricao %}
-                    <p class="meta-descricao">{{ meta.descricao }}</p>
-                    {% endif %}
-
-                    <div class="meta-info">
-                        {% if meta.materia %}
-                        <span class="meta-materia">
-                            <i class="fa-solid fa-book"></i>
-                            {{ meta.materia.nome }}
-                        </span>
-                        {% endif %}
-
-                        {% if meta.data_limite %}
-                        <span class="meta-data-limite">
-                            <i class="fa-solid fa-calendar"></i>
-                            {{ meta.data_limite.strftime('%d/%m/%Y') }}
-                        </span>
-                        {% endif %}
-                    </div>
-
-                    <div class="meta-actions">
-                        {% if meta.status == 'ativo' %}
-                        <form method="post" action="{{ url_for('concluir_meta', meta_id=meta.id) }}" style="display: inline;">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                            <button type="submit" class="btn-meta-action btn-concluir" title="Concluir meta" onclick="return confirm('Marcar esta meta como concluída?')">
-                                <i class="fa-solid fa-check"></i>
-                            </button>
-                        </form>
-                        {% endif %}
-
-                        <a href="{{ url_for('editar_meta', meta_id=meta.id) }}" class="btn-meta-action btn-editar" title="Editar meta">
-                            <i class="fa-solid fa-edit"></i>
-                        </a>
-
-                        <form method="post" action="{{ url_for('deletar_meta', meta_id=meta.id) }}" style="display: inline;">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                            <button type="submit" class="btn-meta-action btn-excluir" title="Excluir meta" onclick="return confirm('Tem certeza que deseja excluir esta meta?')">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="sem-metas-completo">
-                <div class="icone-vazio-metas">
-                    <i class="fa-solid fa-target"></i>
-                </div>
-                <h2>Nenhuma meta encontrada</h2>
-                <p>Comece definindo suas primeiras metas de estudo!</p>
-                <a href="{{ url_for('criar_meta') }}" class="btn-primeira-meta">
-                    <i class="fa-solid fa-plus"></i>
-                    Criar Primeira Meta
+    <main id="conteudo-principal">
+        <div class="metas-container">
+            <div class="filtros-container">
+                <a href="{{ url_for('listar_metas', status='todos') }}" class="filtro-btn {{ 'active' if status_filtro == 'todos' else '' }}">
+                    Todas ({{ metas|length }})
+                </a>
+                <a href="{{ url_for('listar_metas', status='ativo') }}" class="filtro-btn {{ 'active' if status_filtro == 'ativo' else '' }}">
+                    Ativas
+                </a>
+                <a href="{{ url_for('listar_metas', status='concluido') }}" class="filtro-btn {{ 'active' if status_filtro == 'concluido' else '' }}">
+                    Concluídas
                 </a>
             </div>
-        {% endif %}
-    </div>
-</main>
 
+            {% if metas %}
+                <div class="metas-grid">
+                    {% for meta in metas %}
+                    <div class="meta-card {{ meta.status }}">
+                        <div class="meta-header">
+                            <h3 class="meta-titulo">{{ meta.titulo }}</h3>
+                            <span class="status-badge status-{{ meta.status }}">
+                                {{ 'Ativa' if meta.status == 'ativo' else 'Concluída' }}
+                            </span>
+                        </div>
+
+                        {% if meta.descricao %}
+                        <p class="meta-descricao">{{ meta.descricao }}</p>
+                        {% endif %}
+
+                        <div class="meta-info">
+                            {% if meta.materia %}
+                            <span class="meta-info-item">
+                                <i class="fa-solid fa-book"></i>
+                                {{ meta.materia.nome }}
+                            </span>
+                            {% endif %}
+
+                            {% if meta.data_limite %}
+                            <span class="meta-info-item">
+                                <i class="fa-solid fa-calendar"></i>
+                                {{ meta.data_limite.strftime('%d/%m/%Y') }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="meta-actions">
+                            {% if meta.status == 'ativo' %}
+                            <form method="post" action="{{ url_for('concluir_meta', meta_id=meta.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <button type="submit" class="btn-meta-action btn-concluir" title="Concluir meta" onclick="return confirm('Marcar esta meta como concluída?')">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            <a href="{{ url_for('editar_meta', meta_id=meta.id) }}" class="btn-meta-action btn-editar" title="Editar meta">
+                                <i class="fa-solid fa-edit"></i>
+                            </a>
+
+                            <form method="post" action="{{ url_for('deletar_meta', meta_id=meta.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <button type="submit" class="btn-meta-action btn-excluir" title="Excluir meta" onclick="return confirm('Tem certeza que deseja excluir esta meta?')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {% set icon = "target" %}
+                {% set title = "Nenhuma meta encontrada" %}
+                {% set message = "Comece definindo suas primeiras metas de estudo!" %}
+                {% set action_text = "Criar Primeira Meta" %}
+                {% set action_href = url_for('criar_meta') %}
+                {% set action_icon = "plus" %}
+                {% include 'components/empty_state.html' with context %}
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        document.querySelectorAll('.meta-actions form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!confirm('Tem certeza?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 {% endblock %}

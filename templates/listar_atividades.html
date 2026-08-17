@@ -5,21 +5,26 @@
 {% endblock %}
 
 {% block conteudo %}
-    <main>
-        <div class="container_listar_atividades">
-            <div class="header-atividades">
-                <h1>Minhas Atividades</h1>
-                <a href="{{url_for('adicionar_atividade')}}" class="btn-adicionar">
-                    <i class="fa-solid fa-plus"></i>
-                    Nova Atividade
-                </a>
-            </div>
+    {% set subtitle = "Organize e acompanhe todas as suas atividades de estudo" %}
 
+    {% set actions %}
+        {% set text = "Nova Atividade" %}
+        {% set type = "success" %}
+        {% set href = url_for('adicionar_atividade') %}
+        {% set icon = "plus" %}
+        {% set size = "md" %}
+        {% include 'components/button.html' with context %}
+    {% endset %}
+
+    {% include 'components/page_header.html' with context %}
+
+    <main id="conteudo-principal">
+        <div class="container_listar_atividades">
             {% if atividades %}
                 <div class="filtros-atividades">
                     <div class="busca">
                         <i class="fa-solid fa-search"></i>
-                        <input type="text" id="buscar-atividade" placeholder="Buscar por matéria ou ..." onkeyup="filtrarAtividades()">
+                        <input type="text" id="buscar-atividade" placeholder="Buscar por matéria ou assunto..." onkeyup="filtrarAtividades()" aria-label="Buscar atividades">
                     </div>
                     <div class="ordenacao">
                         <label for="ordenar">Ordenar por:</label>
@@ -33,27 +38,23 @@
                 </div>
 
                 <div class="stats-atividades">
-                    <div class="stat-card">
-                        <i class="fa-solid fa-list-check"></i>
-                        <div class="stat-info">
-                            <span class="stat-numero">{{ atividades|length }}</span>
-                            <span class="stat-label">Total de Atividades</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fa-solid fa-book"></i>
-                        <div class="stat-info">
-                            <span class="stat-numero">{{ atividades|map(attribute='materia')|unique|list|length }}</span>
-                            <span class="stat-label">Matérias</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fa-solid fa-clock"></i>
-                        <div class="stat-info">
-                            <span class="stat-numero" id="total-horas">0h</span>
-                            <span class="stat-label">Horas Estudadas</span>
-                        </div>
-                    </div>
+                    {% set label = "Total de Atividades" %}
+                    {% set value = atividades|length|string %}
+                    {% set icon = "list-check" %}
+                    {% set color = "primary" %}
+                    {% include 'components/stat_card.html' with context %}
+
+                    {% set label = "Matérias" %}
+                    {% set value = atividades|map(attribute='materia')|unique|list|length|string %}
+                    {% set icon = "book" %}
+                    {% set color = "info" %}
+                    {% include 'components/stat_card.html' with context %}
+
+                    {% set label = "Horas Estudadas" %}
+                    {% set value = "0h" %}
+                    {% set icon = "clock" %}
+                    {% set color = "warning" %}
+                    {% include 'components/stat_card.html' with context %}
                 </div>
 
                 <div class="lista-atividades-completa" id="lista-atividades">
@@ -95,7 +96,6 @@
                             
                             <form method="post"
                                   action="{{ url_for('excluir_atividade', atividade_id=atividade.id) }}"
-                                  style="display:inline;"
                                   onsubmit="return confirm('Tem certeza que deseja excluir esta atividade?\n\nMatéria: {{ atividade.materia }}\nAssunto: {{ atividade.assunto_primario }}\n\nEsta ação não pode ser desfeita.');">
                                 <button type="submit" 
                                         class="btn-acao btn-excluir" 
@@ -108,22 +108,16 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="sem-atividades-completo">
-                    <div class="icone-vazio">
-                        <i class="fa-solid fa-folder-open"></i>
-                    </div>
-                    <h2>Nenhuma atividade encontrada</h2>
-                    <p>Você ainda não cadastrou nenhuma atividade. Comece agora e organize seus estudos!</p>
-                    <a href="{{url_for('adicionar_atividade')}}" class="btn-primeira-atividade">
-                        <i class="fa-solid fa-plus"></i>
-                        Adicionar Primeira Atividade
-                    </a>
-                </div>
+                {% set icon = "folder-open" %}
+                {% set title = "Nenhuma atividade encontrada" %}
+                {% set message = "Você ainda não cadastrou nenhuma atividade. Comece agora e organize seus estudos!" %}
+                {% set action_text = "Adicionar Primeira Atividade" %}
+                {% set action_href = url_for('adicionar_atividade') %}
+                {% set action_icon = "plus" %}
+                {% include 'components/empty_state.html' with context %}
             {% endif %}
         </div>
     </main>
 
-
-    <script src="{{url_for('static', filename='scripts/listar_atividade.js')}}">
-    </script>
+    <script src="{{ url_for('static', filename='scripts/listar_atividade.js') }}"></script>
 {% endblock %}

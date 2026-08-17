@@ -31,7 +31,10 @@
 @import url('./pages/atividades.css');
 @import url('./pages/metas.css');
 @import url('./pages/calendario.css');
-@import url('./pages/_placeholders.css');
+@import url('./pages/auxiliary.css');
+
+/* Import Page Components */
+@import url('./components/page_components.css');
 
 /* ====================================
    GLOBAL STYLES & UTILITIES
@@ -240,6 +243,27 @@
    FOCUS VISIBLE - ACCESSIBILITY
    ==================================== */
 
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  z-index: var(--z-notification);
+  text-decoration: none;
+  font-weight: var(--font-weight-semi-bold);
+  border-radius: 0 0 var(--radius-md) 0;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--color-primary-dark);
+  outline-offset: 2px;
+}
+
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
@@ -304,3 +328,31 @@ body.dark-mode *::-webkit-scrollbar-track {
     content: ' (' attr(href) ')';
   }
 }
+
+/* ====================================
+   UTILITY COLORS
+   ==================================== */
+
+.text-primary { color: var(--color-primary); }
+.text-success { color: var(--color-success); }
+.text-danger { color: var(--color-danger); }
+.text-warning { color: var(--color-warning); }
+.text-info { color: var(--color-info); }
+.text-secondary { color: var(--color-text-secondary); }
+
+.bg-primary { background-color: var(--color-primary); }
+.bg-success { background-color: var(--color-success); }
+.bg-danger { background-color: var(--color-danger); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-info { background-color: var(--color-info); }
+
+body.dark-mode .text-primary { color: var(--color-primary-light); }
+body.dark-mode .text-success { color: var(--color-success-light); }
+body.dark-mode .text-danger { color: var(--color-danger-light); }
+body.dark-mode .text-warning { color: var(--color-warning-light); }
+body.dark-mode .text-info { color: var(--color-info-light); }
+
+.text-white { color: #ffffff; }
+
+.mt-n1 { margin-top: -1rem; }
+.mb-1 { margin-bottom: 1rem; }

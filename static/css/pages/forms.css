@@ -580,3 +580,36 @@ body.dark-mode .btn-cancel:hover {
     padding: var(--spacing-2) var(--spacing-3);
   }
 }
+
+/* ====================================
+   STATUS OPTIONS
+   ==================================== */
+
+.status-options {
+  display: flex;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+  padding: var(--spacing-3) 0;
+}
+
+.status-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.status-option input[type="radio"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+.status-option label {
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}

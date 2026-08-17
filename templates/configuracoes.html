@@ -6,12 +6,12 @@
 
 {% block conteudo %}
 
-<main>
+    <main id="conteudo-principal">
     <div class="config-container">
         <!-- Header -->
         <div class="config-header">
             <h1><i class="fa-solid fa-gear"></i> Configurações</h1>
-            <p style="font-size: 16px; opacity: 0.95;">Personalize sua experiência no FocusUp</p>
+            <p class="config-subtitle">Personalize sua experiência no FocusUp</p>
         </div>
 
         <!-- Tabs -->
@@ -112,10 +112,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; font-size: 16px; font-weight: 600;">
-                        <i class="fa-solid fa-globe" style="color: #1a73e8; font-size: 18px;"></i>
-                        Idioma da Interface
-                    </label>
+                <label class="theme-card-label">
+                    <i class="fa-solid fa-globe"></i>
+                    Português
+                </label>
                     <div class="language-selector">
                         <div class="language-options">
                             <label class="language-option {{ 'active' if current_user.idioma == 'pt-br' else '' }}" for="lang-pt">
@@ -163,22 +163,22 @@
                 </div>
 
                 <button class="action-btn" onclick="baixarDados()">
-                    <i class="fa-solid fa-download" style="color: #1a73e8;"></i>
+                    <i class="fa-solid fa-download text-primary"></i>
                     Baixar meus dados
                 </button>
 
                 <a href="{{ url_for('politica_privacidade') }}" class="action-btn">
-                    <i class="fa-solid fa-shield" style="color: #2e7d32;"></i>
+                    <i class="fa-solid fa-shield text-success"></i>
                     Política de Privacidade
                 </a>
 
                 <a href="{{ url_for('termos_servico') }}" class="action-btn">
-                    <i class="fa-solid fa-file-contract" style="color: #9c27b0;"></i>
+                    <i class="fa-solid fa-file-contract text-info"></i>
                     Termos de Serviço
                 </a>
 
                 <button class="action-btn danger" onclick="confirmarExclusao()">
-                    <i class="fa-solid fa-trash-can" style="color: red;"></i>
+                    <i class="fa-solid fa-trash-can text-danger"></i>
                     Excluir minha conta
                 </button>
             </div>

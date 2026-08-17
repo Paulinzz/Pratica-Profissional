@@ -5,169 +5,8 @@
 {% endblock %}
 
 {% block conteudo %}
-<style>
-    /* Estilos específicos para as páginas de política e termos */
-    .content-container {
-        max-width: 900px;
-        width: 100%;
-        background-color: #eff1f3;
-        border-radius: 30px;
-        padding: 50px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        animation: fadeInUp 1s ease forwards;
-        margin: 0 auto;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .page-title {
-        font-size: 40px;
-        color: #1a73e8;
-        text-align: center;
-        margin-bottom: 40px;
-        font-weight: bold;
-    }
-
-    .section-title {
-        font-size: 24px;
-        color: #333;
-        margin-top: 35px;
-        margin-bottom: 20px;
-        font-weight: 600;
-        border-left: 4px solid #1a73e8;
-        padding-left: 20px;
-    }
-
-    .subsection-title {
-        font-size: 20px;
-        color: #555;
-        margin-top: 25px;
-        margin-bottom: 15px;
-        font-weight: 500;
-    }
-
-    .content-text {
-        font-size: 16px;
-        color: #666;
-        line-height: 1.7;
-        margin-bottom: 18px;
-        text-align: justify;
-    }
-
-    .content-list {
-        margin-left: 25px;
-        margin-bottom: 18px;
-    }
-
-    .content-list li {
-        font-size: 16px;
-        color: #666;
-        line-height: 1.7;
-        margin-bottom: 10px;
-    }
-
-    .highlight-box {
-        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-        border-left: 4px solid #1a73e8;
-        padding: 25px;
-        margin: 25px 0;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(26, 115, 232, 0.1);
-    }
-
-    .warning-box {
-        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
-        border-left: 4px solid #ff9800;
-        padding: 25px;
-        margin: 25px 0;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(255, 152, 0, 0.1);
-    }
-
-    .contact-info {
-        background: linear-gradient(135deg, #f5f5f5, #eeeeee);
-        padding: 30px;
-        border-radius: 20px;
-        margin-top: 35px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .back-button {
-        display: inline-block;
-        background: linear-gradient(135deg, #1a73e8, #0d47a1);
-        color: white;
-        padding: 15px 30px;
-        border-radius: 30px;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 16px;
-        margin-top: 35px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2);
-    }
-
-    .back-button:hover {
-        background: linear-gradient(135deg, #2e7d32, #1b5e20);
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
-        color: white;
-        text-decoration: none;
-    }
-
-    .last-updated {
-        text-align: center;
-        font-style: italic;
-        color: #888;
-        margin-top: 40px;
-        padding-top: 25px;
-        border-top: 2px solid #ddd;
-        font-size: 14px;
-    }
-
-    .highlight-box .content-text,
-    .warning-box .content-text {
-        margin-bottom: 0;
-    }
-
-    .highlight-box strong,
-    .warning-box strong {
-        color: #1a73e8;
-    }
-
-    .warning-box strong {
-        color: #f57c00;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .content-container {
-            padding: 30px 25px;
-            margin: 0 10px;
-        }
-        
-        .page-title {
-            font-size: 32px;
-        }
-        
-        .section-title {
-            font-size: 20px;
-        }
-    }
-</style>
-
-<main style="padding: 50px; display: flex; justify-content: center;">
-    <div class="content-container">
+<main id="conteudo-principal">
+    <div class="legal-container">
         <h1 class="page-title">Política de Privacidade</h1>
         
         <div class="highlight-box">
@@ -256,7 +95,7 @@
         <p class="content-text">Esta Política de Privacidade pode ser atualizada periodicamente. Notificaremos sobre mudanças significativas através do e-mail cadastrado ou por meio de avisos em nosso site.</p>
 
         <div class="contact-info">
-            <h2 class="section-title" style="margin-top: 0; border: none; padding: 0;">9. Contato</h2>
+            <h2 class="section-title section-title--no-border">9. Contato</h2>
             <p class="content-text">Para questões sobre esta Política de Privacidade ou sobre o tratamento dos seus dados pessoais, entre em contato conosco:</p>
             <p class="content-text"><strong>E-mail:</strong> privacidade@focusup.com.br</p>
             <p class="content-text"><strong>Responsável pela Proteção de Dados:</strong> Equipe FocusUp</p>
@@ -267,7 +106,12 @@
             <p>Última atualização: {{ last_update or "01 de Setembro de 2025" }}</p>
         </div>
 
-        <a href="{{ url_for('dashboard') }}" class="back-button">← Voltar ao Dashboard</a>
+        <div class="text-center">
+            <a href="{{ url_for('dashboard') }}" class="back-button">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar ao Dashboard
+            </a>
+        </div>
     </div>
 </main>
 {% endblock %}

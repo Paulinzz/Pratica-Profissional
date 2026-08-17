@@ -6,7 +6,7 @@
 
 {% block conteudo %}
 
-    <main>
+    <main id="conteudo-principal">
         <div class="container_form_add-atv">
             <h1>Editar atividade</h1>
             <form action="{{ url_for('editar_atividade', atividade_id=atividade.id) }}" method="post" class="form_adicionar-atividade">

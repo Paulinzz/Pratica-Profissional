@@ -3,7 +3,7 @@
 {% block title %}Cadastro{% endblock %}
 
 {% block conteudo %}
-<main class="auth-main auth-signup">
+<main class="auth-main auth-signup" id="conteudo-principal">
     <div class="auth-container">
         <!-- Logo -->
         <div class="auth-logo">
@@ -22,16 +22,7 @@
         </div>
 
         <!-- Flash Messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    {% set alert_type = 'danger' if category == 'error' else category %}
-                    {% set alert_type = 'success' if alert_type == 'message' else alert_type %}
-                    {% set title = 'Erro' if alert_type == 'danger' else 'Sucesso' %}
-                    {% include 'components/alert.html' with context %}
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+        {% include 'components/flash_messages.html' %}
 
         <!-- Signup Form -->
         <form action="{{ url_for('register') }}" method="POST" class="auth-form">

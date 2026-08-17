@@ -1,0 +1,26 @@
+{# components/empty_state.html
+   Estado vazio padronizado para páginas sem dados
+
+   Uso:
+   {% include 'components/empty_state.html' with context %}
+
+   Parâmetros:
+   - icon: ícone FontAwesome (obrigatório)
+   - title: título (obrigatório)
+   - message: mensagem principal (obrigatório)
+   - action_text: texto do botão (opcional)
+   - action_href: URL do botão (opcional)
+   - action_icon: ícone do botão (opcional)
+#}
+
+<div class="empty-state">
+  <i class="fa-solid fa-{{ icon }} empty-state-icon"></i>
+  <h2 class="empty-state-title">{{ title }}</h2>
+  <p class="empty-state-message">{{ message }}</p>
+  {% if action_text and action_href %}
+    <a href="{{ action_href }}" class="empty-state-action">
+      {% if action_icon %}<i class="fa-solid fa-{{ action_icon }}"></i>{% endif %}
+      {{ action_text }}
+    </a>
+  {% endif %}
+</div>

@@ -6,53 +6,10 @@
 /* Main Container */
 .container_listar_atividades {
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: var(--spacing-8);
+  padding: 0 var(--spacing-6) var(--spacing-8);
   box-sizing: border-box;
-}
-
-/* Header Section */
-.header-atividades {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-8);
-  flex-wrap: wrap;
-  gap: var(--spacing-4);
-}
-
-.header-atividades h1 {
-  color: var(--color-primary);
-  font-size: var(--font-size-3xl);
-  margin: 0;
-  font-weight: var(--font-weight-semi-bold);
-}
-
-.btn-adicionar {
-  background: linear-gradient(135deg, var(--color-success), var(--color-success-light));
-  color: white;
-  border: none;
-  padding: var(--spacing-3) var(--spacing-6);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semi-bold);
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  transition: var(--transition-base);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-adicionar:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-
-.btn-adicionar i {
-  font-size: var(--font-size-lg);
 }
 
 /* Filtros Section */
@@ -94,7 +51,8 @@
 }
 
 .busca input:focus {
-  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
 }
 
 .ordenacao {
@@ -132,52 +90,6 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-6);
   margin-bottom: var(--spacing-8);
-}
-
-.stat-card {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-4);
-  background: var(--color-bg-tertiary);
-  padding: var(--spacing-6);
-  border-radius: var(--radius-lg);
-  animation: fadeInUp 0.6s ease forwards;
-  opacity: 0;
-  transition: var(--transition-base);
-}
-
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.15s; }
-.stat-card:nth-child(3) { animation-delay: 0.2s; }
-
-.stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
-.stat-card i {
-  font-size: var(--font-size-3xl);
-  color: var(--color-primary);
-  min-width: 50px;
-  text-align: center;
-}
-
-.stat-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-}
-
-.stat-numero {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-}
-
-.stat-label {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-medium);
 }
 
 /* Lista de Atividades */
@@ -313,109 +225,7 @@
   transform: scale(1.1);
 }
 
-/* Empty State */
-.sem-atividades-completo {
-  text-align: center;
-  padding: var(--spacing-12);
-  background: var(--color-bg-tertiary);
-  border-radius: var(--radius-lg);
-}
-
-.icone-vazio {
-  font-size: 80px;
-  color: var(--color-text-tertiary);
-  margin-bottom: var(--spacing-4);
-  opacity: 0.5;
-}
-
-.sem-atividades-completo h2 {
-  font-size: var(--font-size-2xl);
-  color: var(--color-text-primary);
-  margin: 0 0 var(--spacing-2) 0;
-}
-
-.sem-atividades-completo p {
-  color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-6) 0;
-}
-
-.btn-primeira-atividade {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  background: linear-gradient(135deg, var(--color-success), var(--color-success-light));
-  color: white;
-  padding: var(--spacing-3) var(--spacing-6);
-  border-radius: var(--radius-full);
-  text-decoration: none;
-  font-weight: var(--font-weight-semi-bold);
-  transition: var(--transition-base);
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primeira-atividade:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
 /* Dark Mode */
-body.dark-mode .container_listar_atividades {
-  background: transparent;
-}
-
-body.dark-mode .header-atividades h1 {
-  color: var(--color-primary-light);
-}
-
-body.dark-mode .btn-adicionar {
-  background: linear-gradient(135deg, var(--color-success-dark), var(--color-success));
-}
-
-body.dark-mode .filtros-atividades .busca {
-  background: var(--color-bg-dark-surface);
-  border: 1px solid var(--color-border-dark);
-}
-
-body.dark-mode .busca i {
-  color: var(--color-text-dark-secondary);
-}
-
-body.dark-mode .busca input {
-  color: var(--color-text-dark-primary);
-}
-
-body.dark-mode .busca input::placeholder {
-  color: var(--color-text-dark-tertiary);
-}
-
-body.dark-mode .ordenacao label {
-  color: var(--color-text-dark-secondary);
-}
-
-body.dark-mode .ordenacao select {
-  background: var(--color-bg-dark-secondary);
-  color: var(--color-text-dark-primary);
-  border-color: var(--color-border-dark);
-}
-
-body.dark-mode .ordenacao select:focus {
-  border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 3px rgba(107, 164, 255, 0.1);
-}
-
-body.dark-mode .stat-card {
-  background: var(--color-bg-dark-surface);
-}
-
-body.dark-mode .stat-numero {
-  color: var(--color-text-dark-primary);
-}
-
-body.dark-mode .stat-label {
-  color: var(--color-text-dark-secondary);
-}
-
 body.dark-mode .atividade-item {
   background: var(--color-bg-dark-surface);
   border-left-color: var(--color-primary-light);
@@ -442,18 +252,6 @@ body.dark-mode .btn-acao {
   color: var(--color-text-dark-primary);
 }
 
-body.dark-mode .sem-atividades-completo {
-  background: var(--color-bg-dark-surface);
-}
-
-body.dark-mode .sem-atividades-completo h2 {
-  color: var(--color-text-dark-primary);
-}
-
-body.dark-mode .sem-atividades-completo p {
-  color: var(--color-text-dark-secondary);
-}
-
 /* ====================================
    RESPONSIVIDADE - ATIVIDADES
    ==================================== */
@@ -461,7 +259,7 @@ body.dark-mode .sem-atividades-completo p {
 /* Tablet (1024px) */
 @media (max-width: 1024px) {
   .container_listar_atividades {
-    padding: var(--spacing-6);
+    padding: 0 var(--spacing-5) var(--spacing-6);
   }
 
   .stats-atividades {
@@ -481,17 +279,7 @@ body.dark-mode .sem-atividades-completo p {
 /* Small Tablet (768px) */
 @media (max-width: 768px) {
   .container_listar_atividades {
-    padding: var(--spacing-4);
-  }
-
-  .header-atividades {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .btn-adicionar {
-    width: 100%;
-    justify-content: center;
+    padding: 0 var(--spacing-4) var(--spacing-5);
   }
 
   .filtros-atividades {
@@ -538,16 +326,7 @@ body.dark-mode .sem-atividades-completo p {
 /* Mobile (480px) */
 @media (max-width: 480px) {
   .container_listar_atividades {
-    padding: var(--spacing-3);
-  }
-
-  .header-atividades h1 {
-    font-size: var(--font-size-2xl);
-  }
-
-  .btn-adicionar {
-    font-size: var(--font-size-sm);
-    padding: var(--spacing-2) var(--spacing-4);
+    padding: 0 var(--spacing-3) var(--spacing-4);
   }
 
   .filtros-atividades {
@@ -577,11 +356,11 @@ body.dark-mode .sem-atividades-completo p {
     text-align: center;
   }
 
-  .stat-card i {
+  .stat-icon {
     font-size: var(--font-size-2xl);
   }
 
-  .stat-numero {
+  .stat-number {
     font-size: var(--font-size-lg);
   }
 
@@ -611,22 +390,6 @@ body.dark-mode .sem-atividades-completo p {
   .btn-acao {
     width: 35px;
     height: 35px;
-    font-size: var(--font-size-sm);
-  }
-
-  .sem-atividades-completo {
-    padding: var(--spacing-6);
-  }
-
-  .icone-vazio {
-    font-size: 60px;
-  }
-
-  .sem-atividades-completo h2 {
-    font-size: var(--font-size-lg);
-  }
-
-  .sem-atividades-completo p {
     font-size: var(--font-size-sm);
   }
 }

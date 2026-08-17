@@ -6,23 +6,20 @@
 
 {% block conteudo %}
 
-<main>
+<main id="conteudo-principal">
     <div class="ajuda-container">
-        <!-- Header -->
         <div class="ajuda-header">
             <h1>Central de Ajuda</h1>
             <p>Como podemos ajudar você a aproveitar melhor o FocusUp?</p>
         </div>
 
-        <!-- Busca -->
         <div class="busca-ajuda">
-            <input type="text" id="busca-input" placeholder="Busque por tópicos, tutoriais ou dúvidas...">
+            <input type="text" id="busca-input" placeholder="Busque por tópicos, tutoriais ou dúvidas..." aria-label="Buscar na ajuda">
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
 
-        <!-- Categorias de Ajuda -->
         <div class="categorias-ajuda">
-            <div class="categoria-card" onclick="scrollToSection('primeiros-passos')">
+            <div class="categoria-card" onclick="scrollToSection('primeiros-passos')" role="button" tabindex="0">
                 <div class="categoria-icone">
                     <i class="fa-solid fa-rocket"></i>
                 </div>
@@ -35,7 +32,7 @@
                 </ul>
             </div>
 
-            <div class="categoria-card" onclick="scrollToSection('atividades')">
+            <div class="categoria-card" onclick="scrollToSection('atividades')" role="button" tabindex="0">
                 <div class="categoria-icone">
                     <i class="fa-solid fa-list-check"></i>
                 </div>
@@ -48,7 +45,7 @@
                 </ul>
             </div>
 
-            <div class="categoria-card" onclick="scrollToSection('dashboard')">
+            <div class="categoria-card" onclick="scrollToSection('dashboard')" role="button" tabindex="0">
                 <div class="categoria-icone">
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
@@ -61,7 +58,7 @@
                 </ul>
             </div>
 
-            <div class="categoria-card" onclick="scrollToSection('conta')">
+            <div class="categoria-card" onclick="scrollToSection('conta')" role="button" tabindex="0">
                 <div class="categoria-icone">
                     <i class="fa-solid fa-user-gear"></i>
                 </div>
@@ -75,7 +72,6 @@
             </div>
         </div>
 
-        <!-- Tutoriais em Vídeo -->
         <div class="faq-section">
             <h2>Tutoriais Rápidos</h2>
             <div class="tutoriais-grid">
@@ -114,12 +110,11 @@
             </div>
         </div>
 
-        <!-- FAQ -->
         <div class="faq-section" id="faq-section">
             <h2>Perguntas Frequentes</h2>
             
             <div class="faq-item" id="primeiros-passos">
-                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
                     <h4>Como faço para criar minha primeira atividade?</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -129,7 +124,7 @@
             </div>
 
             <div class="faq-item" id="atividades">
-                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
                     <h4>Posso editar uma atividade depois de criá-la?</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -139,7 +134,7 @@
             </div>
 
             <div class="faq-item">
-                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
                     <h4>Como funcionam os artigos recomendados?</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -149,7 +144,7 @@
             </div>
 
             <div class="faq-item" id="dashboard">
-                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
                     <h4>O que significam os gráficos no dashboard?</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -159,7 +154,7 @@
             </div>
 
             <div class="faq-item">
-                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
                     <h4>Posso usar o FocusUp no celular?</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -169,7 +164,7 @@
             </div>
 
             <div class="faq-item" id="conta">
-                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
                     <h4>Como posso alterar minha senha?</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -179,17 +174,17 @@
             </div>
 
             <div class="faq-item">
-                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
                     <h4>Meus dados estão seguros?</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
                 <div class="faq-resposta">
-                    <p>Sim! O FocusUp utiliza criptografia para armazenar senhas e segue as melhores práticas de segurança. Consulte nossa <a href="{{ url_for('politica_privacidade') }}" style="color: #1a73e8; text-decoration: underline;">Política de Privacidade</a> para mais detalhes.</p>
+                    <p>Sim! O FocusUp utiliza criptografia para armazenar senhas e segue as melhores práticas de segurança. Consulte nossa <a href="{{ url_for('politica_privacidade') }}">Política de Privacidade</a> para mais detalhes.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-pergunta" onclick="toggleFAQ(this)">
+                <div class="faq-pergunta" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
                     <h4>O FocusUp é gratuito?</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -199,7 +194,6 @@
             </div>
         </div>
 
-        <!-- Contato Rápido -->
         <div class="contato-rapido">
             <h2>Ainda precisa de ajuda?</h2>
             <p>Nossa equipe está pronta para responder suas dúvidas</p>

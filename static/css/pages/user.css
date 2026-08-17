@@ -881,3 +881,56 @@ body.dark-mode .filter-btn.active {
     font-size: var(--font-size-xs);
   }
 }
+
+/* ====================================
+   BADGES
+   ==================================== */
+
+.badges-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-2);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-lg);
+  min-width: 80px;
+  text-align: center;
+}
+
+.badge-item i {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-1);
+}
+
+.badge-item .badge-name {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-primary);
+}
+
+.badge-item .badge-date {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.badges-empty {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-4);
+}
+
+body.dark-mode .badge-item {
+  background: var(--color-bg-dark-tertiary);
+}
+
+.filter-label {
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-secondary);
+}

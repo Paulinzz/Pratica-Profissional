@@ -1,0 +1,30 @@
+{# components/stat_card.html
+   Card de estatística padronizado
+
+   Uso:
+   {% include 'components/stat_card.html' with context %}
+
+   Parâmetros:
+   - icon: ícone FontAwesome (obrigatório)
+   - label: texto do label (obrigatório)
+   - value: valor principal (obrigatório)
+   - color: cor do ícone (primary|success|warning|danger|info) (opcional, default: primary)
+#}
+
+{% set color_map = {
+  'primary': 'var(--color-primary)',
+  'success': 'var(--color-success)',
+  'warning': 'var(--color-warning)',
+  'danger': 'var(--color-danger)',
+  'info': 'var(--color-info)'
+} %}
+
+<div class="stat-card">
+  <div class="stat-icon" style="color: {{ color_map[color|default('primary')] }}; background: {{ color_map[color|default('primary')] }}15;">
+    <i class="fa-solid fa-{{ icon }}"></i>
+  </div>
+  <div class="stat-info">
+    <span class="stat-number">{{ value }}</span>
+    <span class="stat-label">{{ label }}</span>
+  </div>
+</div>
