@@ -80,6 +80,9 @@ function filtrarAtividades() {
             const minutos = totalMinutos % 60;
             const totalHorasEl = document.getElementById('total-horas');
             if (totalHorasEl) {
-                totalHorasEl.textContent = `${horas}h${minutos > 0 ? minutos + 'm' : ''}`;
+                const statNumber = totalHorasEl.querySelector('.stat-number');
+                if (statNumber) {
+                    statNumber.textContent = `${horas}h${minutos > 0 ? minutos + 'm' : ''}`;
+                }
             }
         });
