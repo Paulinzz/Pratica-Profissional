@@ -113,15 +113,13 @@
 
                 <div class="form-group">
                 <label class="theme-card-label">
-                    <i class="fa-solid fa-globe"></i>
-                    Português
                 </label>
                     <div class="language-selector">
                         <div class="language-options">
                             <label class="language-option {{ 'active' if current_user.idioma == 'pt-br' else '' }}" for="lang-pt">
                                 <input type="radio" id="lang-pt" name="idioma" value="pt-br" {{ 'checked' if current_user.idioma == 'pt-br' else '' }}>
                                 <div class="language-content">
-                                    <span class="flag">🇧🇷</span>
+                                    <i class="fa-solid fa-language"></i>
                                     <div class="language-info">
                                         <div class="language-name">Português</div>
                                         <div class="language-region">Brasil</div>
@@ -132,7 +130,7 @@
                             <label class="language-option {{ 'active' if current_user.idioma == 'en' else '' }}" for="lang-en">
                                 <input type="radio" id="lang-en" name="idioma" value="en" {{ 'checked' if current_user.idioma == 'en' else '' }}>
                                 <div class="language-content">
-                                    <span class="flag">🇺🇸</span>
+                                    <i class="fa-solid fa-language"></i>
                                     <div class="language-info">
                                         <div class="language-name">English</div>
                                         <div class="language-region">United States</div>
@@ -143,7 +141,7 @@
                             <label class="language-option {{ 'active' if current_user.idioma == 'es' else '' }}" for="lang-es">
                                 <input type="radio" id="lang-es" name="idioma" value="es" {{ 'checked' if current_user.idioma == 'es' else '' }}>
                                 <div class="language-content">
-                                    <span class="flag">🇪🇸</span>
+                                    <i class="fa-solid fa-language"></i>
                                     <div class="language-info">
                                         <div class="language-name">Español</div>
                                         <div class="language-region">España</div>
@@ -277,7 +275,7 @@
 
     // Confirmar exclusão de conta
     function confirmarExclusao() {
-        if (confirm('⚠️ ATENÇÃO!\n\nTem certeza que deseja excluir sua conta?\n\nEsta ação é IRREVERSÍVEL e todos os seus dados serão permanentemente apagados:\n\n• Todas as atividades\n• Todas as matérias\n• Todo o progresso\n• Configurações personalizadas\n\nDigite "EXCLUIR" para confirmar.')) {
+        if (confirm('ATENÇÃO!\n\nTem certeza que deseja excluir sua conta?\n\nEsta ação é IRREVERSÍVEL e todos os seus dados serão permanentemente apagados:\n\n• Todas as atividades\n• Todas as matérias\n• Todo o progresso\n• Configurações personalizadas\n\nDigite "EXCLUIR" para confirmar.')) {
             const confirmacao = prompt('Digite "EXCLUIR" para confirmar:');
             if (confirmacao === 'EXCLUIR') {
                 // Chamar API de exclusão

@@ -6,338 +6,357 @@
 
 {% block conteudo %}
 <style>
-    .pomodoro-container {
-        width: 100%;;
+    :root {
+        --pomodoro-focus: #1a73e8;
+        --pomodoro-focus-light: #4285f4;
+        --pomodoro-focus-soft: rgba(26, 115, 232, 0.08);
+        --pomodoro-short: #2e7d32;
+        --pomodoro-short-light: #43a047;
+        --pomodoro-short-soft: rgba(46, 125, 50, 0.08);
+        --pomodoro-long: #0097a7;
+        --pomodoro-long-light: #00bcd4;
+        --pomodoro-long-soft: rgba(0, 151, 167, 0.08);
+    }
+
+    .pomodoro-page {
+        width: 100%;
+        max-width: 1100px;
         margin: 0 auto;
-        padding: 40px 20px;
-        text-align: center;
+        padding: var(--spacing-8) var(--spacing-6);
     }
 
     .pomodoro-header {
-        background: linear-gradient(135deg, #1a73e8, #1a73e8);
-        border-radius: 25px;
-        padding: 40px;
-        color: white;
-        margin-bottom: 40px;
-        box-shadow: 0 8px 30px rgba(255, 152, 0, 0.3);
-        animation: slideInDown 0.6s ease;
+        text-align: center;
+        margin-bottom: var(--spacing-10);
+        animation: pomodoroFadeIn 0.5s ease;
     }
 
-    @keyframes slideInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .pomodoro-header .session-label {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-2);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semi-bold);
+        letter-spacing: var(--letter-spacing-wider);
+        text-transform: uppercase;
+        color: var(--color-text-tertiary);
+        margin-bottom: var(--spacing-3);
+    }
+
+    .pomodoro-header .session-label i {
+        font-size: 0.75rem;
     }
 
     .pomodoro-header h1 {
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: 10px;
+        font-size: var(--font-size-3xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-text-primary);
+        margin-bottom: var(--spacing-2);
+        line-height: var(--line-height-tight);
+    }
+
+    .pomodoro-header .subtitle {
+        font-size: var(--font-size-base);
+        color: var(--color-text-secondary);
+        line-height: var(--line-height-relaxed);
     }
 
     .timer-card {
-        background: white;
-        border-radius: 30px;
-        padding: 50px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
-        animation: fadeInUp 0.6s ease;
-        min-height: 800px;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .timer-display {
-        font-size: px;
-        font-weight: 500;
-        color: black;
-        font-family: 'Poppins', monospace;
-        margin: 40px 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .timer-display.work-mode {
-        color: #ff9800;
-    }
-
-    .timer-display.break-mode {
-        color: #4caf50;
+        background: var(--color-bg-primary);
+        border: 1px solid var(--color-border-lighter);
+        border-radius: var(--radius-2xl);
+        padding: var(--spacing-10) var(--spacing-8);
+        box-shadow: var(--shadow-lg);
+        margin-bottom: var(--spacing-8);
+        animation: pomodoroFadeIn 0.6s ease;
     }
 
     .mode-selector {
         display: flex;
-        gap: 15px;
         justify-content: center;
-        margin-bottom: 40px;
+        margin-bottom: var(--spacing-8);
+        gap: var(--spacing-2);
     }
 
     .mode-btn {
-        padding: 15px 30px;
-        border: 2px solid #e0e0e0;
-        border-radius: 15px;
-        background: white;
+        position: relative;
+        padding: var(--spacing-3) var(--spacing-6);
+        border: 1px solid var(--color-border-light);
+        border-radius: var(--radius-full);
+        background: var(--color-bg-primary);
+        color: var(--color-text-secondary);
+        font-family: var(--font-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
         cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        color: #666;
-    }
-
-    .mode-btn.active {
-        background: linear-gradient(135deg, #1a73e8, #1557b0);
-        color: white;
-        border-color: rgb(112, 109, 109);
-        transform: translateY(-2px);
+        transition: all var(--duration-base) var(--ease-out);
+        white-space: nowrap;
     }
 
     .mode-btn:hover:not(.active) {
-        transform: translateY(-2px);
+        border-color: var(--color-text-tertiary);
+        color: var(--color-text-primary);
+        background: var(--color-bg-secondary);
     }
 
-    .controls {
-        display: flex;
-        gap: 30px;
-        justify-content: center;
-        margin-bottom: 40px;
-        margin: 80px auto 20px;
-        position: relative;
-        z-index: 5; 
-
+    .mode-btn.active[data-mode="work"] {
+        background: var(--pomodoro-focus);
+        color: white;
+        border-color: var(--pomodoro-focus);
     }
 
-    .control-btn {
-        padding: 20px 50px;
-        border: none;
-        border-radius: 20px;
-        font-size: 18px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    .mode-btn.active[data-mode="short"] {
+        background: var(--pomodoro-short);
+        color: white;
+        border-color: var(--pomodoro-short);
+    }
+
+    .mode-btn.active[data-mode="long"] {
+        background: var(--pomodoro-long);
+        color: white;
+        border-color: var(--pomodoro-long);
+    }
+
+    .materia-block {
         display: flex;
         align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        justify-content: center;
+        gap: var(--spacing-3);
+        margin-bottom: var(--spacing-10);
+        flex-wrap: wrap;
     }
 
-    .btn-start {
-        background: linear-gradient(135deg, #4caf50, #66bb6a);
-        color: white;
+    .materia-block .materia-label {
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semi-bold);
+        letter-spacing: var(--letter-spacing-wider);
+        text-transform: uppercase;
+        color: var(--color-text-tertiary);
     }
 
-    .btn-start:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-    }
-
-    .btn-pause {
-        background: linear-gradient(135deg, #1557b0, #1a73e8);
-        color: white;
-    }
-
-    .btn-pause:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
-    }
-
-    .btn-reset {
-        background: linear-gradient(135deg, #f44336, #e53935);
-        color: white;
-    }
-
-    .btn-reset:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
-    }
-
-    .session-info {
-        background: #f8f9fa;
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 30px;
-    }
-
-    .session-info h3 {
-        font-size: 20px;
-        color: #333;
-        margin-bottom: 20px;
-    }
-
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-    }
-
-    .info-item {
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .info-label {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 5px;
-    }
-
-    .info-value {
-        font-size: 24px;
-        font-weight: 700;
-        color: #1a73e8;
-    }
-
-    .materia-selector {
-        margin-bottom: 30px;
-    }
-
-    .materia-selector label {
-        display: block;
-        font-size: 16px;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .materia-selector select {
-        width: 100%;
-        max-width: 400px;
-        padding: 15px 20px;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        font-size: 16px;
+    .materia-block select {
+        padding: var(--spacing-2) var(--spacing-4);
+        border: 1px solid var(--color-border-light);
+        border-radius: var(--radius-lg);
+        background: var(--color-bg-primary);
+        color: var(--color-text-primary);
+        font-family: var(--font-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all var(--duration-base) var(--ease-out);
+        appearance: none;
+        -webkit-appearance: none;
+        padding-right: var(--spacing-10);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right var(--spacing-3) center;
+        min-width: 160px;
     }
 
-    .materia-selector select:focus {
+    .materia-block select:focus {
         outline: none;
-        border-color: #1a73e8;
-        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+    }
+
+    body.dark-mode .materia-block select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    }
+
+    .progress-ring-wrapper {
+        position: relative;
+        width: min(320px, 80vw);
+        height: min(320px, 80vw);
+        margin: 0 auto var(--spacing-10);
     }
 
     .progress-ring {
-        position: relative;
-        width: 300px;
-        height: 300px;
-        margin: 0 auto 40px;
+        width: 100%;
+        height: 100%;
     }
 
     .progress-ring svg {
+        width: 100%;
+        height: 100%;
         transform: rotate(-90deg);
     }
 
     .progress-ring-circle {
-        stroke: #e0e0e0;
+        stroke: var(--color-border-light);
         fill: transparent;
-        stroke-width: 10;
+        stroke-width: 6;
     }
 
     .progress-ring-progress {
-        stroke: #ff9800;
         fill: transparent;
-        stroke-width: 10;
+        stroke-width: 6;
         stroke-linecap: round;
-        transition: stroke-dashoffset 1s linear;
+        transition: stroke-dashoffset 1s linear, stroke var(--duration-base) var(--ease-out);
     }
 
-    .progress-ring.break-mode .progress-ring-progress {
-        stroke: #4caf50;
+    .progress-ring[data-mode="work"] .progress-ring-progress {
+        stroke: var(--pomodoro-focus);
     }
 
-    .tips-card {
-        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-        border-radius: 20px;
-        padding: 30px;
-        text-align: left;
+    .progress-ring[data-mode="short"] .progress-ring-progress {
+        stroke: var(--pomodoro-short);
     }
 
-    .tips-card h3 {
-        font-size: 20px;
-        color: #1a73e8;
-        margin-bottom: 20px;
+    .progress-ring[data-mode="long"] .progress-ring-progress {
+        stroke: var(--pomodoro-long);
+    }
+
+    .progress-ring-center {
+        position: absolute;
+        inset: 0;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 10px;
+        justify-content: center;
+        text-align: center;
+        pointer-events: none;
     }
 
-    .tips-card ul {
-        list-style: none;
-        padding: 0;
+    .progress-ring-center .time-label {
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semi-bold);
+        letter-spacing: var(--letter-spacing-wider);
+        text-transform: uppercase;
+        color: var(--color-text-tertiary);
+        margin-bottom: var(--spacing-2);
     }
 
-    .tips-card li {
-        padding: 10px 0;
-        color: #555;
-        display: flex;
-        align-items: start;
-        gap: 10px;
+    .timer-display {
+        font-size: clamp(2.5rem, 8vw, 4rem);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-text-primary);
+        font-family: var(--font-primary);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        margin: 0;
+        transition: color var(--duration-base) var(--ease-out);
     }
 
-    .tips-card li:before {
-        content: "🍅";
-        flex-shrink: 0;
+    .timer-display.work-mode {
+        color: var(--pomodoro-focus);
     }
 
-    @media (max-width: 768px) {
-        .timer-display {
-            font-size: 64px;
-        }
-
-        .controls {
-            flex-direction: column;
-        }
-
-        .control-btn {
-            width: 100%;
-            justify-content: center;
-        }
-
-        .mode-selector {
-            flex-direction: column;
-        }
-
-        .progress-ring {
-            width: 300px;
-            height: 300px;
-        }
+    .timer-display.break-mode {
+        color: var(--pomodoro-short);
     }
 
-    .sound-toggle {
+    .session-status {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-2);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        margin-top: var(--spacing-3);
+    }
+
+    .session-status .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--color-text-tertiary);
+        transition: background var(--duration-base) var(--ease-out);
+    }
+
+    .session-status.running .status-dot {
+        background: var(--pomodoro-short);
+        animation: pomodoroPulse 2s ease infinite;
+    }
+
+    .session-status.paused .status-dot {
+        background: var(--color-warning);
+    }
+
+    .session-status.completed .status-dot {
+        background: var(--pomodoro-focus);
+    }
+
+    .controls {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        margin: -50px auto 20px; /* sobe a div para cima; ajuste o valor conforme necessário */
-        position: relative;
-        z-index: 5; /* garante que fique acima do timer */
+        gap: var(--spacing-4);
+        margin-bottom: var(--spacing-8);
+        flex-wrap: wrap;
     }
 
-    .sound-toggle label {
-        font-size: 16px;
-        color: #666;
+    .control-btn {
+        padding: var(--spacing-3) var(--spacing-6);
+        border: none;
+        border-radius: var(--radius-full);
+        font-family: var(--font-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semi-bold);
         cursor: pointer;
+        transition: all var(--duration-base) var(--ease-out);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-2);
+        white-space: nowrap;
+    }
+
+    .btn-start {
+        background: var(--pomodoro-focus);
+        color: white;
+        box-shadow: 0 4px 14px rgba(26, 115, 232, 0.25);
+    }
+
+    .btn-start:hover {
+        background: var(--pomodoro-focus-light);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(26, 115, 232, 0.3);
+    }
+
+    .btn-pause {
+        background: var(--color-bg-secondary);
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border-light);
+    }
+
+    .btn-pause:hover {
+        background: var(--color-bg-tertiary);
+        transform: translateY(-1px);
+    }
+
+    .btn-reset {
+        background: transparent;
+        color: var(--color-text-secondary);
+        border: 1px solid var(--color-border-light);
+    }
+
+    .btn-reset:hover {
+        background: var(--color-bg-secondary);
+        color: var(--color-text-primary);
+        transform: translateY(-1px);
+    }
+
+    .sound-settings {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-3);
+        margin-bottom: var(--spacing-8);
+    }
+
+    .sound-settings label {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-2);
     }
 
     .switch {
         position: relative;
         display: inline-block;
-        width: 50px;
-        height: 28px;
+        width: 44px;
+        height: 24px;
     }
 
     .switch input {
@@ -353,61 +372,253 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #ccc;
-        transition: 0.3s;
-        border-radius: 28px;
+        background-color: var(--color-border-light);
+        transition: var(--duration-base) var(--ease-out);
+        border-radius: var(--radius-full);
     }
 
     .slider:before {
         position: absolute;
         content: "";
-        height: 20px;
-        width: 20px;
-        left: 4px;
-        bottom: 4px;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
         background-color: white;
-        transition: 0.3s;
+        transition: var(--duration-base) var(--ease-out);
         border-radius: 50%;
     }
 
     input:checked + .slider {
-        background-color: #4caf50;
+        background-color: var(--pomodoro-focus);
     }
 
     input:checked + .slider:before {
-        transform: translateX(22px);
-    }
-    .fa-solid.fa-clock{
-        color: white;
+        transform: translateX(20px);
     }
 
+    .stats-section {
+        margin-bottom: var(--spacing-8);
+        animation: pomodoroFadeIn 0.7s ease;
+    }
 
+    .stats-header {
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semi-bold);
+        letter-spacing: var(--letter-spacing-wider);
+        text-transform: uppercase;
+        color: var(--color-text-tertiary);
+        margin-bottom: var(--spacing-4);
+        text-align: center;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-4);
+    }
+
+    .stat-item {
+        background: var(--color-bg-primary);
+        border: 1px solid var(--color-border-lighter);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-5) var(--spacing-4);
+        text-align: center;
+        transition: all var(--duration-base) var(--ease-out);
+    }
+
+    .stat-item:hover {
+        border-color: var(--color-border-light);
+        box-shadow: var(--shadow-md);
+    }
+
+    .stat-icon {
+        font-size: 1.25rem;
+        margin-bottom: var(--spacing-2);
+        opacity: 0.7;
+    }
+
+    .stat-label {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+        margin-bottom: var(--spacing-1);
+        letter-spacing: var(--letter-spacing-wide);
+        text-transform: uppercase;
+    }
+
+    .stat-value {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-text-primary);
+        line-height: var(--line-height-tight);
+    }
+
+    .tips-section {
+        animation: pomodoroFadeIn 0.8s ease;
+    }
+
+    .tips-card {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border-lighter);
+        border-radius: var(--radius-2xl);
+        padding: var(--spacing-8);
+    }
+
+    .tips-header {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-3);
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semi-bold);
+        color: var(--color-text-primary);
+        margin-bottom: var(--spacing-6);
+    }
+
+    .tips-header i {
+        color: var(--color-warning);
+        font-size: 1.1rem;
+    }
+
+    .tips-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-4);
+    }
+
+    .tip-item {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-3);
+        padding: var(--spacing-3);
+        border-radius: var(--radius-lg);
+        transition: background var(--duration-base) var(--ease-out);
+    }
+
+    .tip-item:hover {
+        background: var(--color-bg-primary);
+    }
+
+    .tip-icon {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-bg-primary);
+        border-radius: var(--radius-md);
+        font-size: 0.9rem;
+        border: 1px solid var(--color-border-lighter);
+    }
+
+    .tip-text {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        line-height: var(--line-height-relaxed);
+        padding-top: var(--spacing-1);
+    }
+
+    @keyframes pomodoroFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pomodoroPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+
+    @media (max-width: 768px) {
+        .pomodoro-page {
+            padding: var(--spacing-6) var(--spacing-4);
+        }
+
+        .timer-card {
+            padding: var(--spacing-8) var(--spacing-5);
+        }
+
+        .mode-selector {
+            flex-wrap: wrap;
+        }
+
+        .progress-ring-wrapper {
+            width: min(280px, 75vw);
+            height: min(280px, 75vw);
+        }
+
+        .controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .control-btn {
+            justify-content: center;
+            width: 100%;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .tips-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .pomodoro-header h1 {
+            font-size: var(--font-size-2xl);
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .mode-btn {
+            padding: var(--spacing-2) var(--spacing-4);
+            font-size: var(--font-size-xs);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .session-status.running .status-dot {
+            animation: none;
+        }
+    }
 </style>
 
 <main>
-    <div class="pomodoro-container">
-        <div class="pomodoro-header">
-            <h1><i class="fa-solid fa-clock"></i> Modo Pomodoro</h1>
-            <p>Mantenha o foco com a técnica Pomodoro</p>
-        </div>
+    <div class="pomodoro-page">
+        <header class="pomodoro-header">
+            <div class="session-label">
+                <i class="fa-solid fa-clock"></i>
+                Focus Session
+            </div>
+            <h1>Modo Pomodoro</h1>
+            <p class="subtitle">Organize seu foco em ciclos. Estude com intenção.</p>
+        </header>
 
         <div class="timer-card">
-            <!-- Seletor de Modo -->
             <div class="mode-selector">
                 <button class="mode-btn active" data-mode="work" onclick="changeMode('work')">
-                    <i class="fa-solid fa-brain text-white"></i> Foco (25min)
+                    <i class="fa-solid fa-brain"></i> Foco
                 </button>
                 <button class="mode-btn" data-mode="short" onclick="changeMode('short')">
-                    <i class="fa-solid fa-coffee" ></i> Pausa Curta (5min)
+                    <i class="fa-solid fa-coffee"></i> Pausa curta
                 </button>
                 <button class="mode-btn" data-mode="long" onclick="changeMode('long')">
-                    <i class="fa-solid fa-couch"></i> Pausa Longa (15min)
+                    <i class="fa-solid fa-couch"></i> Pausa longa
                 </button>
             </div>
 
-            <!-- Seletor de Matéria -->
-            <div class="materia-selector">
-                <label for="materia">O que você está estudando?</label>
+            <div class="materia-block">
+                <span class="materia-label">Estudando</span>
                 <select id="materia-select">
                     <option value="Geral">Geral</option>
                     {% if current_user.materias %}
@@ -418,75 +629,97 @@
                 </select>
             </div>
 
-            <!-- Anel de Progresso -->
-            <div class="progress-ring" id="progressRing">
-                <svg width="300" height="300">
-                    <circle class="progress-ring-circle" cx="150" cy="150" r="140"></circle>
-                    <circle class="progress-ring-progress" cx="150" cy="150" r="140" 
-                            id="progressCircle" 
-                            stroke-dasharray="879.645943" 
-                            stroke-dashoffset="879.645943"></circle>
-                </svg>
-                <!-- Timer Display -->
-                <div class="timer-display work-mode" id="timerDisplay">25:00</div>
+            <div class="progress-ring-wrapper">
+                <div class="progress-ring" id="progressRing" data-mode="work">
+                    <svg viewBox="0 0 300 300">
+                        <circle class="progress-ring-circle" cx="150" cy="150" r="140"></circle>
+                        <circle class="progress-ring-progress" cx="150" cy="150" r="140"
+                                id="progressCircle"
+                                stroke-dasharray="879.645943"
+                                stroke-dashoffset="879.645943"></circle>
+                    </svg>
+                    <div class="progress-ring-center">
+                        <span class="time-label">Tempo restante</span>
+                        <div class="timer-display work-mode" id="timerDisplay">25:00</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Som -->
-            <div class="sound-toggle">
+            <div class="session-status" id="sessionStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">Sessão de foco</span>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn btn-start" id="startBtn" onclick="startTimer()">
+                    <i class="fa-solid fa-play"></i> Iniciar
+                </button>
+                <button class="control-btn btn-pause" id="pauseBtn" onclick="pauseTimer()" style="display: none;">
+                    <i class="fa-solid fa-pause"></i> Pausar
+                </button>
+                <button class="control-btn btn-reset" onclick="resetTimer()">
+                    <i class="fa-solid fa-rotate-right"></i> Reiniciar
+                </button>
+            </div>
+
+            <div class="sound-settings">
                 <label for="soundToggle">
-                    <i class="fa-solid fa-volume-high"></i> Som de Notificação
+                    <i class="fa-solid fa-volume-high"></i> Som de notificação
                 </label>
                 <label class="switch">
                     <input type="checkbox" id="soundToggle" checked>
                     <span class="slider"></span>
                 </label>
             </div>
-
-            <!-- Controles -->
-            <div class="controls">
-                <button class="control-btn btn-start" id="startBtn" onclick="startTimer()">
-                    <i class="fa-solid fa-play text-white"></i> Iniciar
-                </button>
-                <button class="control-btn btn-pause" id="pauseBtn" onclick="pauseTimer()" style="display: none;">
-                    <i class="fa-solid fa-pause text-white"></i> Pausar
-                </button>
-                <button class="control-btn btn-reset" onclick="resetTimer()">
-                    <i class="fa-solid fa-rotate-right text-white"></i> Reiniciar
-                </button>
-            </div>
         </div>
 
-        <!-- Informações da Sessão -->
-        <div class="session-info">
-            <h3>Estatísticas da Sessão</h3>
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label">Pomodoros Completos</div>
-                    <div class="info-value" id="pomodorosCount">0</div>
+        <section class="stats-section">
+            <div class="stats-header">Estatísticas da Sessão</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                    <div class="stat-label">Pomodoros</div>
+                    <div class="stat-value" id="pomodorosCount">0</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Tempo Total (min)</div>
-                    <div class="info-value" id="totalTime">0</div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                    <div class="stat-label">Tempo focado</div>
+                    <div class="stat-value" id="totalTime">0</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Sessão Atual</div>
-                    <div class="info-value" id="currentSession">Foco</div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="stat-label">Sessão</div>
+                    <div class="stat-value" id="currentSession">Foco</div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Dicas -->
-        <div class="tips-card">
-            <h3><i class="fa-solid fa-lightbulb"></i> Dicas para usar o Pomodoro</h3>
-            <ul>
-                <li>Escolha uma tarefa específica antes de iniciar</li>
-                <li>Elimine todas as distrações durante o período de foco</li>
-                <li>Use as pausas para descansar completamente - levante, alongue-se</li>
-                <li>Após 4 pomodoros, faça uma pausa mais longa (15-30 minutos)</li>
-                <li>Não interrompa um pomodoro no meio - se algo urgir, pause e reinicie depois</li>
-                <li>Use as estatísticas para melhorar sua produtividade ao longo do tempo</li>
-            </ul>
-        </div>
+        <section class="tips-section">
+            <div class="tips-card">
+                <div class="tips-header">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    Dicas para manter o foco
+                </div>
+                <div class="tips-grid">
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fa-solid fa-bullseye"></i></div>
+                        <div class="tip-text">Defina uma tarefa específica antes de iniciar.</div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fa-solid fa-bell-slash"></i></div>
+                        <div class="tip-text">Elimine distrações durante o período de foco.</div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                        <div class="tip-text">Aproveite as pausas para descansar de verdade.</div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                        <div class="tip-text">Após 4 ciclos, faça uma pausa mais longa.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </main>
 
@@ -499,9 +732,9 @@
     let totalMinutes = 0;
 
     const modes = {
-        work: { duration: 25 * 60, label: 'Foco', color: '#ff9800' },
-        short: { duration: 5 * 60, label: 'Pausa Curta', color: '#4caf50' },
-        long: { duration: 15 * 60, label: 'Pausa Longa', color: '#2196f3' }
+        work: { duration: 25 * 60, label: 'Foco', color: '#1a73e8' },
+        short: { duration: 5 * 60, label: 'Pausa Curta', color: '#2e7d32' },
+        long: { duration: 15 * 60, label: 'Pausa Longa', color: '#0097a7' }
     };
 
     // Inicializar
@@ -528,7 +761,7 @@
         display.className = `timer-display ${mode === 'work' ? 'work-mode' : 'break-mode'}`;
         
         const ring = document.getElementById('progressRing');
-        ring.className = `progress-ring ${mode === 'work' ? '' : 'break-mode'}`;
+        ring.setAttribute('data-mode', mode === 'work' ? 'work' : 'break');
 
         document.getElementById('currentSession').textContent = modes[mode].label;
 
@@ -540,7 +773,11 @@
 
         isRunning = true;
         document.getElementById('startBtn').style.display = 'none';
-        document.getElementById('pauseBtn').style.display = 'flex';
+        document.getElementById('pauseBtn').style.display = 'inline-flex';
+
+        const statusEl = document.getElementById('sessionStatus');
+        statusEl.className = 'session-status running';
+        statusEl.querySelector('.status-text').textContent = 'Sessão em andamento';
 
         timerInterval = setInterval(() => {
             timeLeft--;
@@ -556,8 +793,12 @@
     function pauseTimer() {
         isRunning = false;
         clearInterval(timerInterval);
-        document.getElementById('startBtn').style.display = 'flex';
+        document.getElementById('startBtn').style.display = 'inline-flex';
         document.getElementById('pauseBtn').style.display = 'none';
+
+        const statusEl = document.getElementById('sessionStatus');
+        statusEl.className = 'session-status paused';
+        statusEl.querySelector('.status-text').textContent = 'Sessão pausada';
     }
 
     function resetTimer() {
@@ -565,6 +806,10 @@
         timeLeft = modes[currentMode].duration;
         updateDisplay();
         updateProgress();
+
+        const statusEl = document.getElementById('sessionStatus');
+        statusEl.className = 'session-status';
+        statusEl.querySelector('.status-text').textContent = modes[currentMode].label;
     }
 
     function updateDisplay() {
@@ -602,7 +847,7 @@
 
             // Sugerir próximo modo
             const nextMode = pomodorosCompleted % 4 === 0 ? 'long' : 'short';
-            if (confirm(`Pomodoro completo! 🎉\n\nGostaria de fazer uma ${modes[nextMode].label}?`)) {
+            if (confirm(`Pomodoro completo!\n\nGostaria de fazer uma ${modes[nextMode].label}?`)) {
                 changeMode(nextMode);
                 startTimer();
             }
