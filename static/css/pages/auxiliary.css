@@ -109,9 +109,8 @@
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: var(--spacing-6);
-  justify-items: center;
 }
 
 .team-member {
@@ -121,7 +120,7 @@
   text-align: center;
   box-shadow: var(--shadow-card);
   transition: var(--transition-base);
-  max-width: 300px;
+  max-width: 100%;
 }
 
 .team-member:hover {
@@ -557,6 +556,89 @@
 
 .faq-item.active .faq-pergunta i {
   transform: rotate(180deg);
+}
+
+/* ====================================
+   TUTORIAIS
+   ==================================== */
+
+.tutoriais-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-6);
+}
+
+.tutorial-card {
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.tutorial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.tutorial-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+}
+
+.tutorial-info h4 {
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-primary);
+}
+
+.tutorial-info p {
+  margin: var(--spacing-2) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.tutorial-info a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  transition: var(--transition-fast);
+}
+
+.tutorial-info a:hover {
+  color: var(--color-primary-dark);
+  gap: var(--spacing-3);
+}
+
+/* ====================================
+   DARK MODE
+   ==================================== */
+
+body.dark-mode .faq-item {
+  background: var(--color-bg-dark-surface);
+}
+
+body.dark-mode .faq-pergunta:hover {
+  background: var(--color-bg-dark-secondary);
+}
+
+body.dark-mode .tutorial-card {
+  background: var(--color-bg-dark-surface);
 }
 
 .contato-rapido {

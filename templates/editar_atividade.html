@@ -23,8 +23,8 @@
                 <label for="duracao">Duração:</label>
                 <input type="time" name="duracao" value="{{ atividade.duracao if atividade.duracao is not none else '' }}" placeholder="Ex: 3h">
                 
-                <button type="submit">Salvar Alterações</button>
-                <a href="{{ url_for('listar_atividades') }}" class="button-cancelar">Cancelar</a>
+                <button type="submit" class="btn-submit">Salvar Alterações</button>
+                <a href="{{ url_for('listar_atividades') }}" class="btn-cancel">Cancelar</a>
             </form>
         </div>
         </main>
