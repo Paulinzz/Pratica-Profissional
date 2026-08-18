@@ -6,9 +6,9 @@
 
 {% block conteudo %}
 <main id="conteudo-principal">
-    <div class="notificacoes-container">
+    <div class="notifications-main">
         <!-- Header -->
-        <div class="notif-header">
+        <div class="notifications-header">
             <h1><i class="fa-solid fa-bell"></i> Notificações</h1>
             <div class="notif-stats">
                 <div class="stat-badge">
@@ -60,7 +60,7 @@
             </div>
 
             <div class="action-buttons">
-                <button class="btn-action btn-mark-all" onclick="marcarTodasLidas()">
+                <button class="notif-btn btn-mark-all" onclick="marcarTodasLidas()">
                     <i class="fa-solid fa-check-double"></i>
                     Marcar Todas como Lidas
                 </button>
@@ -69,63 +69,57 @@
 
         <!-- Lista de Notificações -->
         {% if notificacoes %}
-            <div class="notificacoes-list">
-                {% for notif in notificacoes %}
-                <div class="notificacao-card {{ 'nao-lida' if not notif.lida else 'lida' }}" data-id="{{ notif.id }}">
-                    {% if not notif.lida %}
-                    <span class="badge-unread">NOVO</span>
-                    {% endif %}
+            {% for notif in notificacoes %}
+            <div class="notificacao-card {{ 'nao-lida' if not notif.lida else 'lida' }}" data-id="{{ notif.id }}">
+                {% if not notif.lida %}
+                <span class="badge-unread">NOVO</span>
+                {% endif %}
 
-                    <div class="notif-header-row">
-                        <div class="notif-info">
-                            <span class="notif-tipo {{ notif.tipo }}">
-                                <i class="fa-solid {{ notif.icone }}"></i>
-                                {{ notif.tipo.capitalize() }}
-                            </span>
-                            
-                            <h3 class="notif-titulo">
-                                <i class="fa-solid {{ notif.icone }}" style="color: 
-                                    {% if notif.tipo == 'sistema' %}#1a73e8
-                                    {% elif notif.tipo == 'lembrete' %}#f57c00
-                                    {% else %}#2e7d32{% endif %}
-                                ;"></i>
-                                {{ notif.titulo }}
-                            </h3>
-                            
-                            <p class="notif-mensagem">{{ notif.mensagem }}</p>
-                        </div>
+                <div class="notif-content">
+                    <span class="notif-tipo {{ notif.tipo }}">
+                        <i class="fa-solid {{ notif.icone }}"></i>
+                        {{ notif.tipo.capitalize() }}
+                    </span>
+                    
+                    <h3 class="notif-title">
+                        <i class="fa-solid {{ notif.icone }}" style="color: 
+                            {% if notif.tipo == 'sistema' %}#1a73e8
+                            {% elif notif.tipo == 'lembrete' %}#f57c00
+                            {% else %}#2e7d32{% endif %}
+                        ;"></i>
+                        {{ notif.titulo }}
+                    </h3>
+                    
+                    <p class="notif-message">{{ notif.mensagem }}</p>
+
+                    <div class="notif-meta">
+                        <i class="fa-regular fa-clock"></i>
+                        {{ notif.data_criacao.strftime('%d/%m/%Y às %H:%M') }}
                     </div>
 
-                    <div class="notif-footer">
-                        <div class="notif-data">
-                            <i class="fa-regular fa-clock"></i>
-                            {{ notif.data_criacao.strftime('%d/%m/%Y às %H:%M') }}
-                        </div>
+                    <div class="notif-actions">
+                        {% if notif.link %}
+                        <a href="{{ notif.link }}" class="notif-btn btn-ver-mais">
+                            <i class="fa-solid fa-arrow-right"></i>
+                            Ver Mais
+                        </a>
+                        {% endif %}
 
-                        <div class="notif-actions">
-                            {% if notif.link %}
-                            <a href="{{ notif.link }}" class="notif-btn btn-ver-mais">
-                                <i class="fa-solid fa-arrow-right"></i>
-                                Ver Mais
-                            </a>
-                            {% endif %}
+                        {% if not notif.lida %}
+                        <button class="notif-btn btn-marcar-lida" onclick="marcarLida({{ notif.id }})">
+                            <i class="fa-solid fa-check"></i>
+                            Marcar Lida
+                        </button>
+                        {% endif %}
 
-                            {% if not notif.lida %}
-                            <button class="notif-btn btn-marcar-lida" onclick="marcarLida({{ notif.id }})">
-                                <i class="fa-solid fa-check"></i>
-                                Marcar Lida
-                            </button>
-                            {% endif %}
-
-                            <button class="notif-btn btn-excluir" onclick="excluirNotificacao({{ notif.id }})">
-                                <i class="fa-solid fa-trash"></i>
-                                Excluir
-                            </button>
-                        </div>
+                        <button class="notif-btn delete" onclick="excluirNotificacao({{ notif.id }})">
+                            <i class="fa-solid fa-trash"></i>
+                            Excluir
+                        </button>
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         {% else %}
             <div class="empty-state">
                 <div class="empty-icon">
@@ -148,10 +142,12 @@
 
 <script>
     function marcarLida(notifId) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         fetch(`/marcar_notificacao_lida/${notifId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
             }
         })
         .then(response => response.json())
@@ -182,10 +178,13 @@
             return;
         }
 
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         fetch(`/excluir_notificacao/${notifId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
             }
         })
         .then(response => response.json())

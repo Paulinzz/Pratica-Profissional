@@ -158,7 +158,7 @@
 
 .materia-progress-item {
   position: relative;
-  padding: var(--spacing-4);
+  padding: var(--spacing-3);
   background: var(--color-bg-tertiary);
   border-radius: var(--radius-lg);
   transition: var(--transition-base);
@@ -207,14 +207,14 @@
 
 .materia-delete-form {
   position: absolute;
-  top: var(--spacing-2);
-  right: var(--spacing-2);
+  top: var(--spacing-1);
+  right: var(--spacing-1);
 }
 
 .btn-delete-materia {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-md);
   background-color: var(--color-danger);
   color: white;
   border: none;
@@ -224,6 +224,7 @@
   justify-content: center;
   transition: var(--transition-fast);
   font-size: var(--font-size-xs);
+  padding: 0;
 }
 
 .btn-delete-materia:hover {

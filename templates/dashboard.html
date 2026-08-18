@@ -31,7 +31,7 @@
         {% set label = "Metas Ativas" %}
         {% set value = (metas_ativas|default(0)|int)|string %}
         {% set unit = "" %}
-        {% set icon = "target" %}
+        {% set icon = "bullseye" %}
         {% set icon_color = "text-warning" %}
         {% set subtext = "Em andamento" %}
         {% include 'components/card_metric.html' with context %}
@@ -126,6 +126,7 @@
                                       action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
                                       class="materia-delete-form"
                                       onsubmit="return confirm('Excluir matéria {{ materia.nome }}?');">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                     <button type="submit" class="btn-delete-materia" aria-label="Excluir matéria {{ materia.nome }}">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>

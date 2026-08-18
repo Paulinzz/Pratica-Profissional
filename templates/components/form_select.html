@@ -51,8 +51,8 @@
 
     {% if options %}
       {% for option in options %}
-        {% if option is mapping %}
-          {# Option é um dicionário/objeto #}
+        {% if option is mapping or (option is not string and option is not none) %}
+          {# Option é um dicionário ou objeto com atributos #}
           <option value="{{ option[option_value|default('id')] }}"
                   {% if option[option_value|default('id')] == value %}selected{% endif %}>
             {{ option[option_label|default('nome')] }}

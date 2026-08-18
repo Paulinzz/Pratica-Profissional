@@ -308,6 +308,7 @@ body.dark-mode .footer-bottom a:hover {
   .footer-section-content {
     max-height: 0;
     padding: 0;
+    overflow: hidden;
   }
 
   .footer-section.active .footer-section-content {

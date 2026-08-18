@@ -1,14 +1,55 @@
-       // Toggle do dropdown de usuário
+        // Toggle do dropdown de usuário
         function toggleDropdown() {
             const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('active');
+            const isActive = dropdown.classList.toggle('active');
+            const userInfo = dropdown.querySelector('.user-info');
+            if (userInfo) {
+                userInfo.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+            }
+        }
+
+        function closeDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.remove('active');
+            const userInfo = dropdown.querySelector('.user-info');
+            if (userInfo) {
+                userInfo.setAttribute('aria-expanded', 'false');
+            }
         }
 
         // Fechar dropdown ao clicar fora
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('userDropdown');
-            if (!dropdown.contains(event.target)) {
-                dropdown.classList.remove('active');
+            if (dropdown && !dropdown.contains(event.target)) {
+                closeDropdown();
+            }
+        });
+
+        // Fechar dropdown ao clicar em links dentro dele
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown && dropdown.contains(event.target)) {
+                const link = event.target.closest('a');
+                if (link && dropdown.contains(link)) {
+                    closeDropdown();
+                }
+            }
+        });
+
+        // Fechar dropdown com ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeDropdown();
+                closeMobileMenu();
+            }
+        });
+
+        // Acessibilidade: Enter/Space no trigger do dropdown
+        document.addEventListener('keydown', function(event) {
+            const trigger = document.getElementById('userDropdownTrigger');
+            if (trigger && (event.key === 'Enter' || event.key === ' ')) {
+                event.preventDefault();
+                toggleDropdown();
             }
         });
 

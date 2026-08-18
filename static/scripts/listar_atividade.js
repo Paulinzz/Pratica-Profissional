@@ -20,6 +20,7 @@ function filtrarAtividades() {
             const select = document.getElementById('ordenar');
             const lista = document.getElementById('lista-atividades');
             const atividades = Array.from(document.querySelectorAll('.atividade-item'));
+            const filterValue = (document.getElementById('buscar-atividade')?.value || '').toLowerCase();
             
             atividades.sort((a, b) => {
                 switch(select.value) {
@@ -29,17 +30,42 @@ function filtrarAtividades() {
                         return b.dataset.data.localeCompare(a.dataset.data);
                     case 'antiga':
                         return a.dataset.data.localeCompare(b.dataset.data);
+                    case 'duracao':
+                        const durA = parseDuration(a.dataset.duracao || '00:00');
+                        const durB = parseDuration(b.dataset.duracao || '00:00');
+                        return durB - durA;
                     default:
                         return 0;
                 }
             });
             
-            atividades.forEach(atividade => lista.appendChild(atividade));
+            atividades.forEach(atividade => {
+                const materia = atividade.dataset.materia.toLowerCase();
+                const assunto = atividade.dataset.assunto.toLowerCase();
+                if (!filterValue || materia.includes(filterValue) || assunto.includes(filterValue)) {
+                    atividade.style.display = 'flex';
+                } else {
+                    atividade.style.display = 'none';
+                }
+                lista.appendChild(atividade);
+            });
+        }
+
+        function parseDuration(str) {
+            if (!str || str === '00:00') return 0;
+            const parts = str.split(':');
+            if (parts.length === 2) {
+                const h = parseInt(parts[0], 10);
+                const m = parseInt(parts[1], 10);
+                if (isNaN(h) || isNaN(m)) return 0;
+                return h * 60 + m;
+            }
+            return 0;
         }
 
         // Calcular total de horas (exemplo simplificado)
         document.addEventListener('DOMContentLoaded', function() {
-            const duracoes = document.querySelectorAll('.meta-item i.fa-clock');
+            const duracoes = document.querySelectorAll('.meta-item i.fa-clock, .meta-item i.fa-regular.fa-clock');
             let totalMinutos = 0;
             
             duracoes.forEach(item => {
@@ -52,5 +78,8 @@ function filtrarAtividades() {
             
             const horas = Math.floor(totalMinutos / 60);
             const minutos = totalMinutos % 60;
-            document.getElementById('total-horas').textContent = `${horas}h${minutos > 0 ? minutos + 'm' : ''}`;
+            const totalHorasEl = document.getElementById('total-horas');
+            if (totalHorasEl) {
+                totalHorasEl.textContent = `${horas}h${minutos > 0 ? minutos + 'm' : ''}`;
+            }
         });

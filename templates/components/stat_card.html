@@ -19,7 +19,7 @@
   'info': 'var(--color-info)'
 } %}
 
-<div class="stat-card">
+<div class="stat-card {{ id|default('') }}" {% if id %}id="{{ id }}"{% endif %}>
   <div class="stat-icon" style="color: {{ color_map[color|default('primary')] }}; background: {{ color_map[color|default('primary')] }}15;">
     <i class="fa-solid fa-{{ icon }}"></i>
   </div>

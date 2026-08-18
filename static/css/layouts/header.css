@@ -12,6 +12,7 @@
   background: var(--color-bg-primary);
   border-bottom: 1px solid var(--color-border-light);
   transition: var(--transition-base);
+  overflow: visible;
 }
 
 body.dark-mode .header-main {
@@ -31,6 +32,7 @@ header {
   width: 100%;
   box-sizing: border-box;
   transition: var(--transition-base);
+  overflow: visible;
 }
 
 body.dark-mode header {

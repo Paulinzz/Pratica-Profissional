@@ -47,7 +47,7 @@
 form[class*="form"] {
   background: var(--color-bg-primary);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-8);
+  padding: 1px;
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
@@ -403,7 +403,7 @@ body.dark-mode .btn-cancel:hover {
   .atividade-form,
   .materia-form,
   form[class*="form"] {
-    padding: var(--spacing-6);
+    padding: 1px;
     gap: var(--spacing-4);
   }
 

@@ -934,3 +934,410 @@ body.dark-mode .badge-item {
   font-weight: var(--font-weight-semi-bold);
   color: var(--color-text-secondary);
 }
+
+/* ====================================
+   PERFIL PAGE EXTRA STYLES
+   ==================================== */
+
+.btn-remove-foto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--color-danger);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-base);
+  font-size: var(--font-size-sm);
+}
+
+.btn-remove-foto:hover {
+  background: var(--color-danger-dark);
+  transform: scale(1.1);
+}
+
+.tabs-container {
+  display: flex;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-6);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.tab-btn {
+  padding: var(--spacing-3) var(--spacing-4);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  border-bottom: 2px solid transparent;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.tab-btn:hover {
+  color: var(--color-primary);
+}
+
+.tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+body.dark-mode .tabs-container {
+  border-bottom-color: var(--color-border-dark);
+}
+
+.user-detail {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) 0;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.user-detail:last-child {
+  border-bottom: none;
+}
+
+.user-detail i {
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+  width: var(--spacing-5);
+  text-align: center;
+}
+
+.user-detail-text {
+  flex: 1;
+}
+
+.user-detail-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-detail-value {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 48px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.toggle-password:hover {
+  color: var(--color-primary);
+}
+
+/* ====================================
+   CONFIGURACOES PAGE STYLES
+   ==================================== */
+
+.config-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--spacing-8) var(--spacing-6);
+  box-sizing: border-box;
+}
+
+.config-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.config-header h1 {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  color: var(--color-primary);
+  font-size: var(--font-size-3xl);
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.config-subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  margin: 0;
+}
+
+.config-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4) 0;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-info h4 {
+  margin: 0 0 var(--spacing-1) 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-primary);
+}
+
+.setting-info p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.theme-card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-3);
+}
+
+.language-selector {
+  margin-top: var(--spacing-3);
+}
+
+.language-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.language-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 2px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.language-option:hover {
+  border-color: var(--color-primary);
+}
+
+.language-option.active {
+  border-color: var(--color-primary);
+  background: rgba(26, 115, 232, 0.05);
+}
+
+.language-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex: 1;
+}
+
+.flag {
+  font-size: var(--font-size-xl);
+}
+
+.language-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.language-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.language-region {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-3);
+  width: 100%;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-primary);
+}
+
+.action-btn.danger {
+  color: var(--color-danger);
+}
+
+.action-btn.danger:hover {
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--color-danger-dark);
+}
+
+.btn-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-6);
+  border-radius: var(--radius-lg);
+  border: none;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semi-bold);
+  cursor: pointer;
+  transition: var(--transition-base);
+  background: linear-gradient(135deg, var(--color-success), var(--color-success-light));
+  color: white;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  margin-top: var(--spacing-4);
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+body.dark-mode .setting-item {
+  border-bottom-color: var(--color-border-dark);
+}
+
+body.dark-mode .language-option {
+  border-color: var(--color-border-dark);
+}
+
+body.dark-mode .language-option.active {
+  background: rgba(107, 164, 255, 0.1);
+}
+
+body.dark-mode .action-btn {
+  background: var(--color-bg-dark-tertiary);
+  color: var(--color-text-dark-primary);
+}
+
+body.dark-mode .action-btn:hover {
+  background: var(--color-bg-dark-secondary);
+  color: var(--color-primary-light);
+}
+
+body.dark-mode .action-btn.danger:hover {
+  background: rgba(239, 83, 80, 0.15);
+}
+
+/* ====================================
+   NOTIFICACOES PAGE EXTRA STYLES
+   ==================================== */
+
+.notif-stats {
+  display: flex;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+.badge-unread {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-danger);
+  color: white;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-md);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-ver-mais {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-ver-mais:hover {
+  background: var(--color-primary-dark);
+  color: white;
+}
+
+.btn-marcar-lida {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-marcar-lida:hover {
+  background: var(--color-success-dark);
+  color: white;
+}
+
+body.dark-mode .badge-unread {
+  background: var(--color-danger-light);
+}
+
+body.dark-mode .btn-ver-mais {
+  background: var(--color-primary-light);
+}
+
+body.dark-mode .btn-marcar-lida {
+  background: var(--color-success-light);
+}
+
+.btn-mark-all {
+  background: var(--color-info);
+  color: white;
+}
+
+.btn-mark-all:hover {
+  background: var(--color-info-dark);
+  color: white;
+}
+
+body.dark-mode .btn-mark-all {
+  background: var(--color-info-light);
+}

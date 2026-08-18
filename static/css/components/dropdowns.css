@@ -37,10 +37,10 @@
   visibility: hidden;
   transform: translateY(-10px);
   transition: var(--transition-base);
-  z-index: var(--z-dropdown);
+  z-index: calc(var(--z-modal) + 10);
 }
 
-.dropdown.active .dropdown-menu {
+.user-dropdown.active .dropdown-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -54,7 +54,7 @@
   display: inline-block;
 }
 
-.dropdown.active .dropdown-arrow {
+.user-dropdown.active .dropdown-arrow {
   transform: rotate(180deg);
 }
 

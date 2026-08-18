@@ -47,7 +47,7 @@
         {# User Dropdown Menu #}
         {% if current_user.is_authenticated %}
         <div class="user-dropdown" id="userDropdown">
-            <div class="user-info" onclick="toggleDropdown()" aria-expanded="false" aria-haspopup="true" aria-label="Menu do usuário">
+            <div class="user-info" id="userDropdownTrigger" onclick="toggleDropdown()" aria-expanded="false" aria-haspopup="true" aria-label="Menu do usuário">
                 <div class="user-avatar">
                     {% if current_user.photo %}
                         <img src="{{ url_for('static', filename='imagens/' + current_user.photo) }}" alt="Foto de perfil">
@@ -109,7 +109,7 @@
 <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-header">
         <button class="mobile-menu-close" onclick="closeMobileMenu()" aria-label="Fechar menu">&times;</button>
-        <h3><i class="fa-solid fa-bars"></i> Menu</h3>
+        <h3>Menu</h3>
     </div>
     <div class="mobile-menu-content">
         <a href="{{url_for('dashboard')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
@@ -127,6 +127,8 @@
         <a href="{{url_for('ajuda')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
             <i class="fa-solid fa-circle-question"></i> Ajuda
         </a>
+
+        {% if current_user.is_authenticated %}
         <div class="mobile-menu-separator"></div>
         <a href="{{url_for('perfil')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
             <i class="fa-solid fa-user"></i> Meu Perfil
@@ -134,8 +136,24 @@
         <a href="{{url_for('configuracoes')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
             <i class="fa-solid fa-gear"></i> Configurações
         </a>
+        <a href="{{url_for('dashboard')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-chart-line"></i> Dashboard
+        </a>
+        <a href="{{url_for('sobre_nos')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-info-circle"></i> Sobre Nós
+        </a>
+        <div class="mobile-menu-separator"></div>
         <a href="{{url_for('logout')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
             <i class="fa-solid fa-right-from-bracket"></i> Sair
         </a>
+        {% else %}
+        <div class="mobile-menu-separator"></div>
+        <a href="{{url_for('login')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-sign-in-alt"></i> Login
+        </a>
+        <a href="{{url_for('register')}}" class="mobile-menu-item" onclick="closeMobileMenu()">
+            <i class="fa-solid fa-user-plus"></i> Cadastre-se
+        </a>
+        {% endif %}
     </div>
 </div>

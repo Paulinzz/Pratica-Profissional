@@ -20,46 +20,47 @@
 
     <main id="conteudo-principal">
         <div class="container_listar_atividades">
+            <div class="filtros-atividades">
+                <div class="busca">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="buscar-atividade" placeholder="Buscar por matéria ou assunto..." onkeyup="filtrarAtividades()" aria-label="Buscar atividades">
+                </div>
+                <div class="ordenacao">
+                    <label for="ordenar">Ordenar por:</label>
+                    <select id="ordenar" onchange="ordenarAtividades()">
+                        <option value="recente">Mais Recentes</option>
+                        <option value="antiga">Mais Antigas</option>
+                        <option value="materia">Matéria (A-Z)</option>
+                        <option value="duracao">Duração</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="stats-atividades">
+                {% set label = "Total de Atividades" %}
+                {% set value = atividades|length|string %}
+                {% set icon = "list-check" %}
+                {% set color = "primary" %}
+                {% include 'components/stat_card.html' with context %}
+
+                {% set label = "Matérias" %}
+                {% set value = atividades|map(attribute='materia')|unique|list|length|string %}
+                {% set icon = "book" %}
+                {% set color = "info" %}
+                {% include 'components/stat_card.html' with context %}
+
+                {% set label = "Horas Estudadas" %}
+                {% set value = "0h" %}
+                {% set icon = "clock" %}
+                {% set color = "warning" %}
+                {% set id = "total-horas" %}
+                {% include 'components/stat_card.html' with context %}
+            </div>
+
             {% if atividades %}
-                <div class="filtros-atividades">
-                    <div class="busca">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="text" id="buscar-atividade" placeholder="Buscar por matéria ou assunto..." onkeyup="filtrarAtividades()" aria-label="Buscar atividades">
-                    </div>
-                    <div class="ordenacao">
-                        <label for="ordenar">Ordenar por:</label>
-                        <select id="ordenar" onchange="ordenarAtividades()">
-                            <option value="recente">Mais Recentes</option>
-                            <option value="antiga">Mais Antigas</option>
-                            <option value="materia">Matéria (A-Z)</option>
-                            <option value="duracao">Duração</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="stats-atividades">
-                    {% set label = "Total de Atividades" %}
-                    {% set value = atividades|length|string %}
-                    {% set icon = "list-check" %}
-                    {% set color = "primary" %}
-                    {% include 'components/stat_card.html' with context %}
-
-                    {% set label = "Matérias" %}
-                    {% set value = atividades|map(attribute='materia')|unique|list|length|string %}
-                    {% set icon = "book" %}
-                    {% set color = "info" %}
-                    {% include 'components/stat_card.html' with context %}
-
-                    {% set label = "Horas Estudadas" %}
-                    {% set value = "0h" %}
-                    {% set icon = "clock" %}
-                    {% set color = "warning" %}
-                    {% include 'components/stat_card.html' with context %}
-                </div>
-
                 <div class="lista-atividades-completa" id="lista-atividades">
                     {% for atividade in atividades %}
-                    <div class="atividade-item" data-materia="{{ atividade.materia }}" data-assunto="{{ atividade.assunto_primario }}" data-data="{{ atividade.data.strftime('%Y-%m-%d') if atividade.data else '' }}">
+                    <div class="atividade-item" data-materia="{{ atividade.materia }}" data-assunto="{{ atividade.assunto_primario }}" data-data="{{ atividade.data.strftime('%Y-%m-%d') if atividade.data else '' }}" data-duracao="{{ atividade.duracao if atividade.duracao else '00:00' }}">
                         <div class="atividade-lado-esquerdo">
                             <div class="atividade-icone">
                                 <i class="fa-solid fa-book-open"></i>
@@ -97,6 +98,7 @@
                             <form method="post"
                                   action="{{ url_for('excluir_atividade', atividade_id=atividade.id) }}"
                                   onsubmit="return confirm('Tem certeza que deseja excluir esta atividade?\n\nMatéria: {{ atividade.materia }}\nAssunto: {{ atividade.assunto_primario }}\n\nEsta ação não pode ser desfeita.');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                 <button type="submit" 
                                         class="btn-acao btn-excluir" 
                                         title="Excluir atividade">

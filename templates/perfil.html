@@ -13,6 +13,7 @@
                 <h1>Meu Perfil</h1>
                 <p>Gerencie suas informações e acompanhe seu progresso</p>
             </div>
+{% if current_user.is_authenticated %}
             <div class="foto-perfil-header" onclick="document.getElementById('fileInput').click()" role="button" tabindex="0" aria-label="Alterar foto de perfil">
                 {% if current_user.photo %}
                     <img src="{{ url_for('static', filename='imagens/' + current_user.photo) }}" alt="Foto de perfil">
@@ -29,8 +30,10 @@
                 {% endif %}
             </div>
             <form id="uploadForm" action="{{ url_for('upload_foto') }}" method="post" enctype="multipart/form-data" style="display: none;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input type="file" name="foto" id="fileInput" accept="image/*">
             </form>
+            {% endif %}
         </div>
 
         <!-- Tabs -->
@@ -234,10 +237,12 @@
     // Função para remover foto
     function removerFoto() {
         if (confirm('Tem certeza que deseja remover sua foto de perfil?')) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             fetch('{{ url_for("remover_foto") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
                 }
             })
             .then(response => response.json())
