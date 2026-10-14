@@ -5,410 +5,10 @@
 {% endblock %}
 
 {% block conteudo %}
-<style>
-    .notificacoes-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    .notif-header {
-        background: linear-gradient(135deg, #1a73e8, #4285f4);
-        border-radius: 25px;
-        padding: 40px;
-        color: white;
-        margin-bottom: 30px;
-        box-shadow: 0 8px 30px rgba(26, 115, 232, 0.3);
-        animation: slideInDown 0.6s ease;
-    }
-
-    @keyframes slideInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .notif-header h1 {
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    .notif-stats {
-        display: flex;
-        gap: 20px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-    }
-
-    .stat-badge {
-        background: rgba(255,255,255,0.2);
-        padding: 10px 20px;
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-    }
-
-    .filters-bar {
-        background: white;
-        border-radius: 20px;
-        padding: 25px;
-        margin-bottom: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .filter-group {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .filter-btn {
-        padding: 12px 20px;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        background: white;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        color: #666;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .filter-btn:hover {
-        border-color: #1a73e8;
-        color: #1a73e8;
-        transform: translateY(-2px);
-    }
-
-    .filter-btn.active {
-        background: linear-gradient(135deg, #1a73e8, #4285f4);
-        color: white;
-        border-color: #1a73e8;
-        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-    }
-
-    .btn-action {
-        padding: 12px 24px;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .btn-mark-all {
-        background: linear-gradient(135deg, #4caf50, #66bb6a);
-        color: white;
-    }
-
-    .btn-mark-all:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-    }
-
-    .notificacoes-list {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .notificacao-card {
-        background: white;
-        border-radius: 20px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent;
-        animation: fadeInUp 0.6s ease;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-
-    }
-    .fa-solid.fa-trash{
-        color: red;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .notificacao-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    }
-
-    .notificacao-card.nao-lida {
-        background: linear-gradient(135deg, #e3f2fd, #f8f9fa);
-        border-left-color: #1a73e8;
-    }
-
-    .notificacao-card.lida {
-        opacity: 0.7;
-        border-left-color: #e0e0e0;
-    }
-
-    .notif-header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
-        margin-bottom: 15px;
-    }
-
-    .notif-info {
-        flex: 1;
-    }
-
-    .notif-tipo {
-        display: flex;
-        align-items: center;
-        
-    }
-
-    .notif-tipo.sistema {
-        background: #e3f2fd;
-        color: #1a73e8;
-    }
-
-    .notif-tipo.lembrete {
-        background: #fff3e0;
-        color: #f57c00;
-    }
-
-    .notif-tipo.conquista {
-        background: #e8f5e9;
-        color: #2e7d32;
-    }
-
-    .notif-titulo {
-        font-size: 18px;
-        font-weight: 600;
-        color: #1a1a1a;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .notif-titulo i {
-        font-size: 24px;
-    }
-
-    .notif-mensagem {
-
-        font-size: 15px;
-        color: #666;
-        line-height: 1.6;
-        padding: 20px;
-    }
-
-    .notif-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 15px;
-        border-top: 1px solid #f0f0f0;
-    }
-
-    .notif-data {
-        font-size: 13px;
-        color: #999;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .notif-actions {
-        display: flex;
-        gap: 10px;
-    }
-
-    .notif-btn {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .btn-marcar-lida {
-        background: #e8f5e9;
-        color: #2e7d32;
-    }
-
-    .btn-marcar-lida:hover {
-        background: #c8e6c9;
-        transform: scale(1.05);
-    }
-
-    .btn-excluir {
-        background: #ffebee;
-        color: #d32f2f;
-    }
-
-    
-
-    .btn-ver-mais {
-        background: #e3f2fd;
-        color: #1a73e8;
-        text-decoration: none;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 80px 20px;
-        background: white;
-        border-radius: 25px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-
-    .empty-icon {
-        font-size: 80px;
-        color: #e0e0e0;
-        margin-bottom: 20px;
-        animation: float 3s ease-in-out infinite;
-    }
-
-
-    .empty-state h2 {
-        font-size: 28px;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .empty-state p {
-        font-size: 16px;
-        color: #666;
-    }
-
-    .badge-unread {
-        background: #f44336;
-        color: white;
-        font-size: 11px;
-        font-weight: bold;
-        padding: 4px 10px;
-        border-radius: 12px;
-        position: absolute;
-        top: 15px;
-        right: 15px;
-    }
-
-    @media (max-width: 768px) {
-        .filters-bar {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .filter-group {
-            width: 100%;
-            justify-content: center;
-        }
-
-        .action-buttons {
-            width: 100%;
-        }
-
-        .btn-action {
-            flex: 1;
-            justify-content: center;
-        }
-
-        .notif-footer {
-            flex-direction: column;
-            gap: 15px;
-            align-items: start;
-        }
-
-        .notif-actions {
-            width: 100%;
-        }
-
-        .notif-btn {
-            flex: 1;
-            justify-content: center;
-        }
-    }
-
-    .fa-envelope, .fa-envelope-open{
-        color: white;
-    }
-
-    .notif-header i {
-        margin-right: 10px;
-        color: white;
-    }
-
-    .filter-btn i {
-        color: #666;
-        transition: color 0.2s ease;
-    }
-
-    .filter-btn.active i {
-        color: #ffffff;
-    }
-
-    .fa-check-double, .fa-check, .fa-arrow-right:hover {
-        color: inherit;
-        background: none;
-
-
-    }
-
-    .fa-trash:hover{
-        background: linear-gradient(135deg, #ff5252, #ff1744);
-        color: white;
-    }
-
-    .fa-target{
-        color: #2e7d32;
-    }
-
-</style>
-
-<main>
-    <div class="notificacoes-container">
+<main id="conteudo-principal">
+    <div class="notifications-main">
         <!-- Header -->
-        <div class="notif-header">
+        <div class="notifications-header">
             <h1><i class="fa-solid fa-bell"></i> Notificações</h1>
             <div class="notif-stats">
                 <div class="stat-badge">
@@ -425,7 +25,7 @@
         <!-- Filtros -->
         <div class="filters-bar">
             <div class="filter-group">
-                <span style="font-weight: 600; color: #666;">Filtrar por:</span>
+                <span class="filter-label">Filtrar por:</span>
                 <a href="{{ url_for('listar_notificacoes', tipo='todos', lida=lida_filtro) }}" 
                    class="filter-btn {{ 'active' if tipo_filtro == 'todos' else '' }}">
                     <i class="fa-solid fa-list"></i> Todas
@@ -460,7 +60,7 @@
             </div>
 
             <div class="action-buttons">
-                <button class="btn-action btn-mark-all" onclick="marcarTodasLidas()">
+                <button class="notif-btn btn-mark-all" onclick="marcarTodasLidas()">
                     <i class="fa-solid fa-check-double"></i>
                     Marcar Todas como Lidas
                 </button>
@@ -469,62 +69,57 @@
 
         <!-- Lista de Notificações -->
         {% if notificacoes %}
-            <div class="notificacoes-list">
-                {% for notif in notificacoes %}
-                <div class="notificacao-card {{ 'nao-lida' if not notif.lida else 'lida' }}" data-id="{{ notif.id }}">
-                    {% if not notif.lida %}
-                    <span class="badge-unread">NOVO</span>
-                    {% endif %}
+            {% for notif in notificacoes %}
+            <div class="notificacao-card {{ 'nao-lida' if not notif.lida else 'lida' }}" data-id="{{ notif.id }}">
+                {% if not notif.lida %}
+                <span class="badge-unread">NOVO</span>
+                {% endif %}
 
-                    <div class="notif-header-row">
-                        <div class="notif-info">
-                            <span class="notif-tipo {{ notif.tipo }}">
-                                <i class="fa-solid {{ notif.icone }}"></i>
-                                {{ notif.tipo.capitalize() }}
-                            </span>
-                            
-                            <h3 class="notif-titulo">
-                                <i class="fa-solid {{ notif.icone }}" style="color: 
-                                    {% if notif.tipo == 'sistema' %}#1a73e8
-                                    {% elif notif.tipo == 'lembrete' %}#f57c00
-                                    {% else %}#2e7d32{% endif %};"></i>
-                                {{ notif.titulo }}
-                            </h3>
-                            
-                            <p class="notif-mensagem">{{ notif.mensagem }}</p>
-                        </div>
+                <div class="notif-content">
+                    <span class="notif-tipo {{ notif.tipo }}">
+                        <i class="fa-solid {{ notif.icone }}"></i>
+                        {{ notif.tipo.capitalize() }}
+                    </span>
+                    
+                    <h3 class="notif-title">
+                        <i class="fa-solid {{ notif.icone }}" style="color: 
+                            {% if notif.tipo == 'sistema' %}#1a73e8
+                            {% elif notif.tipo == 'lembrete' %}#f57c00
+                            {% else %}#2e7d32{% endif %}
+                        ;"></i>
+                        {{ notif.titulo }}
+                    </h3>
+                    
+                    <p class="notif-message">{{ notif.mensagem }}</p>
+
+                    <div class="notif-meta">
+                        <i class="fa-regular fa-clock"></i>
+                        {{ notif.data_criacao.strftime('%d/%m/%Y às %H:%M') }}
                     </div>
 
-                    <div class="notif-footer">
-                        <div class="notif-data">
-                            <i class="fa-regular fa-clock"></i>
-                            {{ notif.data_criacao.strftime('%d/%m/%Y às %H:%M') }}
-                        </div>
+                    <div class="notif-actions">
+                        {% if notif.link %}
+                        <a href="{{ notif.link }}" class="notif-btn btn-ver-mais">
+                            <i class="fa-solid fa-arrow-right"></i>
+                            Ver Mais
+                        </a>
+                        {% endif %}
 
-                        <div class="notif-actions">
-                            {% if notif.link %}
-                            <a href="{{ notif.link }}" class="notif-btn btn-ver-mais">
-                                <i class="fa-solid fa-arrow-right"></i>
-                                Ver Mais
-                            </a>
-                            {% endif %}
+                        {% if not notif.lida %}
+                        <button class="notif-btn btn-marcar-lida" onclick="marcarLida({{ notif.id }})">
+                            <i class="fa-solid fa-check"></i>
+                            Marcar Lida
+                        </button>
+                        {% endif %}
 
-                            {% if not notif.lida %}
-                            <button class="notif-btn btn-marcar-lida" onclick="marcarLida({{ notif.id }})">
-                                <i class="fa-solid fa-check"></i>
-                                Marcar Lida
-                            </button>
-                            {% endif %}
-
-                            <button class="notif-btn btn-excluir" onclick="excluirNotificacao({{ notif.id }})">
-                                <i class="fa-solid fa-trash"></i>
-                                Excluir
-                            </button>
-                        </div>
+                        <button class="notif-btn delete" onclick="excluirNotificacao({{ notif.id }})">
+                            <i class="fa-solid fa-trash"></i>
+                            Excluir
+                        </button>
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         {% else %}
             <div class="empty-state">
                 <div class="empty-icon">
@@ -547,10 +142,12 @@
 
 <script>
     function marcarLida(notifId) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         fetch(`/marcar_notificacao_lida/${notifId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
             }
         })
         .then(response => response.json())
@@ -581,10 +178,13 @@
             return;
         }
 
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         fetch(`/excluir_notificacao/${notifId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
             }
         })
         .then(response => response.json())

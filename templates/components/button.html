@@ -1,0 +1,40 @@
+{#
+   components/button.html
+
+   Componente de botão reutilizável com múltiplas variantes
+
+   Uso:
+   {% include 'components/button.html' with context %}
+
+   Parâmetros:
+   - text: texto do botão (obrigatório)
+   - type: primary|secondary|success|danger|ghost|link (default: primary)
+   - size: sm|md|lg (default: md)
+   - href: URL (se for link em vez de botão)
+   - disabled: true|false
+   - icon: classe de ícone FontAwesome (ex: "plus", "trash")
+   - icon_before: true|false (ícone antes do texto, default: true)
+   - class: classes CSS adicionais
+   - data_action: data-action para JavaScript
+   - onclick: onclick handler
+#}
+
+{% if href %}
+  <a href="{{ href }}"
+     class="btn btn-{{ type|default('primary') }} btn-{{ size|default('md') }} {{ class|default('') }}"
+     data-action="{{ data_action|default('') }}">
+    {% if icon and icon_before != false %}<i class="fa-solid fa-{{ icon }}"></i>{% endif %}
+    {{ text }}
+    {% if icon and icon_before == false %}<i class="fa-solid fa-{{ icon }}"></i>{% endif %}
+  </a>
+{% else %}
+  <button type="{{ button_type|default('submit') }}"
+          class="btn btn-{{ type|default('primary') }} btn-{{ size|default('md') }} {{ class|default('') }}"
+          {% if disabled %}disabled{% endif %}
+          data-action="{{ data_action|default('') }}"
+          {% if onclick %}onclick="{{ onclick }}"{% endif %}>
+    {% if icon and icon_before != false %}<i class="fa-solid fa-{{ icon }}"></i>{% endif %}
+    {{ text }}
+    {% if icon and icon_before == false %}<i class="fa-solid fa-{{ icon }}"></i>{% endif %}
+  </button>
+{% endif %}

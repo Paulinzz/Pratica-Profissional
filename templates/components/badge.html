@@ -1,0 +1,19 @@
+{#
+   components/badge.html
+
+   Componente de badge/label
+
+   Uso:
+   {% include 'components/badge.html' with context %}
+
+   Parâmetros:
+   - text: texto do badge
+   - type: primary|success|danger|warning|info|light|dark (default: primary)
+   - filled: true|false (default: true)
+   - icon: ícone FontAwesome
+#}
+
+<span class="badge badge-{{ type|default('primary') }}{% if filled == false %}-outlined{% endif %}">
+  {% if icon %}<i class="fa-solid fa-{{ icon }}"></i>{% endif %}
+  {{ text }}
+</span>

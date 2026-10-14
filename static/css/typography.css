@@ -1,0 +1,279 @@
+/* ====================================
+   FOCUSUP - TYPOGRAPHY
+   Font scales and text utilities
+   ==================================== */
+
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Font Size Utility Classes */
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-md { font-size: var(--font-size-md); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-4xl { font-size: var(--font-size-4xl); }
+.text-5xl { font-size: var(--font-size-5xl); }
+
+/* Font Weight Utility Classes */
+.font-thin { font-weight: var(--font-weight-thin); }
+.font-extralight { font-weight: var(--font-weight-extra-light); }
+.font-light { font-weight: var(--font-weight-light); }
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semi-bold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+.font-extrabold { font-weight: var(--font-weight-extra-bold); }
+.font-black { font-weight: var(--font-weight-black); }
+
+/* Line Height Utility Classes */
+.leading-tight { line-height: var(--line-height-tight); }
+.leading-normal { line-height: var(--line-height-normal); }
+.leading-relaxed { line-height: var(--line-height-relaxed); }
+.leading-loose { line-height: var(--line-height-loose); }
+
+/* Letter Spacing Utility Classes */
+.tracking-tight { letter-spacing: var(--letter-spacing-tight); }
+.tracking-normal { letter-spacing: var(--letter-spacing-normal); }
+.tracking-wide { letter-spacing: var(--letter-spacing-wide); }
+.tracking-wider { letter-spacing: var(--letter-spacing-wider); }
+
+/* Text Alignment */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+/* Text Transform */
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+.normal-case { text-transform: none; }
+
+/* Text Decoration */
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+.no-underline { text-decoration: none; }
+
+/* Text Truncation */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Text Break */
+.break-words { word-break: break-word; }
+.break-all { word-break: break-all; }
+.whitespace-normal { white-space: normal; }
+.whitespace-nowrap { white-space: nowrap; }
+.whitespace-pre { white-space: pre; }
+.whitespace-pre-wrap { white-space: pre-wrap; }
+.whitespace-pre-line { white-space: pre-line; }
+
+/* Font Family Utilities */
+.font-primary { font-family: var(--font-primary); }
+.font-secondary { font-family: var(--font-secondary); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Text Color Utilities */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-muted { color: var(--color-text-muted); }
+
+/* Heading Styles */
+.heading-1 {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-tight);
+}
+
+.heading-2 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-tight);
+}
+
+.heading-3 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-tight);
+}
+
+.heading-4 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-tight);
+}
+
+.heading-5 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-tight);
+}
+
+.heading-6 {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-tight);
+}
+
+/* Body Text Styles */
+.body-lg {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.body-md {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.body-sm {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.body-xs {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-tertiary);
+}
+
+/* Caption */
+.caption {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Label */
+.label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Lead (Intro paragraph) */
+.lead {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* Emphasis */
+.italic { font-style: italic; }
+.not-italic { font-style: normal; }
+
+strong, .font-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+em, .italic {
+  font-style: italic;
+}
+
+mark {
+  background: rgba(255, 193, 7, 0.3);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Dark Mode Text Colors */
+body.dark-mode .text-primary { color: var(--color-text-dark-primary); }
+body.dark-mode .text-secondary { color: var(--color-text-dark-secondary); }
+body.dark-mode .text-tertiary { color: var(--color-text-dark-tertiary); }
+body.dark-mode .text-muted { color: var(--color-text-dark-muted); }
+
+body.dark-mode .body-lg,
+body.dark-mode .body-md,
+body.dark-mode .body-sm {
+  color: var(--color-text-dark-secondary);
+}
+
+body.dark-mode .body-xs,
+body.dark-mode .caption {
+  color: var(--color-text-dark-tertiary);
+}
+
+/* Responsive Typography */
+@media (max-width: 1024px) {
+  h1 { font-size: var(--font-size-3xl); }
+  h2 { font-size: var(--font-size-2xl); }
+  h3 { font-size: var(--font-size-xl); }
+  h4 { font-size: var(--font-size-lg); }
+
+  .text-4xl { font-size: var(--font-size-3xl); }
+  .text-3xl { font-size: var(--font-size-2xl); }
+  .text-2xl { font-size: var(--font-size-xl); }
+
+  .heading-1 { font-size: var(--font-size-3xl); }
+  .heading-2 { font-size: var(--font-size-2xl); }
+  .heading-3 { font-size: var(--font-size-xl); }
+  .heading-4 { font-size: var(--font-size-lg); }
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: var(--font-size-2xl); }
+  h2 { font-size: var(--font-size-xl); }
+  h3 { font-size: var(--font-size-lg); }
+  h4 { font-size: var(--font-size-md); }
+
+  .text-4xl { font-size: var(--font-size-2xl); }
+  .text-3xl { font-size: var(--font-size-xl); }
+  .text-2xl { font-size: var(--font-size-lg); }
+
+  .heading-1 { font-size: var(--font-size-2xl); }
+  .heading-2 { font-size: var(--font-size-xl); }
+  .heading-3 { font-size: var(--font-size-lg); }
+  .heading-4 { font-size: var(--font-size-md); }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: var(--font-size-xl); }
+  h2 { font-size: var(--font-size-lg); }
+  h3 { font-size: var(--font-size-md); }
+  h4 { font-size: var(--font-size-base); }
+
+  .text-4xl { font-size: var(--font-size-xl); }
+  .text-3xl { font-size: var(--font-size-lg); }
+  .text-2xl { font-size: var(--font-size-md); }
+
+  .heading-1 { font-size: var(--font-size-xl); }
+  .heading-2 { font-size: var(--font-size-lg); }
+  .heading-3 { font-size: var(--font-size-md); }
+  .heading-4 { font-size: var(--font-size-base); }
+
+  .body-lg { font-size: var(--font-size-base); }
+}

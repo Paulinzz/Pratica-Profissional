@@ -1,0 +1,27 @@
+{# components/page_header.html
+   Header de página padronizado com título, subtítulo e ações
+
+   Uso:
+   {% include 'components/page_header.html' with context %}
+
+   Parâmetros:
+   - title: título principal (obrigatório)
+   - subtitle: subtítulo (opcional)
+   - actions: HTML de ações/botões (opcional)
+#}
+
+<div class="page-header">
+  <div class="page-header-content">
+    <div class="page-header-text">
+      <h1 class="page-title">{{ title }}</h1>
+      {% if subtitle %}
+        <p class="page-subtitle">{{ subtitle }}</p>
+      {% endif %}
+    </div>
+    {% if actions %}
+      <div class="page-header-actions">
+        {{ actions }}
+      </div>
+    {% endif %}
+  </div>
+</div>

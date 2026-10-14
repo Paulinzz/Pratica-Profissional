@@ -5,324 +5,181 @@
 {% endblock %}
 
 {% block conteudo %}
-<style>
-    /* Adicione estes estilos ao seu style.css ou aqui */
-    .materias-lista {
-        margin-top: 20px;
-        display: flex;
-        gap: 25px;
-        overflow-x: auto;
-        padding-bottom: 10px;
-        scrollbar-width: thin;
-        scrollbar-color: #1a73e8 #f1f1f1;
-    }
-
-    .materias-lista::-webkit-scrollbar {
-        height: 8px;
-    }
-
-    .materias-lista::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
-    }
-
-    .materias-lista::-webkit-scrollbar-thumb {
-        background: #1a73e8;
-        border-radius: 4px;
-    }
-
-    .materias-lista::-webkit-scrollbar-thumb:hover {
-        background: #1557b0;
-    }
-
-    .materia-item {
-        display: flex;
-        font-size: 12px;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        text-align: center;
-        padding: 15px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        width: 200px;
-        height: 150px;
-        flex-shrink: 0;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .materia-item:hover {
-        background: #e9ecef;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
-    /* Responsividade */
-    @media (max-width: 768px) {
-        .materias-lista {
-            gap: 15px;
-        }
-
-        .materia-item {
-            width: 180px;
-            height: 100px;
-            padding: 12px;
-        }
-
-        .materia-nome {
-            font-size: 14px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .materias-lista {
-            gap: 10px;
-        }
-
-        .materia-item {
-            width: 160px;
-            height: 90px;
-            padding: 10px;
-        }
-
-        .materia-nome {
-            font-size: 13px;
-        }
-
-        .btn-edit-materia,
-        .btn-delete-materia {
-            width: 25px;
-            height: 25px;
-        }
-    }
-
-    .materia-nome {
-        font-weight: 500;
-        color: #333;
-    }
-
-    .btn-delete-materia {
-        color: #d32f2f;
-        border: none;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        background-color: #d32f2f;
-    }
-
-    .btn-delete-materia:hover {
-        color: white;
-        transform: scale(1.1);
-    }
-
-    .form-add-materia {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .form-add-materia input {
-        flex: 1;
-        padding: 12px 15px;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        font-size: 14px;
-    }
-
-    .form-add-materia input:focus {
-        outline: none;
-        border-color: #1a73e8;
-    }
-
-    .btn-add-materia {
-        background: linear-gradient(135deg, #2e7d32, #43a047);
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-add-materia:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(46,125,50,0.3);
-    }
-
-    .link-pomodoro {
-        display: inline-block;
-        background: linear-gradient(135deg, #1557b0, #1a73e8);
-        color: white;
-        padding: 8px 32px;
-        border-radius: 20px;
-        text-decoration: none;
-        font-weight: 600;
-        margin-top: 15px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(255,152,0,0.2);
-        font-size: 14px;
-    }
-
-    .link-pomodoro:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(255,152,0,0.3);
-        color: white;
-    }
-    .fa-solid.fa-clock{
-        color: white;
-    }
-
-    /* Modo Escuro */
-    body.dark-mode .materia-item {
-        background: #2d2d2d;
-        color: #e0e0e0;
-    }
-
-    body.dark-mode .materia-item:hover {
-        background: #333;
-    }
-
-    body.dark-mode .materia-nome {
-        color: #e0e0e0;
-    }
-
-    body.dark-mode .card-sobre {
-        background: #2d2d2d;
-        color: #e0e0e0;
-    }
-
-    body.dark-mode .card-sobre h1 {
-        color: #e0e0e0;
-    }
-
-    body.dark-mode .card-sobre p {
-        color: #ccc;
-    }
-
-    body.dark-mode .card-sobre a {
-        color: #1a73e8;
-    }
-
-    body.dark-mode .artigo-card {
-        background: #2d2d2d;
-        color: #e0e0e0;
-    }
-
-    body.dark-mode .artigo-card h3 {
-        color: #e0e0e0;
-    }
-
-    body.dark-mode .artigo-card p {
-        color: #ccc;
-    }
-
-    body.dark-mode .artigo-card a {
-        color: #1a73e8;
-    }
-    .minhas_materias{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-
-        
-    }
-
-    .link_add-mat{
-        flex: 1;
-        background-color: #2e7d32;
-        padding: 10px;
-        border-radius: 30px;
-        max-height: 60px;
-        display: flex;
-        align-items: center;
-        max-width: 300px;
-    }
-    .fa-solid.fa-trash{
-        color: white;
-    }
-</style>
-
-    <main>
-        <div class="left-content">
-            <div class="card-dash">
-                <canvas id="chartDash"></canvas>
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="dashboard-header-content">
+            <div class="dashboard-welcome">
+                <h1 class="dashboard-title">Dashboard</h1>
+                <p class="dashboard-subtitle">Acompanhe seu progresso e mantenha o foco nos seus estudos.</p>
             </div>
-            <div class="container-case">
-                <div class="card-materias_mais_estudadas">
-                    <div class="minhas_materias">
-                     <h2>Minhas Matérias</h2>
-            
-                         <a href="{{ url_for('adicionar_materia_page') }}" style="color: #ffff; text-decoration: none;" class="link_add-mat">
-                             <i class="fa-solid fa-plus"></i> Adicionar nova matéria
-                         </a>
-        
+        </div>
+    </div>
 
-                        <!-- Lista de matérias -->
-                        <div class="materias-lista">
-                             {% if sorted_materias %}
-                                 {% for materia in sorted_materias %}
-                                 <div class="materia-item">
-                                     <span class="materia-nome" style="word-break: break-word; text-align: center; display: block;">
-                                         <i class="fa-solid fa-book"></i> {{ materia.nome }}
-                                     </span>
-                                         <div style="font-size: 12px; color: #666; margin-top: 8px; text-align: center;">
-                                         {% set tempo = tempo_por_materia.get(materia.nome, 0) %}
-                                         {% if tempo > 0 %}
-                                             Tempo estudado: {{ tempo // 60 }}h {{ tempo % 60 }}min
-                                         {% else %}
-                                             Nenhum tempo registrado
-                                         {% endif %}
-                                     </div>
-                                     <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;">
-                                         <form method="post"
-                                               action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
-                                               style="display: inline;"
-                                               onsubmit="return confirm('Tem certeza que deseja excluir a matéria {{ materia.nome }}?');">
-                                             <button type="submit" class="btn-delete-materia">
-                                                 <i class="fa-solid fa-trash" style="font-size: 12px;"></i>
-                                             </button>
-                                         </form>
-                                     </div>
-                                 </div>
-                                 {% endfor %}
-                             {% else %}
-                                 <p style="text-align: center; color: #999; padding: 40px 20px;">
-                                     <i class="fa-solid fa-folder-open" style="font-size: 48px; display: block; margin-bottom: 15px;"></i>
-                                     Nenhuma matéria cadastrada.<br>
-                                     Adicione sua primeira matéria acima!
-                                 </p>
-                             {% endif %}
-                         </div>
+    <!-- Metrics Section -->
+    <section class="dashboard-stats" aria-label="Métricas principais">
+        {% set total_minutos = tempo_por_materia.values()|list|sum %}
+        {% set horas = (total_minutos // 60) if total_minutos > 0 else 0 %}
+        {% set minutos_restantes = (total_minutos % 60) if total_minutos > 0 else 0 %}
+        {% set label = "Horas Estudadas" %}
+        {% set value = (horas|int)|string %}
+        {% set unit = "h" %}
+        {% set icon = "hourglass-end" %}
+        {% set icon_color = "text-primary" %}
+        {% set subtext = minutos_restantes ~ "min extras" if minutos_restantes > 0 else "Continue assim!" %}
+        {% include 'components/card_metric.html' with context %}
+
+        {% set label = "Metas Ativas" %}
+        {% set value = (metas_ativas|default(0)|int)|string %}
+        {% set unit = "" %}
+        {% set icon = "bullseye" %}
+        {% set icon_color = "text-warning" %}
+        {% set subtext = "Em andamento" %}
+        {% include 'components/card_metric.html' with context %}
+
+        {% set label = "Metas Concluídas" %}
+        {% set value = (metas_concluidas|default(0)|int)|string %}
+        {% set unit = "" %}
+        {% set icon = "trophy" %}
+        {% set icon_color = "text-success" %}
+        {% set subtext = "Concluídas" %}
+        {% include 'components/card_metric.html' with context %}
+
+        {% set total_metas_val = total_metas|default(0) %}
+        {% set taxa = (metas_concluidas / total_metas_val * 100)|round(0)|int if total_metas_val > 0 else 0 %}
+        {% set label = "Taxa de Conclusão" %}
+        {% set value = (taxa)|string %}
+        {% set unit = "%" %}
+        {% set icon = "chart-pie" %}
+        {% set icon_color = "text-info" %}
+        {% set trend = "up" if taxa >= 50 else "stable" %}
+        {% set trend_percent = "" %}
+        {% set subtext = "Das suas metas" %}
+        {% include 'components/card_metric.html' with context %}
+
+        {% set label = "Atividades" %}
+        {% set value = (sorted_materias|default([])|length)|string %}
+        {% set unit = "" %}
+        {% set icon = "list-check" %}
+        {% set icon_color = "text-primary" %}
+        {% set subtext = "Registradas" %}
+        {% include 'components/card_metric.html' with context %}
+    </section>
+
+    <!-- Main Content Section -->
+    <main class="dashboard-main" id="conteudo-principal">
+        <div class="left-content">
+            <!-- Chart Card -->
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h2>Atividades por Dia</h2>
+                    <span class="card-subtitle">Últimos registros de estudo</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartDash"></canvas>
+                    {% if not labels_dash or labels_dash|length == 0 %}
+                        <div class="chart-empty">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <p>Nenhuma atividade registrada ainda.</p>
+                            <small>Comece adicionando uma atividade para ver seu progresso.</small>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Materials Card -->
+            <div class="card card-materias">
+                <div class="card-header">
+                    <h2>Minhas Matérias</h2>
+                    <span class="card-subtitle">Tempo de estudo por matéria</span>
+                </div>
+
+                {% set text = "Adicionar nova matéria" %}
+                {% set type = "success" %}
+                {% set href = url_for('adicionar_materia_page') %}
+                {% set icon = "plus" %}
+                {% set size = "sm" %}
+                {% include 'components/button.html' with context %}
+
+                {% if sorted_materias %}
+                    <div class="materias-progress">
+                        {% for materia in sorted_materias %}
+                            {% set tempo = tempo_por_materia.get(materia.nome, 0) %}
+                            {% set max_tempo = tempo_por_materia.values()|list|max if tempo_por_materia else 1 %}
+                            {% set percent = (tempo / max_tempo * 100)|round if max_tempo > 0 else 0 %}
+                            <div class="materia-progress-item">
+                                <div class="materia-progress-header">
+                                    <span class="materia-nome">
+                                        <i class="fa-solid fa-book"></i> {{ materia.nome }}
+                                    </span>
+                                    <span class="materia-tempo">
+                                        {% if tempo > 0 %}
+                                            {{ tempo // 60 }}h {{ tempo % 60 }}min
+                                        {% else %}
+                                            Sem tempo
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="materia-progress-bar">
+                                    <div class="materia-progress-fill" style="width: {{ percent }}%"></div>
+                                </div>
+                                <form method="post"
+                                      action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
+                                      class="materia-delete-form"
+                                      onsubmit="return confirm('Excluir matéria {{ materia.nome }}?');">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <button type="submit" class="btn-delete-materia" aria-label="Excluir matéria {{ materia.nome }}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        {% endfor %}
                     </div>
-                </div>
-                <div class="card-sobre">
-                        <div class="title_card-sobre">
-                            <h1>Que tal conhecer um pouco mais sobre nós?</h1>
-                        </div>
-                        <div class="content-card-sobre">
-                            <img src="{{ url_for('static', filename='imagens/sobre.png') }}" alt="Equipe">
-                            <p>Esse projeto foi desenvolvido por alunos do 3° ano do curso de informática para internet 
-                                <a href="{{url_for('sobre_nos')}}">Ler mais...</a></p>
-                        </div>
-                    </a>
-                </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <p>Nenhuma matéria cadastrada.</p>
+                        <small>Adicione sua primeira matéria acima para começar!</small>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
         <div class="right-content">
-            <div class="card_artigo">
-                <div class="title-card_artigo">
+            <!-- Quick Actions Card -->
+            <div class="card card-actions">
+                <div class="card-header">
+                    <h2>Ações Rápidas</h2>
+                    <span class="card-subtitle">O que você quer fazer agora?</span>
+                </div>
+                <div class="quick-actions">
+                    {% set text = "Modo Pomodoro" %}
+                    {% set type = "primary" %}
+                    {% set href = url_for('pomodoro') %}
+                    {% set icon = "clock" %}
+                    {% set size = "md" %}
+                    {% include 'components/button.html' with context %}
+
+                    {% set text = "Adicionar Atividade" %}
+                    {% set type = "success" %}
+                    {% set href = url_for('adicionar_atividade') %}
+                    {% set icon = "plus" %}
+                    {% set size = "md" %}
+                    {% include 'components/button.html' with context %}
+
+                    {% set text = "Nova Meta" %}
+                    {% set type = "warning" %}
+                    {% set href = url_for('criar_meta') %}
+                    {% set icon = "bullseye" %}
+                    {% set size = "md" %}
+                    {% include 'components/button.html' with context %}
+                </div>
+            </div>
+
+            <!-- Articles Card -->
+            <div class="card card-artigos">
+                <div class="card-header">
                     <h2>Artigos Recomendados</h2>
-                    <i class="fa-solid fa-book"></i>
+                    <span class="card-subtitle">Conteúdo para seus estudos</span>
                 </div>
                 <div class="artigos-container">
                     {% if artigos %}
@@ -330,59 +187,47 @@
                             <div class="artigo-card">
                                 <div class="artigo-info">
                                     <h3>{{ artigo.title_pt if artigo.title_pt else artigo.title }}</h3>
-                                    <p>{{ artigo.abstract_pt if artigo.abstract_pt else "Resumo não disponível" }}</p>
-                                    
-                                    <p><strong>Autores:</strong> 
-                                        {% if artigo.authorships %}
-                                            {{ artigo.authorships | map(attribute='author.display_name') | join(', ') }}
-                                        {% else %}
-                                            Não informado
-                                        {% endif %}
-                                    </p>
+                                    <p class="artigo-abstract">{{ artigo.abstract_pt if artigo.abstract_pt else "Resumo não disponível" }}</p>
 
-                                    <p><strong>Ano:</strong> {{ artigo.publication_year if artigo.publication_year else "N/A" }}</p>
-                                    
-                                    <p><strong>Artigo:</strong> 
+                                    <div class="artigo-meta">
+                                        <p><strong>Autores:</strong>
+                                            {% if artigo.authorships %}
+                                                {{ artigo.authorships | map(attribute='author.display_name') | join(', ') }}
+                                            {% else %}
+                                                Não informado
+                                            {% endif %}
+                                        </p>
+
+                                        <p><strong>Ano:</strong> {{ artigo.publication_year if artigo.publication_year else "N/A" }}</p>
+
                                         {% if artigo.doi %}
-                                            <a href="https://doi.org/{{ artigo.doi }}" target="_blank">{{ artigo.doi }}</a>
-                                        {% else %}
-                                            Não disponível
+                                            <p><strong>Artigo:</strong>
+                                                <a href="https://doi.org/{{ artigo.doi }}" target="_blank" rel="noopener">{{ artigo.doi }}</a>
+                                            </p>
                                         {% endif %}
-                                    </p>
+                                    </div>
 
-                                    <a href="{{ artigo.id if artigo.id else artigo.url }}" target="_blank">Ler mais...</a>
+                                    {% set text = "Ler mais" %}
+                                    {% set type = "link" %}
+                                    {% set href = artigo.id if artigo.id else artigo.url %}
+                                    {% set size = "sm" %}
+                                    {% include 'components/button.html' with context %}
                                 </div>
                             </div>
                         {% endfor %}
                     {% else %}
-                        <p>Nenhum artigo encontrado.</p>
+                        <div class="empty-state">
+                            <i class="fa-solid fa-newspaper"></i>
+                            <p>Nenhum artigo disponível no momento.</p>
+                            <small>Volte mais tarde para conferir novas recomendações.</small>
+                        </div>
                     {% endif %}
-                </div>
-            </div>
-
-            <div class="container_add-atividade">
-                <div style="display: flex; flex-direction: column; gap: 15px; align-items: flex-end;">
-                    <!-- Botão Pomodoro -->
-                    <a href="{{ url_for('pomodoro') }}" class="link-pomodoro">
-                        <i class="fa-solid fa-clock"></i> Modo Pomodoro
-                    </a>
-                    
-                    <!-- Botão Adicionar Atividade -->
-                    <div class="add-atividade">
-                        <strong><p>Adicionar atividade</p></strong>
-                        <form action="{{url_for('adicionar_atividade')}}" method="get">
-                            <button type="submit" class="botao_add_atv">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // Passar dados do Jinja2 para JavaScript
         window.labelsDash = {{ labels_dash | tojson }};
         window.dataDash = {{ data_dash | tojson }};
         window.labelsMaterias = {{ labels_materias | tojson }};

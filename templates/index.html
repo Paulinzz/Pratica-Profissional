@@ -21,7 +21,7 @@
         </div>
     </header>
 
-    <main>
+    <main id="conteudo-principal">
         <div class="text_container">
             <h1>Por que utilizar um gerenciador de estudos?</h1>
             <p>
@@ -33,12 +33,8 @@
                 e melhorar o desempenho, tornando os estudos mais produtivos e menos estressantes.
             </p>
             <div class="botoes">
-                <button class="cadastro">
-                    <a href="{{url_for('register')}}">Cadastre-se</a>
-                </button>
-                <button class="login">
-                    <a href="{{url_for('login')}}">Login</a>
-                </button>
+                <a href="{{url_for('register')}}" class="cadastro">Cadastre-se</a>
+                <a href="{{url_for('login')}}" class="login">Login</a>
             </div>
         </div>
     </main>
