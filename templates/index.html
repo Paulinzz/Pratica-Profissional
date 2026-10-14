@@ -3,40 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial - FocusUp</title>
+    <meta name="description" content="FocusUp — organize suas matérias, planeje suas tarefas e acompanhe seu progresso em um só lugar.">
+    <title>FocusUp — Estude com foco. Evolua todos os dias.</title>
     <link rel="stylesheet" href="{{url_for('static', filename='pagina_inicial.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="{{url_for('static', filename='imagens/correto.png')}}" type="image/x-icon">
-
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <div class="focusup-logo">
-                <div class="checkmark-container">
+    <header class="navbar">
+        <div class="navbar-inner">
+            <a href="{{url_for('index')}}" class="focusup-logo" aria-label="FocusUp — página inicial">
+                <div class="checkmark-container" aria-hidden="true">
                     <div class="checkmark"></div>
                 </div>
                 <span class="focusup-text">FocusUp</span>
+            </a>
+
+            <nav class="nav-links" aria-label="Navegação principal">
+                <a href="#inicio">Início</a>
+                <a href="#recursos">Recursos</a>
+                <a href="#sobre">Sobre</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="{{url_for('login')}}" class="btn btn-secondary">Entrar</a>
+                <a href="{{url_for('register')}}" class="btn btn-primary">Começar agora</a>
             </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
         </div>
+
+        <nav class="mobile-menu" id="mobileMenu" aria-label="Menu móvel" hidden>
+            <a href="#inicio">Início</a>
+            <a href="#recursos">Recursos</a>
+            <a href="#sobre">Sobre</a>
+            <div class="mobile-menu-actions">
+                <a href="{{url_for('login')}}" class="btn btn-secondary">Entrar</a>
+                <a href="{{url_for('register')}}" class="btn btn-primary">Começar agora</a>
+            </div>
+        </nav>
     </header>
 
-    <main id="conteudo-principal">
-        <div class="text_container">
-            <h1>Por que utilizar um gerenciador de estudos?</h1>
-            <p>
-                O software gerenciador de estudos surgiu da necessidade
-                de ajudar estudantes a organizarem melhor seu tempo e tarefas. 
-                Com a grande quantidade de matérias, prazos e atividades, 
-                muitos têm dificuldade em manter uma rotina eficiente.
-                Essa ferramenta permite planejar, acompanhar o progresso 
-                e melhorar o desempenho, tornando os estudos mais produtivos e menos estressantes.
-            </p>
-            <div class="botoes">
-                <a href="{{url_for('register')}}" class="cadastro">Cadastre-se</a>
-                <a href="{{url_for('login')}}" class="login">Login</a>
+    <main>
+        <!-- Hero -->
+        <section class="hero" id="inicio">
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <span class="hero-badge">
+                        <i class="fa-solid fa-check" aria-hidden="true"></i>
+                        Sua rotina de estudos, mais organizada
+                    </span>
+                    <h1>Estude <span class="destaque">com foco</span>. Evolua todos os dias.</h1>
+                    <p class="hero-descricao">
+                        Organize suas matérias, planeje suas tarefas e acompanhe seu
+                        progresso em um só lugar. Transforme seus objetivos em uma
+                        rotina de estudos mais leve e produtiva.
+                    </p>
+                    <div class="hero-acoes">
+                        <a href="{{url_for('register')}}" class="btn btn-primary btn-grande">Começar gratuitamente</a>
+                        <a href="{{url_for('login')}}" class="link-secundario">Já tenho uma conta</a>
+                    </div>
+                    <p class="hero-auxiliar">Organize sua rotina e acompanhe sua evolução.</p>
+                </div>
+
+                <!-- Prévia ilustrativa do dashboard (dados demonstrativos) -->
+                <div class="hero-preview" role="img" aria-label="Prévia demonstrativa do painel do FocusUp, com horas estudadas na semana, tarefas e progresso por matéria">
+                    <span class="preview-tag">Prévia demonstrativa</span>
+
+                    <div class="preview-card preview-horas">
+                        <div class="preview-card-header">
+                            <span class="preview-titulo">Horas estudadas nesta semana</span>
+                            <span class="preview-valor">12h 30min</span>
+                        </div>
+                        <div class="grafico-semana" aria-hidden="true">
+                            <div class="barra" style="--h: 35%"><span>S</span></div>
+                            <div class="barra" style="--h: 55%"><span>T</span></div>
+                            <div class="barra" style="--h: 40%"><span>Q</span></div>
+                            <div class="barra destaque-barra" style="--h: 80%"><span>Q</span></div>
+                            <div class="barra" style="--h: 60%"><span>S</span></div>
+                            <div class="barra" style="--h: 30%"><span>S</span></div>
+                            <div class="barra" style="--h: 20%"><span>D</span></div>
+                        </div>
+                    </div>
+
+                    <div class="preview-linha">
+                        <div class="preview-card preview-tarefas">
+                            <span class="preview-titulo">Tarefas</span>
+                            <div class="tarefa-indicador">
+                                <span class="indicador-numero verde">8</span>
+                                <span class="indicador-legenda">concluídas</span>
+                            </div>
+                            <div class="tarefa-indicador">
+                                <span class="indicador-numero">3</span>
+                                <span class="indicador-legenda">pendentes</span>
+                            </div>
+                        </div>
+
+                        <div class="preview-card preview-concluida">
+                            <span class="icone-concluida" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
+                            <div>
+                                <span class="tarefa-feita">Revisão de Álgebra</span>
+                                <span class="tarefa-status">concluída hoje</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preview-card preview-materias">
+                        <span class="preview-titulo">Matérias</span>
+                        <ul class="lista-materias">
+                            <li>
+                                <span class="materia-nome">Matemática</span>
+                                <div class="progresso"><div class="progresso-fill" style="--p: 75%"></div></div>
+                                <span class="materia-pct">75%</span>
+                            </li>
+                            <li>
+                                <span class="materia-nome">História</span>
+                                <div class="progresso"><div class="progresso-fill" style="--p: 50%"></div></div>
+                                <span class="materia-pct">50%</span>
+                            </li>
+                            <li>
+                                <span class="materia-nome">Biologia</span>
+                                <div class="progresso"><div class="progresso-fill" style="--p: 90%"></div></div>
+                                <span class="materia-pct">90%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Recursos -->
+        <section class="recursos" id="recursos">
+            <div class="secao-inner">
+                <h2>Tudo o que você precisa para estudar melhor.</h2>
+                <div class="recursos-grid">
+                    <article class="recurso-card">
+                        <span class="recurso-icone" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+                        <h3>Organize suas matérias</h3>
+                        <p>Reúna suas disciplinas e mantenha seus conteúdos organizados.</p>
+                    </article>
+                    <article class="recurso-card">
+                        <span class="recurso-icone" aria-hidden="true"><i class="fa-solid fa-list-check"></i></span>
+                        <h3>Planeje suas tarefas</h3>
+                        <p>Visualize suas atividades, prazos e prioridades para saber o que fazer a seguir.</p>
+                    </article>
+                    <article class="recurso-card">
+                        <span class="recurso-icone" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span>
+                        <h3>Acompanhe seu progresso</h3>
+                        <p>Tenha uma visão clara da sua evolução e dos seus objetivos de estudo.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chamada para ação -->
+        <section class="cta">
+            <div class="secao-inner cta-inner">
+                <h2>Seu próximo passo começa hoje.</h2>
+                <p>Comece a organizar seus estudos e construa uma rotina que funcione para você.</p>
+                <a href="{{url_for('register')}}" class="btn btn-primary btn-grande">Criar minha conta</a>
+            </div>
+        </section>
     </main>
+
+    <footer class="rodape" id="sobre">
+        <div class="rodape-inner">
+            <div class="rodape-marca">
+                <div class="focusup-logo">
+                    <div class="checkmark-container" aria-hidden="true">
+                        <div class="checkmark"></div>
+                    </div>
+                    <span class="focusup-text">FocusUp</span>
+                </div>
+                <p>Um gerenciador de estudos pessoais para planejar sua rotina e acompanhar sua evolução.</p>
+            </div>
+            <nav class="rodape-links" aria-label="Links do rodapé">
+                <a href="#inicio">Início</a>
+                <a href="#recursos">Recursos</a>
+                <a href="{{url_for('login')}}">Entrar</a>
+                <a href="{{url_for('register')}}">Cadastro</a>
+            </nav>
+        </div>
+        <div class="rodape-base">
+            <p>&copy; <span id="anoAtual">2025</span> FocusUp. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu móvel
+        (function () {
+            var toggle = document.getElementById('navToggle');
+            var menu = document.getElementById('mobileMenu');
+
+            function fecharMenu() {
+                menu.hidden = true;
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.setAttribute('aria-label', 'Abrir menu');
+            }
+
+            toggle.addEventListener('click', function () {
+                var aberto = toggle.getAttribute('aria-expanded') === 'true';
+                if (aberto) {
+                    fecharMenu();
+                } else {
+                    menu.hidden = false;
+                    toggle.setAttribute('aria-expanded', 'true');
+                    toggle.setAttribute('aria-label', 'Fechar menu');
+                }
+            });
+
+            menu.addEventListener('click', function (event) {
+                if (event.target.closest('a')) {
+                    fecharMenu();
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && !menu.hidden) {
+                    fecharMenu();
+                    toggle.focus();
+                }
+            });
+        })();
+
+        // Ano atual no rodapé
+        document.getElementById('anoAtual').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
