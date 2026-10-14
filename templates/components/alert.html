@@ -1,0 +1,43 @@
+{#
+   components/alert.html
+
+   Componente de alerta/mensagem inline
+
+   Uso:
+   {% include 'components/alert.html' with context %}
+
+   Parâmetros:
+   - type: success|danger|warning|info (default: info)
+   - title: título do alerta (opcional)
+   - message: mensagem (obrigatório)
+   - icon: ícone customizado (default: baseado no type)
+   - dismissible: true|false (mostra botão de fechar)
+   - class: classes adicionais
+#}
+
+{% set default_icons = {
+  'success': 'circle-check',
+  'danger': 'circle-exclamation',
+  'warning': 'triangle-exclamation',
+  'info': 'circle-info'
+} %}
+
+<div class="alert alert-{{ type|default('info') }} {{ class|default('') }}"
+     role="alert">
+  <div class="alert-icon">
+    <i class="fa-solid fa-{{ icon|default(default_icons[type|default('info')]) }}"></i>
+  </div>
+
+  <div class="alert-content">
+    {% if title %}
+      <strong class="alert-title">{{ title }}</strong>
+    {% endif %}
+    <div class="alert-message">{{ message }}</div>
+  </div>
+
+  {% if dismissible %}
+    <button type="button" class="alert-close" aria-label="Fechar alerta">
+      <i class="fa-solid fa-times"></i>
+    </button>
+  {% endif %}
+</div>

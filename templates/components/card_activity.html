@@ -1,0 +1,46 @@
+{#
+   components/card_activity.html
+
+   Componente para cards de atividade/meta
+
+   Uso:
+   {% include 'components/card_activity.html' with context %}
+
+   Parâmetros:
+   - title: título da atividade
+   - meta: meta/matéria relacionada
+   - status: "completo"|"em-progresso"|"pendente"
+   - icon: ícone FontAwesome
+   - color: cor (primary|success|warning|danger)
+   - class: classes adicionais
+#}
+
+{% set status_icons = {
+  'completo': 'check-circle',
+  'em-progresso': 'circle-notch',
+  'pendente': 'circle'
+} %}
+
+<div class="card atividade-card {{ class|default('') }}"
+     style="border-left-color: var(--color-{{ color|default('primary') }});">
+
+  <div class="atividade-header">
+    {% if icon %}
+      <i class="fa-solid fa-{{ icon }}"></i>
+    {% endif %}
+    <h3 class="atividade-title">{{ title }}</h3>
+  </div>
+
+  {% if meta %}
+    <div class="atividade-meta">
+      <small>{{ meta }}</small>
+    </div>
+  {% endif %}
+
+  {% if status %}
+    <div class="atividade-status atividade-status-{{ status }}">
+      <i class="fa-solid fa-{{ status_icons[status]|default('circle') }}"></i>
+      {{ status|title }}
+    </div>
+  {% endif %}
+</div>

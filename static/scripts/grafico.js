@@ -4,95 +4,105 @@ document.addEventListener('DOMContentLoaded', function() {
     const labelsMaterias = Array.isArray(window.labelsMaterias) ? window.labelsMaterias : [];
     const dataMaterias = Array.isArray(window.dataMaterias) ? window.dataMaterias : [];
 
-    // Gradiente para o gráfico de linha
+    // Helper: detect dark mode
+    function isDarkMode() {
+        return document.body.classList.contains('dark-mode');
+    }
+
+    // Helper: get CSS variable value
+    function getCssVar(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    // Chart default options with dark mode support
+    const getChartDefaults = function() {
+        const dark = isDarkMode();
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: dark ? 'rgba(30,30,30,0.95)' : 'rgba(0,0,0,0.8)',
+                    titleColor: dark ? '#e0e0e0' : '#fff',
+                    bodyColor: dark ? '#b0b0b0' : '#fff',
+                    cornerRadius: 8,
+                    padding: 12,
+                    titleFont: { weight: '600' },
+                    bodyFont: { size: 13 }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: dark ? 'rgba(255,255,255,0.06)' : 'rgba(200,200,200,0.3)'
+                    },
+                    ticks: {
+                        color: dark ? '#808080' : '#666',
+                        font: { size: 12 }
+                    }
+                },
+                x: {
+                    grid: {
+                        color: dark ? 'rgba(255,255,255,0.06)' : 'rgba(200,200,200,0.3)'
+                    },
+                    ticks: {
+                        color: dark ? '#808080' : '#666',
+                        font: { size: 12 }
+                    }
+                }
+            },
+            animation: {
+                duration: 1500,
+                easing: 'easeInOutQuart'
+            }
+        };
+    };
+
+    // Line Chart - Activities per day
     const ctxDash = document.getElementById('chartDash');
     if (ctxDash && labelsDash.length > 0 && dataDash.length > 0) {
         const contextDash = ctxDash.getContext('2d');
         const gradientDash = contextDash.createLinearGradient(0, 0, 0, 400);
-        gradientDash.addColorStop(0, 'rgba(75, 192, 192, 0.4)');
-        gradientDash.addColorStop(1, 'rgba(75, 192, 192, 0.1)');
+        gradientDash.addColorStop(0, 'rgba(26, 115, 232, 0.3)');
+        gradientDash.addColorStop(1, 'rgba(26, 115, 232, 0.02)');
 
         const chartDash = new Chart(contextDash, {
             type: 'line',
             data: {
                 labels: labelsDash,
                 datasets: [{
-                    label: 'Atividades Registras por Dia',
+                    label: 'Atividades Registradas',
                     data: dataDash,
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderColor: '#1a73e8',
                     backgroundColor: gradientDash,
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4,
-                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                    pointBorderColor: '#fff',
+                    pointBackgroundColor: '#1a73e8',
+                    pointBorderColor: isDarkMode() ? '#1e1e1e' : '#fff',
                     pointBorderWidth: 2,
-                    pointRadius: 6,
-                    pointHoverRadius: 8
+                    pointRadius: 5,
+                    pointHoverRadius: 7
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                ...getChartDefaults(),
                 plugins: {
+                    ...getChartDefaults().plugins,
                     title: {
-                        display: true,
-                        text: 'Atividades Registradas por Dia',
-                        font: {
-                            size: 18,
-                            weight: 'bold'
-                        },
-                        color: '#333'
-                    },
-                    legend: {
                         display: false
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(0,0,0,0.8)',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        cornerRadius: 8
                     }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(200,200,200,0.3)'
-                        },
-                        ticks: {
-                            color: '#666'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            color: 'rgba(200,200,200,0.3)'
-                        },
-                        ticks: {
-                            color: '#666'
-                        }
-                    }
-                },
-                animation: {
-                    duration: 2000,
-                    easing: 'easeInOutQuart'
                 }
             }
         });
     }
 
-    // Cores variadas para o gráfico de barras
+    // Bar Chart - Study time per subject
     const colors = [
-        'rgba(255, 99, 132, 0.8)',
-        'rgba(54, 162, 235, 0.8)',
-        'rgba(255, 205, 86, 0.8)',
-        'rgba(75, 192, 192, 0.8)',
-        'rgba(153, 102, 255, 0.8)',
-        'rgba(255, 159, 64, 0.8)',
-        'rgba(199, 199, 199, 0.8)',
-        'rgba(83, 102, 255, 0.8)',
-        'rgba(255, 99, 255, 0.8)',
-        'rgba(99, 255, 132, 0.8)'
+        '#1a73e8', '#2e7d32', '#f57c00', '#0097a7',
+        '#7b1fa2', '#c62828', '#00838f', '#e65100'
     ];
 
     const ctxMaterias = document.getElementById('chartMaterias');
@@ -105,77 +115,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Tempo Gasto (minutos)',
                     data: dataMaterias,
-                    backgroundColor: colors.slice(0, labelsMaterias.length),
-                    borderColor: colors.slice(0, labelsMaterias.length).map(color => color.replace('0.8', '1')),
+                    backgroundColor: colors.slice(0, labelsMaterias.length).map(c => {
+                        const r = parseInt(c.slice(1, 3), 16);
+                        const g = parseInt(c.slice(3, 5), 16);
+                        const b = parseInt(c.slice(5, 7), 16);
+                        return `rgba(${r}, ${g}, ${b}, 0.8)`;
+                    }),
+                    borderColor: colors.slice(0, labelsMaterias.length),
                     borderWidth: 2,
                     borderRadius: 8,
                     borderSkipped: false,
-                    hoverBackgroundColor: colors.slice(0, labelsMaterias.length).map(color => color.replace('0.8', '1')),
-                    hoverBorderWidth: 3
+                    hoverBackgroundColor: colors.slice(0, labelsMaterias.length)
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                ...getChartDefaults(),
                 plugins: {
+                    ...getChartDefaults().plugins,
                     title: {
-                        display: true,
-                        text: 'Tempo Gasto por Matéria',
-                        font: {
-                            size: 18,
-                            weight: 'bold'
-                        },
-                        color: '#333'
-                    },
-                    legend: {
                         display: false
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(0,0,0,0.8)',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: function(context) {
-                                const minutos = context.parsed.y;
-                                const horas = Math.floor(minutos / 60);
-                                const mins = minutos % 60;
-                                if (horas > 0) {
-                                    return horas + 'h ' + mins + 'min';
-                                } else {
-                                    return mins + ' minutos';
-                                }
-                            }
-                        }
                     }
                 },
                 scales: {
+                    ...getChartDefaults().scales,
                     y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(200,200,200,0.3)'
-                        },
+                        ...getChartDefaults().scales.y,
                         ticks: {
-                            color: '#666',
-                            stepSize: 1
+                            ...getChartDefaults().scales.y.ticks,
+                            callback: function(value) {
+                                const horas = Math.floor(value / 60);
+                                const mins = value % 60;
+                                if (horas > 0 && mins > 0) {
+                                    return horas + 'h ' + mins + 'min';
+                                } else if (horas > 0) {
+                                    return horas + 'h';
+                                }
+                                return mins + 'min';
+                            }
                         }
-                    },
-                    x: {
-                        grid: {
-                            color: 'rgba(200,200,200,0.3)'
-                        },
-                        ticks: {
-                            color: '#666',
-                            maxRotation: 45,
-                            minRotation: 45
-                        }
-                    }
-                },
-                animation: {
-                    duration: 1500,
-                    easing: 'easeOutBounce',
-                    delay: function(context) {
-                        return context.dataIndex * 200;
                     }
                 }
             }
