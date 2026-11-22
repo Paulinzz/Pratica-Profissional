@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Contato - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<style>
+    .contato-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-4);
+        margin-bottom: var(--spacing-8);
+    }
+
+    .contato-info-card {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border-lighter);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-5) var(--spacing-4);
+        text-align: center;
+        text-decoration: none;
+        color: var(--color-text-primary);
+        transition: var(--transition-base);
+    }
+
+    a.contato-info-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--color-primary);
+    }
+
+    .contato-info-card i {
+        font-size: var(--font-size-2xl);
+        color: var(--color-primary);
+        margin-bottom: var(--spacing-3);
+        display: block;
+    }
+
+    .contato-info-card h3 {
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-semi-bold);
+        margin: 0 0 var(--spacing-1);
+    }
+
+    .contato-info-card p {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        margin: 0;
+        word-break: break-word;
+    }
+
+    /* Campo armadilha para robôs: invisível para pessoas */
+    .hp-field {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .contato-info {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<main id="conteudo-principal">
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fa-solid fa-envelope"></i> Fale Conosco</h1>
+            <p>Dúvidas, sugestões ou parcerias? Escreva para a equipe do FocusUp.</p>
+        </div>
+
+        <div class="contato-info">
+            <a class="contato-info-card" href="mailto:{{ email_suporte }}">
+                <i class="fa-solid fa-at"></i>
+                <h3>E-mail</h3>
+                <p>{{ email_suporte }}</p>
+            </a>
+            <a class="contato-info-card" href="{{ url_for('ajuda') }}">
+                <i class="fa-solid fa-circle-question"></i>
+                <h3>Central de Ajuda</h3>
+                <p>Veja as respostas mais comuns</p>
+            </a>
+            <a class="contato-info-card" href="{{ url_for('reportar_bug') }}">
+                <i class="fa-solid fa-bug"></i>
+                <h3>Encontrou um bug?</h3>
+                <p>Use o formulário de reporte</p>
+            </a>
+        </div>
+
+        <form action="{{ url_for('contato') }}" method="post" class="contato-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <!-- Honeypot anti-spam -->
+            <div class="hp-field" aria-hidden="true">
+                <label for="website">Não preencha este campo</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <!-- Nome -->
+            {% set name = "nome" %}
+            {% set label = "Seu nome" %}
+            {% set type = "text" %}
+            {% set value = form.get('nome', '') %}
+            {% set placeholder = "Como podemos te chamar?" %}
+            {% set required = true %}
+            {% set maxlength = 100 %}
+            {% set helper_text = none %}
+            {% set rows = none %}
+            {% include 'components/form_group.html' with context %}
+
+            <!-- E-mail -->
+            {% set name = "email" %}
+            {% set label = "Seu e-mail" %}
+            {% set type = "email" %}
+            {% set value = form.get('email', '') %}
+            {% set placeholder = "seu@email.com" %}
+            {% set required = true %}
+            {% set maxlength = 150 %}
+            {% set helper_text = "É por aqui que vamos te responder" %}
+            {% include 'components/form_group.html' with context %}
+
+            <!-- Assunto -->
+            {% set name = "assunto" %}
+            {% set label = "Assunto" %}
+            {% set options = [] %}
+            {% for key, nome_assunto in assuntos.items() %}
+                {% set _ = options.append({'id': key, 'nome': nome_assunto}) %}
+            {% endfor %}
+            {% set option_value = "id" %}
+            {% set option_label = "nome" %}
+            {% set value = form.get('assunto', '') %}
+            {% set placeholder = "Selecione..." %}
+            {% set required = true %}
+            {% set helper_text = none %}
+            {% include 'components/form_select.html' with context %}
+
+            <!-- Mensagem -->
+            {% set name = "mensagem" %}
+            {% set label = "Mensagem" %}
+            {% set type = "textarea" %}
+            {% set value = form.get('mensagem', '') %}
+            {% set placeholder = "Escreva aqui a sua mensagem..." %}
+            {% set required = true %}
+            {% set maxlength = 3000 %}
+            {% set rows = 6 %}
+            {% set helper_text = "Mínimo de 10 caracteres" %}
+            {% include 'components/form_group.html' with context %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Enviar mensagem
+                </button>
+                <a href="{{ url_for('dashboard') }}" class="btn-cancel">
+                    <i class="fa-solid fa-times"></i>
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Reportar Bug - FocusUp
+{% endblock %}
+
+{% block conteudo %}
+<main id="conteudo-principal">
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fa-solid fa-bug"></i> Reportar Bug</h1>
+            <p>Encontrou algo estranho? Conte pra gente para podermos corrigir.</p>
+        </div>
+
+        <form action="{{ url_for('reportar_bug') }}" method="post" class="bug-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <!-- Título -->
+            {% set name = "titulo" %}
+            {% set label = "Título do problema" %}
+            {% set type = "text" %}
+            {% set value = form.get('titulo', '') %}
+            {% set placeholder = "Ex: O timer do Pomodoro não pausa" %}
+            {% set required = true %}
+            {% set maxlength = 150 %}
+            {% set helper_text = "Resuma o problema em uma frase" %}
+            {% set rows = none %}
+            {% include 'components/form_group.html' with context %}
+
+            <!-- Categoria -->
+            {% set name = "categoria" %}
+            {% set label = "Categoria" %}
+            {% set options = [] %}
+            {% for key, nome in categorias.items() %}
+                {% set _ = options.append({'id': key, 'nome': nome}) %}
+            {% endfor %}
+            {% set option_value = "id" %}
+            {% set option_label = "nome" %}
+            {% set value = form.get('categoria', '') %}
+            {% set placeholder = "Selecione..." %}
+            {% set required = true %}
+            {% set helper_text = "Em que área o problema aconteceu?" %}
+            {% include 'components/form_select.html' with context %}
+
+            <!-- Gravidade -->
+            {% set name = "gravidade" %}
+            {% set label = "Gravidade" %}
+            {% set options = [] %}
+            {% for key, nome in gravidades.items() %}
+                {% set _ = options.append({'id': key, 'nome': nome}) %}
+            {% endfor %}
+            {% set value = form.get('gravidade', '') %}
+            {% set placeholder = "Selecione..." %}
+            {% set required = true %}
+            {% set helper_text = "O quanto isso atrapalha o seu uso?" %}
+            {% include 'components/form_select.html' with context %}
+
+            <!-- Página -->
+            {% set name = "pagina" %}
+            {% set label = "Página onde aconteceu (opcional)" %}
+            {% set type = "text" %}
+            {% set value = form.get('pagina', '') %}
+            {% set placeholder = "Ex: /dashboard" %}
+            {% set required = false %}
+            {% set maxlength = 255 %}
+            {% set helper_text = "Já preenchemos com a página de onde você veio" %}
+            {% include 'components/form_group.html' with context %}
+
+            <!-- Descrição -->
+            {% set name = "descricao" %}
+            {% set label = "O que aconteceu?" %}
+            {% set type = "textarea" %}
+            {% set value = form.get('descricao', '') %}
+            {% set placeholder = "Descreva o problema e o que você esperava que acontecesse" %}
+            {% set required = true %}
+            {% set maxlength = 2000 %}
+            {% set rows = 5 %}
+            {% set helper_text = "Quanto mais detalhes, mais rápido conseguimos corrigir" %}
+            {% include 'components/form_group.html' with context %}
+
+            <!-- Passos -->
+            {% set name = "passos" %}
+            {% set label = "Passos para reproduzir (opcional)" %}
+            {% set type = "textarea" %}
+            {% set value = form.get('passos', '') %}
+            {% set placeholder = "Ex: 1) Abri o Pomodoro 2) Cliquei em Iniciar 3) Cliquei em Pausar" %}
+            {% set required = false %}
+            {% set maxlength = 2000 %}
+            {% set rows = 4 %}
+            {% set helper_text = "Liste o passo a passo para o erro aparecer" %}
+            {% include 'components/form_group.html' with context %}
+
+            <p class="form-note" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                <i class="fa-solid fa-circle-info"></i>
+                Enviamos automaticamente o navegador que você está usando para ajudar na investigação.
+            </p>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Enviar relatório
+                </button>
+                <a href="{{ url_for('dashboard') }}" class="btn-cancel">
+                    <i class="fa-solid fa-times"></i>
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}

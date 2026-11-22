@@ -111,26 +111,34 @@
                                     <span class="materia-nome">
                                         <i class="fa-solid fa-book"></i> {{ materia.nome }}
                                     </span>
-                                    <span class="materia-tempo">
-                                        {% if tempo > 0 %}
-                                            {{ tempo // 60 }}h {{ tempo % 60 }}min
-                                        {% else %}
-                                            Sem tempo
-                                        {% endif %}
-                                    </span>
+
+                                    <!-- Tempo + botão de excluir agrupados à direita -->
+                                    <div class="materia-acoes">
+                                        <span class="materia-tempo">
+                                            {% if tempo > 0 %}
+                                                {{ tempo // 60 }}h {{ tempo % 60 }}min
+                                            {% else %}
+                                                Sem tempo
+                                            {% endif %}
+                                        </span>
+
+                                        <form method="post"
+                                              action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
+                                              class="materia-delete-form"
+                                              onsubmit="return confirm('Excluir matéria {{ materia.nome }}?');">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                            <button type="submit"
+                                                    class="btn-delete-materia"
+                                                    title="Excluir matéria"
+                                                    aria-label="Excluir matéria {{ materia.nome }}">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                                 <div class="materia-progress-bar">
                                     <div class="materia-progress-fill" style="width: {{ percent }}%"></div>
                                 </div>
-                                <form method="post"
-                                      action="{{ url_for('excluir_materia', materia_id=materia.id) }}"
-                                      class="materia-delete-form"
-                                      onsubmit="return confirm('Excluir matéria {{ materia.nome }}?');">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                                    <button type="submit" class="btn-delete-materia" aria-label="Excluir matéria {{ materia.nome }}">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
                             </div>
                         {% endfor %}
                     </div>

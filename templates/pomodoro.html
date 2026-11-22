@@ -160,10 +160,6 @@
         box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
     }
 
-    body.dark-mode .materia-block select {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-    }
-
     .progress-ring-wrapper {
         position: relative;
         width: min(320px, 80vw);
@@ -518,6 +514,16 @@
         padding-top: var(--spacing-1);
     }
 
+    .ambient-settings {
+        margin-top: calc(-1 * var(--spacing-4));
+    }
+
+    .ambient-volume {
+        width: 110px;
+        accent-color: var(--pomodoro-focus);
+        cursor: pointer;
+    }
+
     @keyframes pomodoroFadeIn {
         from {
             opacity: 0;
@@ -671,6 +677,18 @@
                     <span class="slider"></span>
                 </label>
             </div>
+
+            <div class="sound-settings ambient-settings">
+                <label for="brownNoiseToggle">
+                    <i class="fa-solid fa-wave-square"></i> Ruído marrom (foco)
+                </label>
+                <label class="switch">
+                    <input type="checkbox" id="brownNoiseToggle">
+                    <span class="slider"></span>
+                </label>
+                <input type="range" id="brownNoiseVolume" class="ambient-volume"
+                       min="0" max="100" value="40" aria-label="Volume do ruído marrom">
+            </div>
         </div>
 
         <section class="stats-section">
@@ -730,6 +748,9 @@
     let currentMode = 'work';
     let pomodorosCompleted = 0;
     let totalMinutes = 0;
+    let ambientCtx = null;
+    let ambientSource = null;
+    let ambientGain = null;
 
     const modes = {
         work: { duration: 25 * 60, label: 'Foco', color: '#1a73e8' },
@@ -772,6 +793,7 @@
         if (isRunning) return;
 
         isRunning = true;
+        updateAmbientSound();
         document.getElementById('startBtn').style.display = 'none';
         document.getElementById('pauseBtn').style.display = 'inline-flex';
 
@@ -793,6 +815,7 @@
     function pauseTimer() {
         isRunning = false;
         clearInterval(timerInterval);
+        updateAmbientSound();
         document.getElementById('startBtn').style.display = 'inline-flex';
         document.getElementById('pauseBtn').style.display = 'none';
 
@@ -877,6 +900,91 @@
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.5);
     }
+
+    // ---------- Ruído marrom ----------
+    function createBrownNoiseBuffer(ctx) {
+        const seconds = 10;
+        const fade = Math.floor(ctx.sampleRate * 0.5);       // crossfade de 0,5s
+        const length = ctx.sampleRate * seconds;
+        const raw = new Float32Array(length + fade);
+
+        let last = 0;
+        for (let i = 0; i < raw.length; i++) {
+            const white = Math.random() * 2 - 1;
+            last = (last + 0.02 * white) / 1.02;              // integra o ruído branco
+            raw[i] = last * 3.5;                              // compensa o volume baixo
+        }
+
+        const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        data.set(raw.subarray(0, length));
+        // crossfade do final com o início para o loop não "estalar"
+        for (let i = 0; i < fade; i++) {
+            const t = i / fade;
+            data[i] = raw[i] * t + raw[length + i] * (1 - t);
+        }
+        return buffer;
+    }
+
+    function getAmbientVolume() {
+        return (document.getElementById('brownNoiseVolume').value / 100) * 0.5;
+    }
+
+    function startAmbientSound() {
+        if (!ambientCtx) {
+            ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (ambientCtx.state === 'suspended') ambientCtx.resume();
+        if (ambientSource) return; // já tocando
+
+        ambientGain = ambientCtx.createGain();
+        ambientGain.gain.setValueAtTime(0, ambientCtx.currentTime);
+        ambientGain.gain.linearRampToValueAtTime(getAmbientVolume(), ambientCtx.currentTime + 1.5);
+        ambientGain.connect(ambientCtx.destination);
+
+        ambientSource = ambientCtx.createBufferSource();
+        ambientSource.buffer = createBrownNoiseBuffer(ambientCtx);
+        ambientSource.loop = true;
+        ambientSource.connect(ambientGain);
+        ambientSource.start();
+    }
+
+    function stopAmbientSound() {
+        if (!ambientSource) return;
+        const source = ambientSource;
+        const gain = ambientGain;
+        ambientSource = null;
+        ambientGain = null;
+
+        gain.gain.cancelScheduledValues(ambientCtx.currentTime);
+        gain.gain.setValueAtTime(gain.gain.value, ambientCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, ambientCtx.currentTime + 0.5);
+        setTimeout(() => { source.stop(); gain.disconnect(); }, 600);
+    }
+
+    // Toca só se: timer rodando + modo Foco + toggle ligado
+    function updateAmbientSound() {
+        const enabled = document.getElementById('brownNoiseToggle').checked;
+        if (isRunning && currentMode === 'work' && enabled) {
+            startAmbientSound();
+        } else {
+            stopAmbientSound();
+        }
+    }
+
+    document.getElementById('brownNoiseToggle').addEventListener('change', () => {
+        localStorage.setItem('focusup_brown_noise', document.getElementById('brownNoiseToggle').checked);
+        updateAmbientSound();
+    });
+
+    document.getElementById('brownNoiseVolume').addEventListener('input', (e) => {
+        localStorage.setItem('focusup_brown_noise_vol', e.target.value);
+        if (ambientGain) ambientGain.gain.setTargetAtTime(getAmbientVolume(), ambientCtx.currentTime, 0.05);
+    });
+
+    // Restaura preferências salvas
+    document.getElementById('brownNoiseToggle').checked = localStorage.getItem('focusup_brown_noise') === 'true';
+    document.getElementById('brownNoiseVolume').value = localStorage.getItem('focusup_brown_noise_vol') || 40;
 
     function salvarSessao() {
         const materia = document.getElementById('materia-select').value;

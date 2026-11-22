@@ -45,13 +45,7 @@
         });
 
         // Acessibilidade: Enter/Space no trigger do dropdown
-        document.addEventListener('keydown', function(event) {
-            const trigger = document.getElementById('userDropdownTrigger');
-            if (trigger && (event.key === 'Enter' || event.key === ' ')) {
-                event.preventDefault();
-                toggleDropdown();
-            }
-        });
+
 
         // Footer toggle
         function toggleFooterSection(element) {

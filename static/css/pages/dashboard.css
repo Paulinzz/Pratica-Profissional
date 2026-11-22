@@ -224,7 +224,7 @@
   justify-content: center;
   transition: var(--transition-fast);
   font-size: var(--font-size-xs);
-  padding: 0;
+  padding: 5px;
 }
 
 .btn-delete-materia:hover {
@@ -568,5 +568,69 @@ body.dark-mode .chart-empty small {
 
   .artigos-container {
     max-height: 300px;
+  }
+}
+
+/* Time + delete grouped on the right of the header */
+.materia-acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+/* No longer absolute: it's now part of the flex row */
+.materia-delete-form {
+  margin: 0;
+  display: flex;
+}
+
+/* Ghost button: quiet by default */
+.btn-delete-materia {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  padding: 0;
+  transition: var(--transition-fast);
+}
+
+/* Red only when the user shows intent */
+.btn-delete-materia:hover,
+.btn-delete-materia:focus-visible {
+  background: rgba(211, 47, 47, 0.12);
+  color: var(--color-danger);
+}
+
+.btn-delete-materia:focus-visible {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 2px;
+}
+
+.btn-delete-materia:active {
+  transform: scale(0.92);
+}
+
+body.dark-mode .btn-delete-materia {
+  color: var(--color-text-dark-secondary);
+}
+
+body.dark-mode .btn-delete-materia:hover,
+body.dark-mode .btn-delete-materia:focus-visible {
+  background: rgba(239, 83, 80, 0.15);
+  color: #ef5350;
+}
+
+/* Touch screens: larger hit area */
+@media (pointer: coarse) {
+  .btn-delete-materia {
+    width: 40px;
+    height: 40px;
   }
 }

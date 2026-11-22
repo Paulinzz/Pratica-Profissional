@@ -210,7 +210,6 @@ body.dark-mode .footer-section-content a i {
 }
 
 .social-link:hover {
-  background: var(--color-primary);
   color: white;
   transform: translateY(-4px);
 }

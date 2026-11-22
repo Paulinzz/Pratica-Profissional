@@ -97,7 +97,6 @@
   padding: var(--spacing-6);
   border-left: 4px solid var(--color-primary);
   transition: var(--transition-base);
-  box-shadow: var(--shadow-card);
   animation: fadeInUp 0.6s ease forwards;
   opacity: 0;
 }

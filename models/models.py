@@ -4,7 +4,6 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -26,13 +25,11 @@ class User(db.Model, UserMixin):
         "Notificacao", backref="usuario", lazy=True, cascade="all, delete-orphan"
     )
 
-
 class Materia(db.Model):
     __tablename__ = "tb_materias"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-
 
 class Atividade(db.Model):
     __tablename__ = "tb_atividades"
@@ -44,7 +41,6 @@ class Atividade(db.Model):
     data = db.Column(db.Date, nullable=True)
     data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-
 
 class Notificacao(db.Model):
     __tablename__ = "tb_notificacoes"
@@ -59,7 +55,6 @@ class Notificacao(db.Model):
     data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
     link = db.Column(db.String(255), nullable=True)  # URL para redirecionar
     icone = db.Column(db.String(50), default="fa-bell")  # Ícone Font Awesome
-
 
 class Meta(db.Model):
     __tablename__ = "tb_metas"
@@ -86,7 +81,6 @@ class Badge(db.Model):
     criterio = db.Column(db.String(100), nullable=False)  # Condition to earn
     pontos = db.Column(db.Integer, default=10)
 
-
 class UserBadge(db.Model):
     __tablename__ = "tb_user_badges"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -94,3 +88,28 @@ class UserBadge(db.Model):
     badge_id = db.Column(db.Integer, db.ForeignKey("tb_badges.id"), nullable=False)
     data_conquista = db.Column(db.DateTime, default=datetime.utcnow)
     badge = db.relationship("Badge", backref="user_badges", lazy=True)
+
+class BugReport(db.Model):
+    __tablename__ = "tb_bug_reports"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+    titulo = db.Column(db.String(150), nullable=False)
+    categoria = db.Column(db.String(30), nullable=False)
+    gravidade = db.Column(db.String(10), nullable=False)  # baixa, media, alta
+    pagina = db.Column(db.String(255), nullable=True)
+    descricao = db.Column(db.Text, nullable=False)
+    passos = db.Column(db.Text, nullable=True)
+    user_agent = db.Column(db.String(255), nullable=True)
+    status = db.Column(db.String(20), default="aberto")  # aberto, em_analise, resolvido
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+
+class ContatoMensagem(db.Model):
+    __tablename__ = "tb_contatos"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(150), nullable=False)
+    assunto = db.Column(db.String(30), nullable=False)
+    mensagem = db.Column(db.Text, nullable=False)
+    lida = db.Column(db.Boolean, default=False)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)

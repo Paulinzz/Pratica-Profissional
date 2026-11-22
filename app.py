@@ -18,7 +18,8 @@ from controllers.study_controller import init_study_routes
 from controllers.user_controller import init_user_routes
 from controllers.error_controller import init_error_handlers
 from config.logging_config import setup_logging
-
+from controllers.bug_controller import init_bug_routes
+from controllers.contact_controller import init_contact_routes
 
 load_dotenv()
 
@@ -65,7 +66,8 @@ login_manager.login_view = "login"
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
+init_contact_routes(app)
+init_bug_routes(app)
 init_auth_routes(app, bcrypt, mail)
 init_study_routes(app)
 init_user_routes(app, bcrypt)
