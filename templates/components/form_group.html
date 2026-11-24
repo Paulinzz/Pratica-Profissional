@@ -54,6 +54,7 @@
               aria-label="{{ label }}"
               {% if helper_text %}aria-describedby="{{ name }}-help"{% endif %}>{{ value|default('') }}</textarea>
   {% else %}
+    {% if type == 'password' %}<div class="password-input-wrapper">{% endif %}
     <input type="{{ type|default('text') }}"
            id="{{ name }}"
            name="{{ name }}"
@@ -73,6 +74,18 @@
            {% if step %}step="{{ step }}"{% endif %}
            aria-label="{{ label }}"
            {% if helper_text %}aria-describedby="{{ name }}-help"{% endif %}>
+    {% if type == 'password' %}
+      <button type="button"
+              class="password-toggle"
+              data-password-toggle="{{ name }}"
+              aria-label="Mostrar senha"
+              aria-controls="{{ name }}"
+              aria-pressed="false"
+              title="Mostrar senha">
+        <i class="fa-solid fa-eye" aria-hidden="true"></i>
+      </button>
+    </div>
+    {% endif %}
   {% endif %}
 
   {% if error_text %}

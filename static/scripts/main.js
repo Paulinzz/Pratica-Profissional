@@ -91,6 +91,70 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Entrada suave em todas as páginas
+            document.body.classList.remove('page-entering');
+            window.requestAnimationFrame(function() {
+                document.body.classList.add('page-entering');
+            });
+
+            // Transição suave para links internos
+            document.querySelectorAll('a[href]').forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    if (link.target && link.target !== '_self') return;
+                    if (link.hasAttribute('download')) return;
+
+                    const url = new URL(link.href, window.location.href);
+                    if (url.origin !== window.location.origin) return;
+                    if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return;
+
+                    event.preventDefault();
+                    document.body.classList.remove('page-entering');
+                    document.body.classList.add('page-leaving');
+
+                    window.setTimeout(function() {
+                        window.location.href = url.href;
+                    }, 180);
+                });
+            });
+
+            // Transição suave antes do envio de formulários
+            document.querySelectorAll('form').forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (event.defaultPrevented || form.dataset.noPageTransition === 'true') return;
+                    if (form.target && form.target !== '_self') return;
+                    if (form.method === 'dialog') return;
+
+                    event.preventDefault();
+                    document.body.classList.remove('page-entering');
+                    document.body.classList.add('page-leaving');
+
+                    window.setTimeout(function() {
+                        form.submit();
+                    }, 180);
+                });
+            });
+
+            document.querySelectorAll('[data-password-toggle]').forEach(function(toggle) {
+                toggle.addEventListener('click', function() {
+                    const inputId = toggle.getAttribute('data-password-toggle');
+                    const input = document.getElementById(inputId);
+                    if (!input) return;
+
+                    const isVisible = input.type === 'text';
+                    input.type = isVisible ? 'password' : 'text';
+                    toggle.setAttribute('aria-pressed', isVisible ? 'false' : 'true');
+                    toggle.setAttribute('aria-label', isVisible ? 'Mostrar senha' : 'Ocultar senha');
+                    toggle.setAttribute('title', isVisible ? 'Mostrar senha' : 'Ocultar senha');
+
+                    const icon = toggle.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-eye', isVisible);
+                        icon.classList.toggle('fa-eye-slash', !isVisible);
+                    }
+                });
+            });
+
             const footerSections = document.querySelectorAll('.footer-section h3');
             footerSections.forEach(function(header) {
                 header.addEventListener('click', function() {

@@ -183,6 +183,44 @@
 .z-fixed { z-index: var(--z-fixed); }
 .z-modal { z-index: var(--z-modal); }
 
+/* Page Transitions */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body.page-entering #conteudo-principal,
+body.page-entering .auth-container {
+  animation: pageEnter var(--duration-slow) var(--ease-out) both;
+}
+
+body.page-leaving #conteudo-principal,
+body.page-leaving .auth-container {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--duration-fast) var(--ease-in),
+              transform var(--duration-fast) var(--ease-in);
+}
+
+/* Native cross-document view transitions (supported browsers) */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: fadeOut 180ms ease both;
+}
+
+::view-transition-new(root) {
+  animation: pageEnter 320ms var(--ease-out) both;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
