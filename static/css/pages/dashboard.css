@@ -205,37 +205,6 @@
   transition: width 0.6s ease;
 }
 
-.materia-delete-form {
-  position: absolute;
-  top: var(--spacing-1);
-  right: var(--spacing-1);
-}
-
-.btn-delete-materia {
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-md);
-  background-color: var(--color-danger);
-  color: white;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition-fast);
-  font-size: var(--font-size-xs);
-  padding: 5px;
-}
-
-.btn-delete-materia:hover {
-  background-color: var(--color-danger-dark);
-  transform: scale(1.1);
-}
-
-.btn-delete-materia:active {
-  transform: scale(0.95);
-}
-
 /* ====================================
    QUICK ACTIONS
    ==================================== */
@@ -335,14 +304,16 @@
    EMPTY STATE
    ==================================== */
 
-.empty-state {
+/* Escopado ao dashboard: antes valia para o site todo e quebrava o
+   componente components/empty_state.html (atividades, metas) */
+.dashboard-main .empty-state {
   text-align: center;
   color: var(--color-text-secondary);
   padding: var(--spacing-8) var(--spacing-4);
   width: 100%;
 }
 
-.empty-state i {
+.dashboard-main .empty-state i {
   font-size: 48px;
   display: block;
   margin-bottom: var(--spacing-4);
@@ -350,13 +321,13 @@
   color: var(--color-text-tertiary);
 }
 
-.empty-state p {
+.dashboard-main .empty-state p {
   margin: 0 0 var(--spacing-2) 0;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
 }
 
-.empty-state small {
+.dashboard-main .empty-state small {
   font-size: var(--font-size-sm);
   color: var(--color-text-tertiary);
 }
@@ -364,11 +335,19 @@
 .chart-empty {
   text-align: center;
   color: var(--color-text-secondary);
-  padding: var(--spacing-8);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* Dentro do fluxo (não absolute): ocupa toda a largura do card e cresce em altura se precisar */
+  position: static;
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+  padding: var(--spacing-6) var(--spacing-4);
+  margin: 0 auto;
+  transform: none;
+}
+
+/* Sem dados, o canvas vazio não precisa ocupar espaço */
+.card-chart .chart-container:has(.chart-empty) canvas {
+  display: none;
 }
 
 .chart-empty i {
@@ -385,8 +364,30 @@
 }
 
 .chart-empty small {
+  display: block;
   font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
   color: var(--color-text-tertiary);
+}
+
+@media (max-width: 480px) {
+  .chart-empty {
+    padding: var(--spacing-4) var(--spacing-2);
+  }
+
+  .chart-empty i {
+    font-size: 36px;
+    margin-bottom: var(--spacing-3);
+  }
+
+  .chart-empty p {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-normal);
+  }
+
+  .chart-empty small {
+    font-size: var(--font-size-xs);
+  }
 }
 
 /* ====================================
@@ -578,10 +579,20 @@ body.dark-mode .chart-empty small {
   gap: var(--spacing-2);
 }
 
-/* No longer absolute: it's now part of the flex row */
+/* Parte da linha flex (nunca absolute, para não sobrepor o tempo) */
 .materia-delete-form {
+  position: static;
   margin: 0;
   display: flex;
+  flex-shrink: 0;
+}
+
+.materia-acoes {
+  flex-shrink: 0;
+}
+
+.materia-progress-header .materia-tempo {
+  white-space: nowrap;
 }
 
 /* Ghost button: quiet by default */

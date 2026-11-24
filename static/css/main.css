@@ -32,6 +32,7 @@
 @import url('./pages/metas.css');
 @import url('./pages/calendario.css');
 @import url('./pages/auxiliary.css');
+@import url('./pages/notificacoes.css');
 
 /* Import Page Components */
 @import url('./components/page_components.css');

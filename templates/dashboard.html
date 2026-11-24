@@ -58,7 +58,7 @@
         {% include 'components/card_metric.html' with context %}
 
         {% set label = "Atividades" %}
-        {% set value = (sorted_materias|default([])|length)|string %}
+        {% set value = (total_atividades|default(0)|int)|string %}
         {% set unit = "" %}
         {% set icon = "list-check" %}
         {% set icon_color = "text-primary" %}

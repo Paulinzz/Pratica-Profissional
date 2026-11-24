@@ -102,9 +102,11 @@ def init_study_routes(app):
         metas_concluidas = Meta.query.filter_by(
             user_id=current_user.id, status="concluido"
         ).count()
+        total_atividades = Atividade.query.filter_by(user_id=current_user.id).count()
 
         return render_template(
             "dashboard.html",
+            total_atividades=total_atividades,
             artigos=artigos,
             labels_dash=labels_dash,
             data_dash=data_dash,
@@ -591,7 +593,7 @@ def init_study_routes(app):
                     titulo="Meta Criada! 🎯",
                     mensagem=f"Meta '{titulo}' foi criada com sucesso.",
                     link="/metas",
-                    icone="fa-target",
+                    icone="fa-bullseye",
                 )
                 flash("Meta criada com sucesso!", "success")
                 return redirect(url_for("listar_metas"))

@@ -220,7 +220,6 @@ body.dark-mode .social-link {
 }
 
 body.dark-mode .social-link:hover {
-  background: var(--color-primary);
   color: white;
 }
 

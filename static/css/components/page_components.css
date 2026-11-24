@@ -91,6 +91,28 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Garantias de alinhamento do componente */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.empty-state .empty-state-message {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.empty-state .empty-state-action i {
+  font-size: inherit;
+  display: inline-block;
+  margin: 0;
+  opacity: 1;
+  color: inherit;
+}
+
 .empty-state-action:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);

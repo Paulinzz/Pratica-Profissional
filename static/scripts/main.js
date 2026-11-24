@@ -62,7 +62,7 @@
                     const previousCount = parseInt(badge.textContent) || 0;
                     if (data.nao_lidas > 0) {
                         badge.textContent = data.nao_lidas > 99 ? '99+' : data.nao_lidas;
-                        badge.style.display = 'inline-block';
+                        badge.style.display = 'flex';
 
                         // Mostrar notificação do navegador se houver novas
                         if (data.nao_lidas > previousCount && previousCount > 0) {

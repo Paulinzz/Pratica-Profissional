@@ -15,111 +15,136 @@
                     <i class="fa-solid fa-envelope"></i>
                     <span>{{ total_notificacoes }} Total</span>
                 </div>
-                <div class="stat-badge">
+                <div class="stat-badge {{ 'destaque' if nao_lidas > 0 else '' }}">
                     <i class="fa-solid fa-envelope-open"></i>
-                    <span>{{ nao_lidas }} Não Lidas</span>
+                    <span>{{ nao_lidas }} Não lidas</span>
                 </div>
             </div>
         </div>
 
         <!-- Filtros -->
         <div class="filters-bar">
-            <div class="filter-group">
-                <span class="filter-label">Filtrar por:</span>
-                <a href="{{ url_for('listar_notificacoes', tipo='todos', lida=lida_filtro) }}" 
-                   class="filter-btn {{ 'active' if tipo_filtro == 'todos' else '' }}">
-                    <i class="fa-solid fa-list"></i> Todas
-                </a>
-                <a href="{{ url_for('listar_notificacoes', tipo='sistema', lida=lida_filtro) }}" 
-                   class="filter-btn {{ 'active' if tipo_filtro == 'sistema' else '' }}">
-                    <i class="fa-solid fa-gear"></i> Sistema
-                </a>
-                <a href="{{ url_for('listar_notificacoes', tipo='lembrete', lida=lida_filtro) }}" 
-                   class="filter-btn {{ 'active' if tipo_filtro == 'lembrete' else '' }}">
-                    <i class="fa-solid fa-calendar"></i> Lembretes
-                </a>
-                <a href="{{ url_for('listar_notificacoes', tipo='conquista', lida=lida_filtro) }}" 
-                   class="filter-btn {{ 'active' if tipo_filtro == 'conquista' else '' }}">
-                    <i class="fa-solid fa-trophy"></i> Conquistas
-                </a>
+            <div class="filters-row">
+                <div class="filter-group">
+                    <span class="filter-label">Tipo</span>
+                    <a href="{{ url_for('listar_notificacoes', tipo='todos', lida=lida_filtro) }}"
+                       class="filter-btn {{ 'active' if tipo_filtro == 'todos' else '' }}">
+                        <i class="fa-solid fa-list"></i> Todas
+                    </a>
+                    <a href="{{ url_for('listar_notificacoes', tipo='sistema', lida=lida_filtro) }}"
+                       class="filter-btn {{ 'active' if tipo_filtro == 'sistema' else '' }}">
+                        <i class="fa-solid fa-info-circle"></i> Sistema
+                    </a>
+                    <a href="{{ url_for('listar_notificacoes', tipo='lembrete', lida=lida_filtro) }}"
+                       class="filter-btn {{ 'active' if tipo_filtro == 'lembrete' else '' }}">
+                        <i class="fa-solid fa-calendar"></i> Lembretes
+                    </a>
+                    <a href="{{ url_for('listar_notificacoes', tipo='conquista', lida=lida_filtro) }}"
+                       class="filter-btn {{ 'active' if tipo_filtro == 'conquista' else '' }}">
+                        <i class="fa-solid fa-trophy"></i> Conquistas
+                    </a>
+                </div>
             </div>
 
-            <div class="filter-group">
-                <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='todos') }}" 
-                   class="filter-btn {{ 'active' if lida_filtro == 'todos' else '' }}">
-                    Todas
-                </a>
-                <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='nao_lidas') }}" 
-                   class="filter-btn {{ 'active' if lida_filtro == 'nao_lidas' else '' }}">
-                    Não Lidas
-                </a>
-                <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='lidas') }}" 
-                   class="filter-btn {{ 'active' if lida_filtro == 'lidas' else '' }}">
-                    Lidas
-                </a>
-            </div>
+            <div class="filters-row">
+                <div class="filter-group">
+                    <span class="filter-label">Status</span>
+                    <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='todos') }}"
+                       class="filter-btn {{ 'active' if lida_filtro == 'todos' else '' }}">
+                        Todas
+                    </a>
+                    <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='nao_lidas') }}"
+                       class="filter-btn {{ 'active' if lida_filtro == 'nao_lidas' else '' }}">
+                        Não lidas
+                    </a>
+                    <a href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida='lidas') }}"
+                       class="filter-btn {{ 'active' if lida_filtro == 'lidas' else '' }}">
+                        Lidas
+                    </a>
+                </div>
 
-            <div class="action-buttons">
-                <button class="notif-btn btn-mark-all" onclick="marcarTodasLidas()">
+                <button type="button" class="notif-btn btn-mark-all" onclick="marcarTodasLidas()">
                     <i class="fa-solid fa-check-double"></i>
-                    Marcar Todas como Lidas
+                    Marcar todas como lidas
                 </button>
             </div>
         </div>
 
         <!-- Lista de Notificações -->
         {% if notificacoes %}
+        <div class="notif-list">
             {% for notif in notificacoes %}
-            <div class="notificacao-card {{ 'nao-lida' if not notif.lida else 'lida' }}" data-id="{{ notif.id }}">
-                {% if not notif.lida %}
-                <span class="badge-unread">NOVO</span>
-                {% endif %}
+            <article class="notificacao-card tipo-{{ notif.tipo }} {{ 'nao-lida' if not notif.lida else 'lida' }}" data-id="{{ notif.id }}">
+                <div class="notif-icon">
+                    <i class="fa-solid {{ notif.icone or 'fa-bell' }}"></i>
+                </div>
 
-                <div class="notif-content">
-                    <span class="notif-tipo {{ notif.tipo }}">
-                        <i class="fa-solid {{ notif.icone }}"></i>
-                        {{ notif.tipo.capitalize() }}
-                    </span>
-                    
-                    <h3 class="notif-title">
-                        <i class="fa-solid {{ notif.icone }}" style="color: 
-                            {% if notif.tipo == 'sistema' %}#1a73e8
-                            {% elif notif.tipo == 'lembrete' %}#f57c00
-                            {% else %}#2e7d32{% endif %}
-                        ;"></i>
-                        {{ notif.titulo }}
-                    </h3>
-                    
-                    <p class="notif-message">{{ notif.mensagem }}</p>
-
-                    <div class="notif-meta">
-                        <i class="fa-regular fa-clock"></i>
-                        {{ notif.data_criacao.strftime('%d/%m/%Y às %H:%M') }}
+                <div class="notif-body">
+                    <div class="notif-top">
+                        <span class="notif-tipo">{{ notif.tipo.capitalize() }}</span>
+                        {% if not notif.lida %}
+                        <span class="badge-unread">NOVO</span>
+                        {% endif %}
+                        <span class="notif-meta">
+                            <i class="fa-regular fa-clock"></i>
+                            {{ notif.data_criacao.strftime('%d/%m/%Y às %H:%M') }}
+                        </span>
                     </div>
+
+                    <h3 class="notif-title">{{ notif.titulo }}</h3>
+                    <p class="notif-message">{{ notif.mensagem }}</p>
 
                     <div class="notif-actions">
                         {% if notif.link %}
                         <a href="{{ notif.link }}" class="notif-btn btn-ver-mais">
                             <i class="fa-solid fa-arrow-right"></i>
-                            Ver Mais
+                            Ver mais
                         </a>
                         {% endif %}
 
                         {% if not notif.lida %}
-                        <button class="notif-btn btn-marcar-lida" onclick="marcarLida({{ notif.id }})">
+                        <button type="button" class="notif-btn btn-marcar-lida" onclick="marcarLida({{ notif.id }})">
                             <i class="fa-solid fa-check"></i>
-                            Marcar Lida
+                            Marcar lida
                         </button>
                         {% endif %}
 
-                        <button class="notif-btn delete" onclick="excluirNotificacao({{ notif.id }})">
+                        <button type="button" class="notif-btn delete" onclick="excluirNotificacao({{ notif.id }})">
                             <i class="fa-solid fa-trash"></i>
                             Excluir
                         </button>
                     </div>
                 </div>
-            </div>
+            </article>
             {% endfor %}
+        </div>
+
+        <!-- Paginação -->
+        {% if pagination and pagination.pages > 1 %}
+        <nav class="notif-pagination" aria-label="Paginação de notificações">
+            {% if pagination.has_prev %}
+            <a class="page-link" href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida=lida_filtro, page=current_page - 1, per_page=per_page) }}" aria-label="Página anterior">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+            {% else %}
+            <span class="page-link disabled"><i class="fa-solid fa-chevron-left"></i></span>
+            {% endif %}
+
+            {% for p in range(1, pagination.pages + 1) %}
+            <a class="page-link {{ 'active' if p == current_page else '' }}"
+               href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida=lida_filtro, page=p, per_page=per_page) }}">{{ p }}</a>
+            {% endfor %}
+
+            {% if pagination.has_next %}
+            <a class="page-link" href="{{ url_for('listar_notificacoes', tipo=tipo_filtro, lida=lida_filtro, page=current_page + 1, per_page=per_page) }}" aria-label="Próxima página">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+            {% else %}
+            <span class="page-link disabled"><i class="fa-solid fa-chevron-right"></i></span>
+            {% endif %}
+        </nav>
+        {% endif %}
+
         {% else %}
             <div class="empty-state">
                 <div class="empty-icon">
@@ -253,21 +278,6 @@
             });
     }
 
-    // Animação de fadeOut
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-    `;
-    document.head.appendChild(style);
 </script>
 
 {% endblock %}

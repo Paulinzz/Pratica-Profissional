@@ -1263,11 +1263,39 @@ body.dark-mode .badge-item {
   word-break: normal;
 }
 
+/* Abas Perfil / Configurações
+   Sem depender de #conteudo-principal (a página de perfil não tem esse id) */
 .tabs-container {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
   margin-bottom: var(--spacing-6);
-  padding: 20 var(--spacing-2);
+  padding: 0 0 var(--spacing-3);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: var(--font-weight-semi-bold);
+  transition: var(--transition-base);
+}
+
+.tab-btn:hover {
+  color: var(--color-primary);
+  background: var(--color-bg-tertiary);
+}
+
+.tab-btn.active {
+  color: white;
+  background: var(--color-primary);
 }
 
 .perfil-content {
