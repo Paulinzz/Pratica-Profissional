@@ -496,20 +496,47 @@ def init_study_routes(app):
             )
         return {"success": True, "message": "Sessão salva com sucesso!"}, 200
 
+   
     @app.route("/metas")
     @login_required
     def listar_metas():
-        page, per_page = get_pagination_params(default_page=1, default_per_page=10)
+        page, per_page = get_pagination_params(
+            default_page=1,
+            default_per_page=10
+        )
 
         status_filtro = request.args.get("status", "todos")
-        query = Meta.query.filter_by(user_id=current_user.id)
 
-        if status_filtro != "todos":
+        # Contadores independentes do filtro aplicado
+        metas_ativas = Meta.query.filter_by(
+            user_id=current_user.id,
+            status="ativo"
+        ).count()
+
+        metas_concluidas = Meta.query.filter_by(
+            user_id=current_user.id,
+            status="concluido"
+        ).count()
+
+        total_metas = metas_ativas + metas_concluidas
+
+        query = Meta.query.filter_by(
+            user_id=current_user.id
+        )
+
+        if status_filtro in ("ativo", "concluido"):
             query = query.filter_by(status=status_filtro)
+        else:
+            status_filtro = "todos"
 
         query = query.order_by(Meta.data_criacao.desc())
 
-        paginator = Paginator(query, page=page, per_page=per_page)
+        paginator = Paginator(
+            query,
+            page=page,
+            per_page=per_page
+        )
+
         result = paginator.paginate()
 
         study_logger.info(
@@ -522,9 +549,13 @@ def init_study_routes(app):
             metas=result['items'],
             pagination=result,
             status_filtro=status_filtro,
+            total_metas=total_metas,
+            metas_ativas=metas_ativas,
+            metas_concluidas=metas_concluidas,
             current_page=page,
             per_page=per_page,
         )
+
 
     @app.route("/criar_meta", methods=["GET", "POST"])
     @login_required

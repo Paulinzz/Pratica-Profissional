@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block title %}
@@ -6,30 +7,39 @@
 
 {% block conteudo %}
 
-    <main id="conteudo-principal">
+<main id="conteudo-principal">
     <div class="config-container">
-        <!-- Header -->
+
+        <!-- Cabeçalho -->
         <div class="config-header">
-            <h1><i class="fa-solid fa-gear"></i> Configurações</h1>
-            <p class="config-subtitle">Personalize sua experiência no FocusUp</p>
+            <h1>
+                <i class="fa-solid fa-gear"></i>
+                Configurações
+            </h1>
+            <p class="config-subtitle">
+                Personalize sua experiência no FocusUp
+            </p>
         </div>
 
-        <!-- Tabs -->
-         <div class="tabs-container">
+        <!-- Abas -->
+        <div class="tabs-container">
             <a href="{{ url_for('perfil') }}" class="tab-btn">
                 <i class="fa-solid fa-user"></i>
                 Perfil
             </a>
+
             <a href="{{ url_for('configuracoes') }}" class="tab-btn active">
                 <i class="fa-solid fa-gear"></i>
                 Configurações
             </a>
         </div>
 
-        <!-- Seções -->
+        <!-- Seções de configurações -->
         <div class="config-sections">
+
             <!-- Notificações -->
             <div class="config-card">
+
                 <div class="card-header">
                     <i class="fa-solid fa-bell"></i>
                     <h3>Notificações</h3>
@@ -40,8 +50,13 @@
                         <h4>Notificações por Email</h4>
                         <p>Receba atualizações importantes no seu email</p>
                     </div>
+
                     <label class="switch">
-                        <input type="checkbox" id="emailNotif" {{ 'checked' if current_user.notificacoes_email else '' }}>
+                        <input
+                            type="checkbox"
+                            id="emailNotif"
+                            {{ 'checked' if current_user.notificacoes_email else '' }}
+                        >
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -51,8 +66,13 @@
                         <h4>Notificações Push</h4>
                         <p>Receba alertas no navegador</p>
                     </div>
+
                     <label class="switch">
-                        <input type="checkbox" id="pushNotif" {{ 'checked' if current_user.notificacoes_push else '' }}>
+                        <input
+                            type="checkbox"
+                            id="pushNotif"
+                            {{ 'checked' if current_user.notificacoes_push else '' }}
+                        >
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -62,166 +82,210 @@
                         <h4>Lembretes de Estudo</h4>
                         <p>Receba lembretes automáticos de atividades</p>
                     </div>
+
                     <label class="switch">
-                        <input type="checkbox" id="lembretes" {{ 'checked' if current_user.lembretes else '' }}>
+                        <input
+                            type="checkbox"
+                            id="lembretes"
+                            {{ 'checked' if current_user.lembretes else '' }}
+                        >
                         <span class="slider"></span>
                     </label>
                 </div>
+
             </div>
 
             <!-- Aparência -->
             <div class="config-card">
+
                 <div class="card-header">
                     <i class="fa-solid fa-palette"></i>
                     <h3>Aparência</h3>
                 </div>
 
                 <div class="form-group">
-                    <label></label>
+
                     <div class="theme-options">
+
+                        <!-- Tema Claro -->
                         <label class="theme-card {{ 'active' if not current_user.tema_escuro else '' }}">
-                            <input type="radio" name="tema" value="claro" {{ 'checked' if not current_user.tema_escuro else '' }}>
+
+                            <input
+                                type="radio"
+                                name="tema"
+                                value="claro"
+                                {{ 'checked' if not current_user.tema_escuro else '' }}
+                            >
+
                             <div class="theme-icon">
-                                <div>
                                 <i class="fa-solid fa-sun"></i>
                             </div>
+
+                            <div class="theme-label">
+                                Claro
                             </div>
-                            <div class="theme-label">Claro</div>
+
                         </label>
 
+                        <!-- Tema Escuro -->
                         <label class="theme-card {{ 'active' if current_user.tema_escuro else '' }}">
-                            <input type="radio" name="tema" value="escuro" {{ 'checked' if current_user.tema_escuro else '' }}>
+
+                            <input
+                                type="radio"
+                                name="tema"
+                                value="escuro"
+                                {{ 'checked' if current_user.tema_escuro else '' }}
+                            >
+
                             <div class="theme-icon">
-                                <div>
                                 <i class="fa-solid fa-moon"></i>
                             </div>
+
+                            <div class="theme-label">
+                                Escuro
                             </div>
-                            <div class="theme-label">Escuro</div>
+
                         </label>
 
+                        <!-- Tema Automático -->
                         <label class="theme-card">
-                            <input type="radio" name="tema" value="auto">
+
+                            <input
+                                type="radio"
+                                name="tema"
+                                value="auto"
+                            >
+
                             <div class="theme-icon">
-                                <div>
                                 <i class="fa-solid fa-circle-half-stroke"></i>
                             </div>
 
-                            <div class="theme-label">Automático</div>
+                            <div class="theme-label">
+                                Automático
+                            </div>
+
                         </label>
+
                     </div>
+
                 </div>
 
-                <div class="form-group">
-                <label class="theme-card-label">
-                </label>
-                    <div class="language-selector">
-                        <div class="language-options">
-                            <label class="language-option {{ 'active' if current_user.idioma == 'pt-br' else '' }}" for="lang-pt">
-                                <input type="radio" id="lang-pt" name="idioma" value="pt-br" {{ 'checked' if current_user.idioma == 'pt-br' else '' }}>
-                                <div class="language-content">
-                                    <i class="fa-solid fa-language"></i>
-                                    <div class="language-info">
-                                        <div class="language-name">Português</div>
-                                        <div class="language-region">Brasil</div>
-                                    </div>
-                                </div>
-                            </label>
-
-                            <label class="language-option {{ 'active' if current_user.idioma == 'en' else '' }}" for="lang-en">
-                                <input type="radio" id="lang-en" name="idioma" value="en" {{ 'checked' if current_user.idioma == 'en' else '' }}>
-                                <div class="language-content">
-                                    <i class="fa-solid fa-language"></i>
-                                    <div class="language-info">
-                                        <div class="language-name">English</div>
-                                        <div class="language-region">United States</div>
-                                    </div>
-                                </div>
-                            </label>
-
-                            <label class="language-option {{ 'active' if current_user.idioma == 'es' else '' }}" for="lang-es">
-                                <input type="radio" id="lang-es" name="idioma" value="es" {{ 'checked' if current_user.idioma == 'es' else '' }}>
-                                <div class="language-content">
-                                    <i class="fa-solid fa-language"></i>
-                                    <div class="language-info">
-                                        <div class="language-name">Español</div>
-                                        <div class="language-region">España</div>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Privacidade e Segurança -->
             <div class="config-card">
+
                 <div class="card-header">
                     <i class="fa-solid fa-shield-halved"></i>
                     <h3>Privacidade e Segurança</h3>
                 </div>
 
-                <button class="action-btn" onclick="baixarDados()">
+                <button
+                    type="button"
+                    class="action-btn"
+                    onclick="baixarDados()"
+                >
                     <i class="fa-solid fa-download text-primary"></i>
                     Baixar meus dados
                 </button>
 
-                <a href="{{ url_for('politica_privacidade') }}" class="action-btn">
+                <a
+                    href="{{ url_for('politica_privacidade') }}"
+                    class="action-btn"
+                >
                     <i class="fa-solid fa-shield text-success"></i>
                     Política de Privacidade
                 </a>
 
-                <a href="{{ url_for('termos_servico') }}" class="action-btn">
+                <a
+                    href="{{ url_for('termos_servico') }}"
+                    class="action-btn"
+                >
                     <i class="fa-solid fa-file-contract text-info"></i>
                     Termos de Serviço
                 </a>
 
-                <button class="action-btn danger" onclick="confirmarExclusao()">
+                <button
+                    type="button"
+                    class="action-btn danger"
+                    onclick="confirmarExclusao()"
+                >
                     <i class="fa-solid fa-trash-can text-danger"></i>
                     Excluir minha conta
                 </button>
+
             </div>
 
-            <!-- Botão Salvar -->
-            <button class="btn-save">
+            <!-- Salvar configurações -->
+            <button type="button" class="btn-save">
                 <i class="fa-solid fa-floppy-disk"></i>
                 Salvar Configurações
             </button>
+
         </div>
     </div>
 </main>
 
 <script>
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
 
-    // Toggle tema cards
+    // Atualizar tema visualmente
+    function aplicarTema(tema) {
+
+        const themeIcon = document.getElementById('themeIcon');
+        const themeToggle = document.getElementById('themeToggle');
+
+        let temaEscuro = false;
+
+        if (tema === 'escuro') {
+            temaEscuro = true;
+        } else if (tema === 'auto') {
+            temaEscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+
+        document.body.classList.toggle('dark-mode', temaEscuro);
+
+        if (themeIcon) {
+            themeIcon.classList.toggle('fa-sun', temaEscuro);
+            themeIcon.classList.toggle('fa-moon', !temaEscuro);
+        }
+
+        if (themeToggle) {
+            themeToggle.classList.toggle('dark', temaEscuro);
+        }
+
+        return temaEscuro;
+    }
+
+    // Seleção dos temas
     document.querySelectorAll('.theme-card').forEach(card => {
-        card.addEventListener('click', function() {
-            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+
+        card.addEventListener('click', function () {
+
+            const input = this.querySelector('input[name="tema"]');
+
+            if (!input) return;
+
+            document.querySelectorAll('.theme-card').forEach(item => {
+                item.classList.remove('active');
+            });
+
             this.classList.add('active');
-            this.querySelector('input').checked = true;
+            input.checked = true;
 
-            // Aplicar tema
-            const tema = this.querySelector('input').value;
-            if (tema === 'escuro') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('themeIcon').classList.remove('fa-moon');
-                document.getElementById('themeIcon').classList.add('fa-sun');
-                document.getElementById('themeToggle').classList.add('dark');
-            } else if (tema === 'claro') {
-                document.body.classList.remove('dark-mode');
-                document.getElementById('themeIcon').classList.remove('fa-sun');
-                document.getElementById('themeIcon').classList.add('fa-moon');
-                document.getElementById('themeToggle').classList.remove('dark');
-            }
+            const temaEscuro = aplicarTema(input.value);
 
-            // Salvar preferência
+            // Salvar preferência de tema
             fetch('/alternar_tema', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken
                 },
-                body: JSON.stringify({ tema_escuro: tema === 'escuro' })
+                body: JSON.stringify({
+                    tema_escuro: temaEscuro
+                })
             })
             .then(response => response.json())
             .then(data => {
@@ -232,53 +296,73 @@
             .catch(error => {
                 console.error('Erro:', error);
             });
-        });
-    });
 
-    // Toggle language options
-    document.querySelectorAll('.language-option').forEach(option => {
-        option.addEventListener('click', function() {
-            document.querySelectorAll('.language-option').forEach(opt => opt.classList.remove('active'));
-            this.classList.add('active');
-            this.querySelector('input').checked = true;
         });
+
     });
 
     // Baixar dados do usuário
     function baixarDados() {
+
         fetch('{{ url_for("baixar_dados") }}', {
-            method: 'GET',
+            method: 'GET'
         })
         .then(response => {
+
             if (response.ok) {
                 return response.blob();
-            } else {
-                throw new Error('Erro ao baixar dados');
             }
+
+            throw new Error('Erro ao baixar dados');
+
         })
         .then(blob => {
+
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
+
             a.style.display = 'none';
             a.href = url;
             a.download = 'relatorio_dados_focusup.pdf';
+
             document.body.appendChild(a);
             a.click();
+
             window.URL.revokeObjectURL(url);
+            a.remove();
+
             alert('Relatório PDF baixado com sucesso!');
+
         })
         .catch(error => {
+
             console.error('Erro:', error);
             alert('Erro ao baixar dados. Tente novamente.');
+
         });
+
     }
 
-    // Confirmar exclusão de conta
+    // Confirmar exclusão da conta
     function confirmarExclusao() {
-        if (confirm('ATENÇÃO!\n\nTem certeza que deseja excluir sua conta?\n\nEsta ação é IRREVERSÍVEL e todos os seus dados serão permanentemente apagados:\n\n• Todas as atividades\n• Todas as matérias\n• Todo o progresso\n• Configurações personalizadas\n\nDigite "EXCLUIR" para confirmar.')) {
+
+        if (
+            confirm(
+                'ATENÇÃO!\n\n' +
+                'Tem certeza que deseja excluir sua conta?\n\n' +
+                'Esta ação é IRREVERSÍVEL e todos os seus dados serão permanentemente apagados:\n\n' +
+                '• Todas as atividades\n' +
+                '• Todas as matérias\n' +
+                '• Todo o progresso\n' +
+                '• Configurações personalizadas\n\n' +
+                'Digite "EXCLUIR" para confirmar.'
+            )
+        ) {
+
             const confirmacao = prompt('Digite "EXCLUIR" para confirmar:');
+
             if (confirmacao === 'EXCLUIR') {
-                // Chamar API de exclusão
+
                 fetch('{{ url_for("excluir_conta") }}', {
                     method: 'POST',
                     headers: {
@@ -288,29 +372,46 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+
                     if (data.success) {
-                        alert('Conta excluída com sucesso. Você será redirecionado para a página inicial.');
+
+                        alert(
+                            'Conta excluída com sucesso. ' +
+                            'Você será redirecionado para a página inicial.'
+                        );
+
                         window.location.href = '{{ url_for("index") }}';
+
                     } else {
+
                         alert('Erro ao excluir conta: ' + data.message);
+
                     }
+
                 })
                 .catch(error => {
+
                     console.error('Erro:', error);
                     alert('Erro ao excluir conta. Tente novamente.');
+
                 });
+
             } else {
+
                 alert('Exclusão cancelada.');
+
             }
+
         }
+
     }
 
-    // Salvar configurações com feedback
-    document.querySelector('.btn-save').addEventListener('click', function() {
+    // Salvar configurações
+    document.querySelector('.btn-save').addEventListener('click', function () {
+
         const emailNotif = document.getElementById('emailNotif').checked;
         const pushNotif = document.getElementById('pushNotif').checked;
         const lembretes = document.getElementById('lembretes').checked;
-        const idioma = document.querySelector('input[name="idioma"]:checked').value;
 
         fetch('/atualizar_configuracoes', {
             method: 'POST',
@@ -321,31 +422,41 @@
             body: JSON.stringify({
                 notificacoes_email: emailNotif,
                 notificacoes_push: pushNotif,
-                lembretes: lembretes,
-                idioma: idioma
+                lembretes: lembretes
             })
         })
         .then(response => response.json())
         .then(data => {
+
             if (data.success) {
-                // Animação de sucesso
+
                 const btn = document.querySelector('.btn-save');
                 const originalText = btn.innerHTML;
+
                 btn.innerHTML = '<i class="fa-solid fa-check"></i> Salvo!';
                 btn.style.background = 'linear-gradient(135deg, #4caf50, #66bb6a)';
 
                 setTimeout(() => {
+
                     btn.innerHTML = originalText;
-                    btn.style.background = 'linear-gradient(135deg, #2e7d32, #43a047)';
+                    btn.style.background = '';
+
                 }, 2000);
+
             } else {
+
                 alert('Erro ao salvar configurações: ' + data.message);
+
             }
+
         })
         .catch(error => {
+
             console.error('Erro:', error);
             alert('Erro ao salvar configurações.');
+
         });
+
     });
 </script>
 

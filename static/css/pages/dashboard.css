@@ -634,3 +634,452 @@ body.dark-mode .btn-delete-materia:focus-visible {
     height: 40px;
   }
 }
+
+
+/* ==========================================
+   NOVA ORGANIZAÇÃO DOS COMPARTIMENTOS
+   DASHBOARD FOCUSUP
+   ========================================== */
+
+/* Distribuição principal */
+.dashboard-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
+    grid-template-areas:
+        "grafico artigos"
+        "materias acoes";
+    gap: var(--spacing-6);
+    align-items: stretch;
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+}
+
+/* Remove as colunas intermediárias sem alterar o HTML */
+.dashboard-main .left-content,
+.dashboard-main .right-content {
+    display: contents;
+}
+
+/* Compartimento do gráfico */
+.card-chart {
+    grid-area: grafico;
+    min-width: 0;
+    min-height: 360px;
+    height: 100%;
+}
+
+/* Compartimento dos artigos */
+.card-artigos {
+    grid-area: artigos;
+    min-width: 0;
+    min-height: 360px;
+    height: 100%;
+}
+
+.card-artigos .artigos-container {
+    max-height: 350px;
+}
+
+/* Compartimento das matérias */
+.card-materias {
+    grid-area: materias;
+    min-width: 0;
+    height: 100%;
+}
+
+/* Compartimento das ações rápidas */
+.card-actions {
+    grid-area: acoes;
+    min-width: 0;
+    height: 100%;
+}
+
+/* Evita que os conteúdos ultrapassem os cards */
+.dashboard-main .card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.dashboard-main .card-header {
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.dashboard-main .card-header h2 {
+    overflow-wrap: anywhere;
+}
+
+.dashboard-main .quick-actions {
+    width: 100%;
+}
+
+.dashboard-main .quick-actions .btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Gráfico */
+.card-chart .chart-container {
+    min-width: 0;
+    width: 100%;
+}
+
+/* Matérias */
+.materia-progress-header {
+    gap: var(--spacing-2);
+    flex-wrap: wrap;
+}
+
+.materia-progress-header .materia-nome {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.materia-acoes {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    min-width: 0;
+}
+
+/* ==========================================
+   TABLETS
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .dashboard-main {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-areas:
+            "grafico grafico"
+            "materias artigos"
+            "acoes acoes";
+        gap: var(--spacing-5);
+    }
+
+    .card-chart {
+        min-height: 320px;
+    }
+
+    .card-artigos {
+        min-height: 320px;
+    }
+}
+
+/* ==========================================
+   CELULARES
+   ========================================== */
+
+@media (max-width: 768px) {
+    .dashboard-main {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "grafico"
+            "materias"
+            "acoes"
+            "artigos";
+        gap: var(--spacing-4);
+    }
+
+    .card-chart,
+    .card-materias,
+    .card-actions,
+    .card-artigos {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+    }
+
+    .card-chart {
+        min-height: 280px;
+    }
+
+    .card-artigos {
+        min-height: 250px;
+    }
+
+    .card-artigos .artigos-container {
+        max-height: 350px;
+    }
+}
+
+/* ==========================================
+   CELULARES PEQUENOS
+   ========================================== */
+
+@media (max-width: 480px) {
+    .dashboard-main {
+        gap: var(--spacing-3);
+    }
+
+    .card-chart {
+        min-height: 250px;
+    }
+
+    .card-chart .chart-container {
+        min-height: 190px;
+    }
+
+    .dashboard-main .card {
+        padding: var(--spacing-4);
+    }
+
+    .materia-progress-header {
+        align-items: flex-start;
+    }
+
+    .materia-progress-header .materia-tempo {
+        font-size: var(--font-size-xs);
+    }
+}
+
+/* ==========================================
+   REMOVER EFEITOS DE HOVER DO DASHBOARD
+   ========================================== */
+
+/* Cards e indicadores */
+.dashboard-stats .card:hover,
+.dashboard-main .card:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Progresso das matérias */
+.dashboard-main .materia-progress-item:hover {
+    background: var(--color-bg-tertiary) !important;
+    box-shadow: none !important;
+}
+
+/* Artigos */
+.dashboard-main .artigo-card:hover {
+    background: var(--color-bg-dark-surface, var(--color-bg-tertiary)) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.dashboard-main .artigo-meta a:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+/* Botões: remove mudança de cor e movimento */
+.dashboard-main .btn:hover,
+.dashboard-main .btn-primary:hover,
+.dashboard-main .btn-secondary:hover,
+.dashboard-main .btn-success:hover,
+.dashboard-main .btn-ghost:hover,
+.dashboard-main .btn-link:hover {
+    transform: none !important;
+    filter: none !important;
+}
+
+/* Mantém as cores originais dos botões */
+.dashboard-main .btn-primary:hover {
+    background: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+}
+
+.dashboard-main .btn-secondary:hover {
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+}
+
+.dashboard-main .btn-ghost:hover {
+    background: transparent;
+}
+
+/* Remove animação de destaque dos botões de ação */
+.dashboard-main .quick-actions .btn:hover {
+    transform: none !important;
+    filter: none !important;
+}
+
+/* Evita transições visuais indesejadas */
+.dashboard-main .card,
+.dashboard-main .artigo-card,
+.dashboard-main .materia-progress-item {
+    transition: none !important;
+}
+
+/* ==========================================
+   DASHBOARD - NOVA DISTRIBUIÇÃO
+   ========================================== */
+
+.dashboard-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(300px, 1fr);
+    grid-template-areas:
+        "grafico acoes"
+        "materias artigos";
+    gap: var(--spacing-6);
+    align-items: stretch;
+}
+
+.dashboard-main .left-content,
+.dashboard-main .right-content {
+    display: contents;
+}
+
+.card-chart {
+    grid-area: grafico;
+    min-height: 350px;
+}
+
+.card-actions {
+    grid-area: acoes;
+    min-height: 350px;
+}
+
+.card-materias {
+    grid-area: materias;
+    min-height: 280px;
+}
+
+.card-artigos {
+    grid-area: artigos;
+    min-height: 280px;
+}
+
+.dashboard-main > .card,
+.dashboard-main .card {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Melhor distribuição dos botões rápidos */
+.card-actions .quick-actions {
+    flex: 1;
+    justify-content: center;
+    gap: var(--spacing-4);
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .dashboard-main {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "grafico"
+            "acoes"
+            "materias"
+            "artigos";
+        gap: var(--spacing-5);
+    }
+
+    .card-chart,
+    .card-actions,
+    .card-materias,
+    .card-artigos {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-main {
+        gap: var(--spacing-3);
+    }
+
+    .dashboard-main .card {
+        padding: var(--spacing-4);
+    }
+}
+
+
+/* Remove o hover preto dos artigos científicos */
+.card-artigos .artigo-card:hover {
+    background-color: #fff !important;
+    color: inherit !important;
+    box-shadow: none;
+    transform: none;
+}
+
+/* ==========================================
+   ORGANIZAÇÃO DOS ATALHOS DO DASHBOARD
+   ========================================== */
+
+/* Espaçamento entre os cards da coluna direita */
+.dashboard-main .right-content {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* Card de ações rápidas */
+.dashboard-main .card-actions {
+    padding: 26px;
+}
+
+.dashboard-main .card-actions .card-header {
+    margin-bottom: 24px;
+}
+
+.dashboard-main .card-actions .quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Botões de adicionar atividade e meta */
+.dashboard-main .card-actions .quick-actions .btn {
+    width: 100%;
+    min-height: 52px;
+    padding: 14px 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+/* Card de matérias */
+.dashboard-main .card-materias {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 26px;
+}
+
+/* Botão adicionar matéria */
+.dashboard-main .card-materias .dashboard-btn-add-materia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    margin: 4px 0 12px;
+    box-sizing: border-box;
+}
+
+/* Espaçamento da lista de matérias */
+.dashboard-main .materias-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .dashboard-main .right-content {
+        gap: 22px;
+    }
+
+    .dashboard-main .card-actions,
+    .dashboard-main .card-materias {
+        padding: 20px;
+    }
+
+    .dashboard-main .card-actions .quick-actions {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-main .card-actions,
+    .dashboard-main .card-materias {
+        padding: 16px;
+    }
+
+    .dashboard-main .card-actions .quick-actions .btn {
+        min-height: 50px;
+    }
+}

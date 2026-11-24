@@ -26,6 +26,7 @@
         {% set icon = "hourglass-end" %}
         {% set icon_color = "text-primary" %}
         {% set subtext = minutos_restantes ~ "min extras" if minutos_restantes > 0 else "Continue assim!" %}
+        {% set class = "dashboard-btn-pomodoro" %}
         {% include 'components/card_metric.html' with context %}
 
         {% set label = "Metas Ativas" %}
@@ -93,11 +94,7 @@
                     <span class="card-subtitle">Tempo de estudo por matéria</span>
                 </div>
 
-                {% set text = "Adicionar nova matéria" %}
-                {% set type = "success" %}
-                {% set href = url_for('adicionar_materia_page') %}
-                {% set icon = "plus" %}
-                {% set size = "sm" %}
+                {% set class = "dashboard-btn-add-materia" %}
                 {% include 'components/button.html' with context %}
 
                 {% if sorted_materias %}
@@ -159,28 +156,35 @@
                     <h2>Ações Rápidas</h2>
                     <span class="card-subtitle">O que você quer fazer agora?</span>
                 </div>
-                <div class="quick-actions">
-                    {% set text = "Modo Pomodoro" %}
-                    {% set type = "primary" %}
-                    {% set href = url_for('pomodoro') %}
-                    {% set icon = "clock" %}
-                    {% set size = "md" %}
-                    {% include 'components/button.html' with context %}
+                
+<div class="quick-actions">
 
-                    {% set text = "Adicionar Atividade" %}
-                    {% set type = "success" %}
-                    {% set href = url_for('adicionar_atividade') %}
-                    {% set icon = "plus" %}
-                    {% set size = "md" %}
-                    {% include 'components/button.html' with context %}
+    {% set text = "Adicionar Atividade" %}
+    {% set type = "primary" %}
+    {% set href = url_for('adicionar_atividade') %}
+    {% set icon = "plus" %}
+    {% set size = "md" %}
+    {% set class = "dashboard-btn-add-atividade" %}
+    {% include 'components/button.html' with context %}
 
-                    {% set text = "Nova Meta" %}
-                    {% set type = "warning" %}
-                    {% set href = url_for('criar_meta') %}
-                    {% set icon = "bullseye" %}
-                    {% set size = "md" %}
-                    {% include 'components/button.html' with context %}
-                </div>
+    {% set text = "Adicionar Meta" %}
+    {% set type = "success" %}
+    {% set href = url_for('criar_meta') %}
+    {% set icon = "bullseye" %}
+    {% set size = "md" %}
+    {% set class = "" %}
+    {% include 'components/button.html' with context %}
+
+    {% set text = "Iniciar Pomodoro" %}
+    {% set type = "warning" %}
+    {% set href = url_for('pomodoro') %}
+    {% set icon = "hourglass-start" %}
+    {% set size = "md" %}
+    {% set class = "dashboard-btn-pomodoro" %}
+    {% include 'components/button.html' with context %}
+
+</div>
+
             </div>
 
             <!-- Articles Card -->

@@ -558,3 +558,119 @@ body.dark-mode .sem-metas-completo p {
     font-size: var(--font-size-sm);
   }
 }
+
+/* ====================================
+   AJUSTE DE ORGANIZAÇÃO DA PÁGINA DE METAS
+   ==================================== */
+
+#conteudo-principal {
+    min-height: 560px;
+}
+
+.metas-container {
+    max-width: 1240px;
+    padding: 20px 24px 64px;
+}
+
+.metas-container .filtros-container {
+    margin: 12px 0 30px;
+    gap: 12px;
+}
+
+.metas-container .filtro-btn {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 18px;
+}
+
+.metas-container .metas-grid {
+    align-items: stretch;
+}
+
+.metas-container .empty-state {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 720px;
+    min-height: 300px;
+    margin: 12px auto 0;
+    padding: 42px 28px;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-xl, 16px);
+    text-align: center;
+}
+
+.metas-container .empty-state-icon {
+    margin: 0 0 18px;
+    font-size: 54px;
+    color: var(--color-primary);
+    opacity: .75;
+}
+
+.metas-container .empty-state-title {
+    margin: 0 0 10px;
+    font-size: clamp(21px, 2.2vw, 26px);
+}
+
+.metas-container .empty-state-message {
+    margin: 0 auto 24px;
+    max-width: 440px;
+    line-height: 1.6;
+}
+
+.metas-container .empty-state-action {
+    min-height: 48px;
+    padding: 12px 24px;
+}
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+    .metas-container {
+        padding: 16px 16px 40px;
+    }
+
+    .metas-container .filtros-container {
+        gap: 8px;
+        margin: 8px 0 22px;
+    }
+
+    .metas-container .filtro-btn {
+        padding: 8px 13px;
+        font-size: var(--font-size-xs);
+    }
+
+    .metas-container .empty-state {
+        min-height: 260px;
+        padding: 32px 18px;
+    }
+}
+
+@media (max-width: 420px) {
+    .metas-container .filtros-container {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .metas-container .filtro-btn {
+        padding: 8px 5px;
+        white-space: nowrap;
+    }
+
+    .metas-container .empty-state-action {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Modo escuro */
+
+body.dark-mode .metas-container .empty-state {
+    background: var(--color-bg-dark-surface);
+    border-color: var(--color-border-dark);
+}
