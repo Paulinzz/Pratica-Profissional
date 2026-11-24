@@ -7,7 +7,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Configurar variáveis de ambiente antes de importar app
 import os
-os.environ['TESTING'] = 'True'
+
+os.environ["TESTING"] = "True"
 
 from flask import Flask
 from flask_bcrypt import Bcrypt
@@ -104,6 +105,7 @@ def authenticated_client(client, test_user, test_app):
     """Cliente autenticado (login já feito)"""
     with test_app.app_context():
         from flask_login import login_user
+
         login_user(test_user)
     return client
 

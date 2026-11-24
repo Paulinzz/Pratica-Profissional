@@ -12,8 +12,11 @@ class TestPaginator:
         with test_app.app_context():
             # Criar usuário e atividades dentro do contexto
             from flask_bcrypt import Bcrypt
+
             bcrypt = Bcrypt(test_app)
-            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode("utf-8")
+            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode(
+                "utf-8"
+            )
 
             user = User(
                 name="Test User",
@@ -37,20 +40,23 @@ class TestPaginator:
             paginator = Paginator(query, page=1, per_page=10)
             result = paginator.paginate()
 
-            assert result['current_page'] == 1
-            assert len(result['items']) == 10
-            assert result['total'] == 25
-            assert result['pages'] == 3
-            assert result['has_next'] is True
-            assert result['has_prev'] is False
+            assert result["current_page"] == 1
+            assert len(result["items"]) == 10
+            assert result["total"] == 25
+            assert result["pages"] == 3
+            assert result["has_next"] is True
+            assert result["has_prev"] is False
 
     @pytest.mark.unit
     def test_paginator_pagina_do_meio(self, db_session, test_app):
         """Testa paginação em página do meio"""
         with test_app.app_context():
             from flask_bcrypt import Bcrypt
+
             bcrypt = Bcrypt(test_app)
-            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode("utf-8")
+            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode(
+                "utf-8"
+            )
 
             user = User(
                 name="Test User 2",
@@ -73,18 +79,21 @@ class TestPaginator:
             paginator = Paginator(query, page=2, per_page=10)
             result = paginator.paginate()
 
-            assert result['current_page'] == 2
-            assert len(result['items']) == 10
-            assert result['has_next'] is True
-            assert result['has_prev'] is True
+            assert result["current_page"] == 2
+            assert len(result["items"]) == 10
+            assert result["has_next"] is True
+            assert result["has_prev"] is True
 
     @pytest.mark.unit
     def test_paginator_ultima_pagina(self, db_session, test_app):
         """Testa paginação na última página"""
         with test_app.app_context():
             from flask_bcrypt import Bcrypt
+
             bcrypt = Bcrypt(test_app)
-            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode("utf-8")
+            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode(
+                "utf-8"
+            )
 
             user = User(
                 name="Test User 3",
@@ -107,18 +116,21 @@ class TestPaginator:
             paginator = Paginator(query, page=3, per_page=10)
             result = paginator.paginate()
 
-            assert result['current_page'] == 3
-            assert len(result['items']) == 5
-            assert result['has_next'] is False
-            assert result['has_prev'] is True
+            assert result["current_page"] == 3
+            assert len(result["items"]) == 5
+            assert result["has_next"] is False
+            assert result["has_prev"] is True
 
     @pytest.mark.unit
     def test_paginator_pagina_invalida(self, db_session, test_app):
         """Testa paginação com página inválida"""
         with test_app.app_context():
             from flask_bcrypt import Bcrypt
+
             bcrypt = Bcrypt(test_app)
-            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode("utf-8")
+            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode(
+                "utf-8"
+            )
 
             user = User(
                 name="Test User 4",
@@ -142,20 +154,23 @@ class TestPaginator:
             # Página 0 deve voltar para 1
             paginator = Paginator(query, page=0, per_page=10)
             result = paginator.paginate()
-            assert result['current_page'] == 1
+            assert result["current_page"] == 1
 
             # Página negativa deve voltar para 1
             paginator = Paginator(query, page=-5, per_page=10)
             result = paginator.paginate()
-            assert result['current_page'] == 1
+            assert result["current_page"] == 1
 
     @pytest.mark.unit
     def test_paginator_per_page_invalido(self, db_session, test_app):
         """Testa paginação com per_page inválido"""
         with test_app.app_context():
             from flask_bcrypt import Bcrypt
+
             bcrypt = Bcrypt(test_app)
-            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode("utf-8")
+            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode(
+                "utf-8"
+            )
 
             user = User(
                 name="Test User 5",
@@ -179,20 +194,23 @@ class TestPaginator:
             # per_page > 100 deve ser limitado a 100
             paginator = Paginator(query, page=1, per_page=200)
             result = paginator.paginate()
-            assert result['per_page'] == 100
+            assert result["per_page"] == 100
 
             # per_page 0 deve voltar para 1
             paginator = Paginator(query, page=1, per_page=0)
             result = paginator.paginate()
-            assert result['per_page'] == 1
+            assert result["per_page"] == 1
 
     @pytest.mark.unit
     def test_paginator_query_vazia(self, db_session, test_app):
         """Testa paginação com query vazia"""
         with test_app.app_context():
             from flask_bcrypt import Bcrypt
+
             bcrypt = Bcrypt(test_app)
-            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode("utf-8")
+            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode(
+                "utf-8"
+            )
 
             user = User(
                 name="Test User 6",
@@ -206,19 +224,22 @@ class TestPaginator:
             paginator = Paginator(query, page=1, per_page=10)
             result = paginator.paginate()
 
-            assert result['total'] == 0
-            assert result['pages'] == 0
-            assert len(result['items']) == 0
-            assert result['has_next'] is False
-            assert result['has_prev'] is False
+            assert result["total"] == 0
+            assert result["pages"] == 0
+            assert len(result["items"]) == 0
+            assert result["has_next"] is False
+            assert result["has_prev"] is False
 
     @pytest.mark.unit
     def test_paginator_total_calculado_corretamente(self, db_session, test_app):
         """Testa cálculo correto de total de páginas"""
         with test_app.app_context():
             from flask_bcrypt import Bcrypt
+
             bcrypt = Bcrypt(test_app)
-            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode("utf-8")
+            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode(
+                "utf-8"
+            )
 
             user = User(
                 name="Test User 7",
@@ -243,25 +264,28 @@ class TestPaginator:
             # 7 itens com 3 por página = 3 páginas (3+3+1)
             paginator = Paginator(query, page=1, per_page=3)
             result = paginator.paginate()
-            assert result['pages'] == 3
+            assert result["pages"] == 3
 
             # 7 itens com 2 por página = 4 páginas (2+2+2+1)
             paginator = Paginator(query, page=1, per_page=2)
             result = paginator.paginate()
-            assert result['pages'] == 4
+            assert result["pages"] == 4
 
             # 7 itens com 7 por página = 1 página
             paginator = Paginator(query, page=1, per_page=7)
             result = paginator.paginate()
-            assert result['pages'] == 1
+            assert result["pages"] == 1
 
     @pytest.mark.unit
     def test_paginator_offset_correto(self, db_session, test_app):
         """Testa se o offset é calculado corretamente"""
         with test_app.app_context():
             from flask_bcrypt import Bcrypt
+
             bcrypt = Bcrypt(test_app)
-            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode("utf-8")
+            hashed_password = bcrypt.generate_password_hash("TestPass123!").decode(
+                "utf-8"
+            )
 
             user = User(
                 name="Test User 8",
@@ -286,17 +310,17 @@ class TestPaginator:
             # Página 1: offset 0, itens 0-9
             paginator = Paginator(query, page=1, per_page=10)
             result = paginator.paginate()
-            assert len(result['items']) == 10
+            assert len(result["items"]) == 10
 
             # Página 2: offset 10, itens 10-19
             paginator = Paginator(query, page=2, per_page=10)
             result = paginator.paginate()
-            assert len(result['items']) == 10
+            assert len(result["items"]) == 10
 
             # Página 3: offset 20, itens 20-29
             paginator = Paginator(query, page=3, per_page=10)
             result = paginator.paginate()
-            assert len(result['items']) == 10
+            assert len(result["items"]) == 10
 
 
 class TestGetPaginationParams:

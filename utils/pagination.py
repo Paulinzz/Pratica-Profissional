@@ -1,7 +1,7 @@
 import logging
 from flask import request
 
-logger = logging.getLogger('service')
+logger = logging.getLogger("service")
 
 
 class Paginator:
@@ -42,9 +42,11 @@ class Paginator:
                 - has_prev: Se existe página anterior
         """
         total = self.query.count()
-        items = self.query.limit(self.per_page).offset(
-            (self.page - 1) * self.per_page
-        ).all()
+        items = (
+            self.query.limit(self.per_page)
+            .offset((self.page - 1) * self.per_page)
+            .all()
+        )
         pages = (total + self.per_page - 1) // self.per_page if total > 0 else 0
 
         logger.debug(
@@ -53,13 +55,13 @@ class Paginator:
         )
 
         return {
-            'items': items,
-            'total': total,
-            'pages': pages,
-            'current_page': self.page,
-            'per_page': self.per_page,
-            'has_next': self.page < pages,
-            'has_prev': self.page > 1,
+            "items": items,
+            "total": total,
+            "pages": pages,
+            "current_page": self.page,
+            "per_page": self.per_page,
+            "has_next": self.page < pages,
+            "has_prev": self.page > 1,
         }
 
 
@@ -75,8 +77,8 @@ def get_pagination_params(default_page=1, default_per_page=10):
         tuple: (page, per_page) com valores validados
     """
     try:
-        page = int(request.args.get('page', default_page))
-        per_page = int(request.args.get('per_page', default_per_page))
+        page = int(request.args.get("page", default_page))
+        per_page = int(request.args.get("per_page", default_per_page))
 
         # Validações
         page = max(1, page)

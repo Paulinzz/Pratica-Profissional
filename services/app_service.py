@@ -3,7 +3,7 @@ import logging
 
 from models.models import db, Notificacao
 
-service_logger = logging.getLogger('service')
+service_logger = logging.getLogger("service")
 
 
 tentativas_login = {}
@@ -58,7 +58,9 @@ def criar_notificacao(user_id, tipo, titulo, mensagem, link=None, icone="fa-bell
         db.session.commit()
         service_logger.debug(f"Notificação criada para usuário {user_id}: {titulo}")
     except Exception as e:
-        service_logger.error(f"Erro ao criar notificação para user {user_id}: {str(e)}", exc_info=True)
+        service_logger.error(
+            f"Erro ao criar notificação para user {user_id}: {str(e)}", exc_info=True
+        )
         db.session.rollback()
 
 

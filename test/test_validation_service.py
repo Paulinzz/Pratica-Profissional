@@ -19,7 +19,11 @@ class TestValidadoresEmail:
             ("@example.com", False, "Email sem usuário"),
             ("user @example.com", False, "Email com espaço"),
             ("user@example", False, "Email sem TLD"),
-            ("user..name@example.com", True, "Email com múltiplos pontos (válido em padrão)"),
+            (
+                "user..name@example.com",
+                True,
+                "Email com múltiplos pontos (válido em padrão)",
+            ),
             ("a" * 150 + "@example.com", False, "Email muito longo (> 150)"),
             ("user@example.com", True, "Email exato no limite (150 chars)"),
         ],

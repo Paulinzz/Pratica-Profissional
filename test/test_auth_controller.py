@@ -44,7 +44,7 @@ class TestRegisterRoute:
         )
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
+        response_text = response.data.decode("utf-8", errors="ignore")
         assert "cadastrado" in response_text.lower()
 
     @pytest.mark.auth
@@ -94,7 +94,7 @@ class TestRegisterRoute:
             follow_redirects=True,
         )
 
-        response_text = response.data.decode('utf-8', errors='ignore')
+        response_text = response.data.decode("utf-8", errors="ignore")
         assert "tentativas" in response_text.lower()
 
 
@@ -131,8 +131,10 @@ class TestLoginRoute:
         )
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
-        assert "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        response_text = response.data.decode("utf-8", errors="ignore")
+        assert (
+            "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        )
 
     @pytest.mark.auth
     def test_login_senha_incorreta(self, client, test_user):
@@ -144,8 +146,10 @@ class TestLoginRoute:
         )
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
-        assert "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        response_text = response.data.decode("utf-8", errors="ignore")
+        assert (
+            "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        )
 
     @pytest.mark.auth
     def test_login_rate_limit(self, client, test_user):
@@ -164,7 +168,7 @@ class TestLoginRoute:
             follow_redirects=True,
         )
 
-        response_text = response.data.decode('utf-8', errors='ignore')
+        response_text = response.data.decode("utf-8", errors="ignore")
         assert "tentativas" in response_text.lower()
 
     @pytest.mark.auth
@@ -177,8 +181,10 @@ class TestLoginRoute:
         )
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
-        assert "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        response_text = response.data.decode("utf-8", errors="ignore")
+        assert (
+            "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        )
 
 
 class TestLogoutRoute:
@@ -241,7 +247,7 @@ class TestForgotPasswordRoute:
         )
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
+        response_text = response.data.decode("utf-8", errors="ignore")
         assert "email" in response_text.lower()
 
     @pytest.mark.auth
@@ -254,8 +260,10 @@ class TestForgotPasswordRoute:
         )
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
-        assert "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        response_text = response.data.decode("utf-8", errors="ignore")
+        assert (
+            "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        )
 
 
 class TestResetPasswordRoute:
@@ -300,8 +308,12 @@ class TestResetPasswordRoute:
         response = client.get(f"/resetar_senha/{token}", follow_redirects=True)
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
-        assert "invalido" in response_text.lower() or "inválido" in response_text.lower() or "expirado" in response_text.lower()
+        response_text = response.data.decode("utf-8", errors="ignore")
+        assert (
+            "invalido" in response_text.lower()
+            or "inválido" in response_text.lower()
+            or "expirado" in response_text.lower()
+        )
 
     @pytest.mark.auth
     def test_reset_password_senhas_nao_coincidem(self, client, test_user):
@@ -324,7 +336,7 @@ class TestResetPasswordRoute:
         )
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
+        response_text = response.data.decode("utf-8", errors="ignore")
         assert "coincidem" in response_text.lower() or "não" in response_text.lower()
 
     @pytest.mark.auth
@@ -345,8 +357,10 @@ class TestResetPasswordRoute:
         )
 
         assert response.status_code == 200
-        response_text = response.data.decode('utf-8', errors='ignore')
-        assert "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        response_text = response.data.decode("utf-8", errors="ignore")
+        assert (
+            "invalido" in response_text.lower() or "inválido" in response_text.lower()
+        )
 
 
 class TestAuthIntegracao:

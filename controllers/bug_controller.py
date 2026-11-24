@@ -131,7 +131,9 @@ def init_bug_routes(app):
             except Exception:
                 db.session.rollback()
                 bug_logger.error("Erro ao salvar bug report", exc_info=True)
-                flash("Erro ao enviar o relatório. Tente novamente mais tarde.", "error")
+                flash(
+                    "Erro ao enviar o relatório. Tente novamente mais tarde.", "error"
+                )
                 return render_template(
                     "reportar_bug.html",
                     form=dados,
@@ -147,7 +149,10 @@ def init_bug_routes(app):
                 f"Recebemos seu relatório #{report.id}: {report.titulo}. Obrigado!",
                 icone="fa-bug",
             )
-            flash("Relatório enviado com sucesso! Obrigado por ajudar a melhorar o FocusUp.", "success")
+            flash(
+                "Relatório enviado com sucesso! Obrigado por ajudar a melhorar o FocusUp.",
+                "success",
+            )
             return redirect(url_for("dashboard"))
 
         # GET: preenche a página de origem automaticamente

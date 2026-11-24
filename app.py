@@ -66,6 +66,7 @@ login_manager.login_view = "login"
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 init_contact_routes(app)
 init_bug_routes(app)
 init_auth_routes(app, bcrypt, mail)
@@ -80,5 +81,7 @@ with app.app_context():
 
 
 if __name__ == "__main__":
-    app_logger.info(f"Iniciando FocusUp em modo {'DEBUG' if app.debug else 'PRODUCTION'}")
+    app_logger.info(
+        f"Iniciando FocusUp em modo {'DEBUG' if app.debug else 'PRODUCTION'}"
+    )
     app.run(debug=True)

@@ -22,7 +22,7 @@ from services.app_service import (
 )
 from services.validation_service import Validadores
 
-auth_logger = logging.getLogger('auth')
+auth_logger = logging.getLogger("auth")
 
 
 def init_auth_routes(app, bcrypt, mail):
@@ -67,7 +67,9 @@ def init_auth_routes(app, bcrypt, mail):
                 return redirect(url_for("register"))
 
             if User.query.filter_by(email=email).first():
-                auth_logger.warning(f"Tentativa de registro com email já existente: {email}")
+                auth_logger.warning(
+                    f"Tentativa de registro com email já existente: {email}"
+                )
                 flash("Este email já está cadastrado.", "error")
                 return redirect(url_for("register"))
 
@@ -79,7 +81,9 @@ def init_auth_routes(app, bcrypt, mail):
                 db.session.add(new_user)
                 db.session.commit()
 
-                auth_logger.info(f"Novo usuário registrado: {email} (ID: {new_user.id})")
+                auth_logger.info(
+                    f"Novo usuário registrado: {email} (ID: {new_user.id})"
+                )
 
                 criar_notificacao(
                     user_id=new_user.id,
@@ -97,7 +101,9 @@ def init_auth_routes(app, bcrypt, mail):
                 return redirect(url_for("login"))
             except Exception as e:
                 db.session.rollback()
-                auth_logger.error(f"Erro ao criar conta para {email}: {str(e)}", exc_info=True)
+                auth_logger.error(
+                    f"Erro ao criar conta para {email}: {str(e)}", exc_info=True
+                )
                 flash(f"Erro ao criar conta: {str(e)}", "error")
                 return redirect(url_for("register"))
 
@@ -129,7 +135,9 @@ def init_auth_routes(app, bcrypt, mail):
             user = User.query.filter_by(email=email).first()
             if user and bcrypt.check_password_hash(user.password, password):
                 login_user(user)
-                auth_logger.info(f"Login bem-sucedido para usuário: {email} (ID: {user.id})")
+                auth_logger.info(
+                    f"Login bem-sucedido para usuário: {email} (ID: {user.id})"
+                )
 
                 criar_notificacao(
                     user_id=user.id,

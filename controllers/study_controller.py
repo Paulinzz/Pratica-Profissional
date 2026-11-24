@@ -15,7 +15,7 @@ from services.badge_service import verificar_e_conceder_badge
 from services.validation_service import Validadores
 from utils.pagination import Paginator, get_pagination_params
 
-study_logger = logging.getLogger('study')
+study_logger = logging.getLogger("study")
 
 
 traducoes_comuns = {
@@ -265,7 +265,7 @@ def init_study_routes(app):
 
         return render_template(
             "listar_atividades.html",
-            atividades=result['items'],
+            atividades=result["items"],
             pagination=result,
             current_page=page,
             per_page=per_page,
@@ -397,8 +397,10 @@ def init_study_routes(app):
         paginator = Paginator(query, page=page, per_page=per_page)
         result = paginator.paginate()
 
-        total_notificacoes = result['total']
-        nao_lidas = Notificacao.query.filter_by(user_id=current_user.id, lida=False).count()
+        total_notificacoes = result["total"]
+        nao_lidas = Notificacao.query.filter_by(
+            user_id=current_user.id, lida=False
+        ).count()
 
         study_logger.info(
             f"Listando notificações do usuário {current_user.id}, "
@@ -407,7 +409,7 @@ def init_study_routes(app):
 
         return render_template(
             "listar_notificacoes.html",
-            notificacoes=result['items'],
+            notificacoes=result["items"],
             pagination=result,
             tipo_filtro=tipo_filtro,
             lida_filtro=lida_filtro,
@@ -498,33 +500,25 @@ def init_study_routes(app):
             )
         return {"success": True, "message": "Sessão salva com sucesso!"}, 200
 
-   
     @app.route("/metas")
     @login_required
     def listar_metas():
-        page, per_page = get_pagination_params(
-            default_page=1,
-            default_per_page=10
-        )
+        page, per_page = get_pagination_params(default_page=1, default_per_page=10)
 
         status_filtro = request.args.get("status", "todos")
 
         # Contadores independentes do filtro aplicado
         metas_ativas = Meta.query.filter_by(
-            user_id=current_user.id,
-            status="ativo"
+            user_id=current_user.id, status="ativo"
         ).count()
 
         metas_concluidas = Meta.query.filter_by(
-            user_id=current_user.id,
-            status="concluido"
+            user_id=current_user.id, status="concluido"
         ).count()
 
         total_metas = metas_ativas + metas_concluidas
 
-        query = Meta.query.filter_by(
-            user_id=current_user.id
-        )
+        query = Meta.query.filter_by(user_id=current_user.id)
 
         if status_filtro in ("ativo", "concluido"):
             query = query.filter_by(status=status_filtro)
@@ -533,11 +527,7 @@ def init_study_routes(app):
 
         query = query.order_by(Meta.data_criacao.desc())
 
-        paginator = Paginator(
-            query,
-            page=page,
-            per_page=per_page
-        )
+        paginator = Paginator(query, page=page, per_page=per_page)
 
         result = paginator.paginate()
 
@@ -548,7 +538,7 @@ def init_study_routes(app):
 
         return render_template(
             "listar_metas.html",
-            metas=result['items'],
+            metas=result["items"],
             pagination=result,
             status_filtro=status_filtro,
             total_metas=total_metas,
@@ -557,7 +547,6 @@ def init_study_routes(app):
             current_page=page,
             per_page=per_page,
         )
-
 
     @app.route("/criar_meta", methods=["GET", "POST"])
     @login_required

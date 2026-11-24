@@ -129,12 +129,17 @@ def init_contact_routes(app):
                 contact_logger.info(f"Mensagem de contato #{contato_msg.id} recebida")
             except Exception:
                 db.session.rollback()
-                contact_logger.error("Erro ao salvar mensagem de contato", exc_info=True)
+                contact_logger.error(
+                    "Erro ao salvar mensagem de contato", exc_info=True
+                )
                 flash("Erro ao enviar a mensagem. Tente novamente mais tarde.", "error")
                 return render(dados)
 
             _enviar_email(contato_msg)
-            flash("Mensagem enviada com sucesso! Responderemos no e-mail informado.", "success")
+            flash(
+                "Mensagem enviada com sucesso! Responderemos no e-mail informado.",
+                "success",
+            )
             return redirect(url_for("contato"))
 
         # GET: se estiver logado, preenche nome e e-mail

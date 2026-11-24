@@ -23,8 +23,8 @@ def setup_logging(app):
 
     # Formato de log estruturado
     formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
+        "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
     )
 
     # Logger raiz
@@ -39,9 +39,7 @@ def setup_logging(app):
 
     # Handler para arquivo - todos os logs
     file_handler = logging.handlers.RotatingFileHandler(
-        os.path.join(log_dir, 'app.log'),
-        maxBytes=10485760,  # 10MB
-        backupCount=10
+        os.path.join(log_dir, "app.log"), maxBytes=10485760, backupCount=10  # 10MB
     )
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
@@ -49,29 +47,29 @@ def setup_logging(app):
 
     # Handler específico para erros
     error_handler = logging.handlers.RotatingFileHandler(
-        os.path.join(log_dir, 'errors.log'),
-        maxBytes=10485760,  # 10MB
-        backupCount=5
+        os.path.join(log_dir, "errors.log"), maxBytes=10485760, backupCount=5  # 10MB
     )
     error_handler.setLevel(logging.ERROR)
     error_handler.setFormatter(formatter)
     root_logger.addHandler(error_handler)
 
     # Criar loggers específicos para módulos principais
-    auth_logger = logging.getLogger('auth')
-    study_logger = logging.getLogger('study')
-    user_logger = logging.getLogger('user')
-    validation_logger = logging.getLogger('validation')
-    service_logger = logging.getLogger('service')
+    auth_logger = logging.getLogger("auth")
+    study_logger = logging.getLogger("study")
+    user_logger = logging.getLogger("user")
+    validation_logger = logging.getLogger("validation")
+    service_logger = logging.getLogger("service")
 
-    app.logger.info(f"Sistema de logging iniciado - Nível: {logging.getLevelName(log_level)}")
+    app.logger.info(
+        f"Sistema de logging iniciado - Nível: {logging.getLevelName(log_level)}"
+    )
 
     return {
-        'auth': auth_logger,
-        'study': study_logger,
-        'user': user_logger,
-        'validation': validation_logger,
-        'service': service_logger,
+        "auth": auth_logger,
+        "study": study_logger,
+        "user": user_logger,
+        "validation": validation_logger,
+        "service": service_logger,
     }
 
 
