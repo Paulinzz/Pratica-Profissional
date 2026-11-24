@@ -987,11 +987,27 @@ body.dark-mode .btn-delete-materia:focus-visible {
 
 
 /* Remove o hover preto dos artigos científicos */
+
+/* Hover suave dos artigos científicos */
+.card-artigos .artigo-card {
+    background-color: var(--color-bg-primary);
+    transition: background-color 0.2s ease;
+}
+
 .card-artigos .artigo-card:hover {
-    background-color: #fff !important;
+    background-color: var(--color-bg-tertiary) !important;
     color: inherit !important;
-    box-shadow: none;
-    transform: none;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* Preserva as cores dos textos */
+.card-artigos .artigo-card:hover h3 {
+    color: var(--color-primary);
+}
+
+.card-artigos .artigo-card:hover p {
+    color: var(--color-text-secondary);
 }
 
 /* ==========================================

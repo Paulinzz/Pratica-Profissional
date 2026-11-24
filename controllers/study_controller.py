@@ -145,11 +145,11 @@ def init_study_routes(app):
             )
             verificar_e_conceder_badge(current_user.id, "5_materias")
             flash(f"Matéria '{nome_materia}' adicionada com sucesso!", "success")
-            return redirect(url_for("adicionar_materia_page"))
+            return redirect(url_for("dashboard"))
         except Exception as e:
             db.session.rollback()
             flash(f"Erro ao adicionar matéria: {str(e)}", "error")
-            return redirect(url_for("adicionar_materia_page"))
+            return redirect(url_for("dashboard"))
 
     @app.route("/adicionar_materia", methods=["GET"])
     @login_required

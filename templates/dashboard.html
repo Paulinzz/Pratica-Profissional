@@ -94,8 +94,11 @@
                     <span class="card-subtitle">Tempo de estudo por matéria</span>
                 </div>
 
-                {% set class = "dashboard-btn-add-materia" %}
-                {% include 'components/button.html' with context %}
+                <a href="{{ url_for('adicionar_materia_page') }}"
+   class="btn btn-primary btn-md dashboard-btn-add-materia">
+    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+    <span>Adicionar matéria</span>
+</a>
 
                 {% if sorted_materias %}
                     <div class="materias-progress">
