@@ -4,9 +4,11 @@ from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 from flask_mail import Mail
 import os
+from urllib.parse import quote_plus
 from dotenv import load_dotenv
 from datetime import timedelta
 import logging
+import certifi
 
 from models.models import (
     db,
@@ -37,11 +39,20 @@ DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = os.getenv("DB_PORT", "3306")
 DB_NAME = os.getenv("DB_NAME", "pratica_profissional")
 DB_USER = os.getenv("DB_USER", "root")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "FSca*2033")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    f"mysql+pymysql://{quote_plus(DB_USER)}:{quote_plus(DB_PASSWORD)}"
+    f"@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
+
+# Conexão segura (TLS), exigida por bancos em nuvem como o TiDB Cloud.
+# Ative definindo DB_SSL=true nas variáveis de ambiente.
+if os.getenv("DB_SSL", "").lower() == "true":
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "connect_args": {"ssl": {"ca": certifi.where()}}
+    }
+
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "Chave1234")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER", "smtp.gmail.com")
@@ -81,7 +92,10 @@ with app.app_context():
 
 
 if __name__ == "__main__":
+    # Rodando localmente: debug ligado, exceto se FLASK_ENV=production.
+    # No Render o app é iniciado pelo gunicorn e este bloco não é executado.
+    modo_debug = os.getenv("FLASK_ENV") != "production"
     app_logger.info(
-        f"Iniciando FocusUp em modo {'DEBUG' if app.debug else 'PRODUCTION'}"
+        f"Iniciando FocusUp em modo {'DEBUG' if modo_debug else 'PRODUCTION'}"
     )
-    app.run(debug=True)
+    app.run(debug=modo_debug)
